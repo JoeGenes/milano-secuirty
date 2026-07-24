@@ -70,7 +70,20 @@ button, input, select, textarea {
   width: 100%;
   max-width: 1240px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 1.5rem;
+}
+
+/* Mobile responsive container padding */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 0.75rem;
+  }
 }
 
 /* Deep Navy Blue Buttons (#0A0B3D) */
@@ -249,3 +262,372 @@ button, input, select, textarea {
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: var(--pure-white); }
 ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
+
+/* ===== RESPONSIVE UTILITIES ===== */
+
+/* Hide/Show Mobile Elements */
+.hide-mobile {
+  display: block !important;
+}
+
+.show-mobile-only {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none !important;
+  }
+
+  .show-mobile-only {
+    display: block !important;
+  }
+
+  .hide-mobile-flex {
+    display: none !important;
+  }
+
+  .show-mobile-flex {
+    display: flex !important;
+  }
+
+  .hide-mobile-grid {
+    display: none !important;
+  }
+
+  .show-mobile-grid {
+    display: grid !important;
+  }
+}
+
+/* Responsive Typography */
+h1 {
+  font-size: clamp(1.8rem, 5vw, 3rem);
+}
+
+h2 {
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+}
+
+h3 {
+  font-size: clamp(1.1rem, 3vw, 1.6rem);
+}
+
+h4 {
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+}
+
+p {
+  font-size: clamp(0.9rem, 2vw, 1rem);
+}
+
+.text-sm {
+  font-size: clamp(0.75rem, 1.5vw, 0.85rem);
+}
+
+.text-base {
+  font-size: clamp(0.85rem, 2vw, 0.95rem);
+}
+
+.text-lg {
+  font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+}
+
+.text-xl {
+  font-size: clamp(1.1rem, 3vw, 1.3rem);
+}
+
+.text-2xl {
+  font-size: clamp(1.3rem, 3.5vw, 1.6rem);
+}
+
+/* Responsive Spacing */
+@media (max-width: 1024px) {
+  section {
+    padding: 3.5rem 0 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  section {
+    padding: 2.5rem 0 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  section {
+    padding: 1.8rem 0 !important;
+  }
+}
+
+/* Responsive Grid - Mobile First */
+.grid-auto-fit {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .grid-auto-fit {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-auto-fit {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  }
+}
+
+.grid-2-cols {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .grid-2-cols {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.grid-3-cols {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .grid-3-cols {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-3-cols {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.grid-4-cols {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .grid-4-cols {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-4-cols {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Responsive Flexbox */
+.flex-center-mobile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .flex-center-mobile {
+    flex-direction: row;
+    text-align: left;
+    align-items: flex-start;
+  }
+}
+
+/* Responsive Padding */
+.p-mobile-sm {
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  .p-mobile-sm {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .p-mobile-sm {
+    padding: 2rem;
+  }
+}
+
+/* Button Responsive */
+.btn {
+  width: auto;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .btn {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.75rem;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .btn-group .btn {
+    width: 100%;
+  }
+}
+
+/* Card Responsive */
+.card {
+  padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .card {
+    padding: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .card {
+    padding: 2.5rem;
+  }
+}
+
+/* Badge Responsive */
+.badge {
+  font-size: 0.7rem;
+  padding: 0.4rem 0.8rem;
+}
+
+@media (min-width: 640px) {
+  .badge {
+    font-size: 0.78rem;
+    padding: 0.5rem 1rem;
+  }
+}
+
+.badge-navy {
+  background-color: rgba(10, 11, 61, 0.08);
+  color: #0A0B3D;
+  border: 1px solid rgba(10, 11, 61, 0.2);
+}
+
+.badge-gold {
+  background-color: rgba(212, 175, 55, 0.12);
+  color: #D4AF37;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+/* Flex Wrap Responsive */
+.flex-wrap-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .flex-wrap-mobile {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+/* Maximum width utilities */
+.max-w-sm {
+  max-width: 600px;
+}
+
+.max-w-md {
+  max-width: 800px;
+}
+
+.max-w-lg {
+  max-width: 1000px;
+}
+
+/* Margin utilities */
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mt-mobile {
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .mt-mobile {
+    margin-top: 2.5rem;
+  }
+}
+
+/* Image Responsive */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Overflow handling */
+body {
+  overflow-x: hidden;
+}
+
+/* Form responsive */
+.form-group {
+  width: 100%;
+}
+
+form {
+  width: 100%;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .form-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Table Responsive */
+table {
+  width: 100%;
+  overflow-x: auto;
+  display: block;
+}
+
+@media (min-width: 768px) {
+  table {
+    display: table;
+  }
+}

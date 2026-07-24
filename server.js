@@ -17,6 +17,49 @@ const submissionsDir = path.join(__dirname, 'data', 'submissions');
 const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL || 'support@milanosecurity.co.tz';
 const DEFAULT_FROM_EMAIL = process.env.SMTP_USER || 'careers@milanosecurity.co.tz';
 
+// Simple, mobile-friendly HTML email template generator
+const buildEmailTemplate = ({ title = 'Milano Security', preheader = '', bodyHtml = '', logoCid } = {}) => {
+  const logoImg = logoCid ? `<img src="cid:${logoCid}" alt="Milano Security" style="height:40px;display:block;margin-bottom:8px;"/>` : '';
+  return `<!doctype html>
+  <html>
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width,initial-scale=1" />
+      <title>${title}</title>
+    </head>
+    <body style="margin:0;padding:0;background:#f3f5f7;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td align="center">
+            <table role="presentation" width="680" cellpadding="0" cellspacing="0" style="margin:28px auto;background:#ffffff;border-radius:8px;overflow:hidden;border:1px solid #e6edf3;">
+              <tr>
+                <td style="background:linear-gradient(90deg,#0A0B3D,#16185E);padding:20px 28px;color:#ffffff;text-align:left;">
+                  ${logoImg}
+                  <h1 style="margin:0;font-size:18px;letter-spacing:0.02em;">MILANO SECURITY SERVICE LIMITED</h1>
+                  <p style="margin:6px 0 0;font-size:13px;opacity:0.95">${preheader}</p>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding:22px 28px;color:#0A0B3D;font-size:14px;line-height:1.6;">
+                  ${bodyHtml}
+                </td>
+              </tr>
+
+              <tr>
+                <td style="background:#f8fafc;padding:16px 24px;border-top:1px solid #eef2f6;color:#64748b;font-size:13px;">
+                  <div>Contact: milanosec351@gmail.com • +255 685 302 141</div>
+                  <div style="margin-top:6px">BRELA Reg No. 154815619 • PDPC Reg No. 0-000-010-187</div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </body>
+  </html>`;
+};
+
 export function buildFallbackMailto(recipient, positionTitle, details) {
   const subject = encodeURIComponent(`New Career Application – ${positionTitle || 'General Enquiry'}`);
   const bodyLines = [
@@ -103,6 +146,8 @@ app.post('/api/careers/submit', upload.single('cv'), async (req, res) => {
     const attachments = req.file
       ? [{ filename: req.file.originalname, content: req.file.buffer, contentType: req.file.mimetype }]
       : [];
+    const logoPath = path.join(__dirname, 'public', 'favicon.svg');
+    const attachmentsWithLogo = attachments.concat([{ filename: 'logo.svg', path: logoPath, cid: 'logo@milano', contentType: 'image/svg+xml' }]);
 
     const submissionDetails = {
       fullName,
@@ -131,29 +176,39 @@ app.post('/api/careers/submit', upload.single('cv'), async (req, res) => {
       `Cover Note: ${coverMessage || 'No additional note provided'}`
     ].join('<br/>');
 
+    const companyBody = `
+      <p>A new career application has been submitted through the Milano Security recruitment portal.</p>
+      <p><strong>Company:</strong> ${companyName || 'Milano Security'}</p>
+      <h3 style="margin-top:18px">Applicant Details</h3>
+      <p style="margin:6px 0 0">${applicantDetails}</p>
+    `;
+
     const mailOptions = {
       from: `${companyName || 'Milano Security'} <${process.env.SMTP_USER || 'careers@milanosecurity.co.tz'}>`,
       to: recipient,
       replyTo: applicantEmail,
       subject: `New Career Application – ${positionTitle || 'General Enquiry'}`,
-      html: `
-        <h3>New application received</h3>
-        <p>A new career application has been submitted through the Milano Security recruitment portal.</p>
-        <p><strong>Company:</strong> ${companyName || 'Milano Security'}</p>
-        <p><strong>Applicant Details</strong><br/>${applicantDetails}</p>
-      `,
-      attachments
+      html: buildEmailTemplate({ title: `New Career Application – ${positionTitle || 'General Enquiry'}`, preheader: 'New career application received', bodyHtml: companyBody, logoCid: 'logo@milano' }),
+      attachments: attachmentsWithLogo
     };
 
     try {
       await transporter.sendMail(mailOptions);
 
       if (applicantEmail) {
+        const ackBody = `
+          <p>Dear ${fullName},</p>
+          <p>Thank you for applying to Milano Security. Your application for <strong>${positionTitle || 'the advertised position'}</strong> has been received by our HR team.</p>
+          <p>We will review your application and contact you shortly.</p>
+          <p>Best regards,<br/>Milano Security HR</p>
+        `;
+
         await transporter.sendMail({
           from: `${companyName || 'Milano Security'} <${process.env.SMTP_USER || 'careers@milanosecurity.co.tz'}>`,
           to: applicantEmail,
           subject: 'Your career application has been received',
-          html: `<p>Dear ${fullName},</p><p>Thank you for applying to Milano Security. Your application for <strong>${positionTitle || 'the advertised position'}</strong> has been received by our HR team.</p><p>We will review your application and contact you shortly.</p><p>Best regards,<br/>Milano Security HR</p>`
+          html: buildEmailTemplate({ title: 'Application Received', preheader: 'We received your application', bodyHtml: ackBody, logoCid: 'logo@milano' }),
+          attachments: [{ filename: 'logo.svg', path: path.join(__dirname, 'public', 'favicon.svg'), cid: 'logo@milano', contentType: 'image/svg+xml' }]
         });
       }
 
@@ -213,21 +268,25 @@ app.post('/api/support/submit', async (req, res) => {
     const recipient = SUPPORT_EMAIL;
     const senderEmail = trimmedEmail;
 
+    const supportBody = `
+      <p>A new support request has been submitted through the Milano Security contact portal.</p>
+      <h3 style="margin-top:12px">Request Details</h3>
+      <p><strong>Name:</strong> ${name}</p>
+      <p><strong>Phone:</strong> ${phone}</p>
+      <p><strong>Email:</strong> ${senderEmail}</p>
+      <p><strong>Category:</strong> ${category}</p>
+      <p><strong>Region:</strong> ${region}</p>
+      <p><strong>Details:</strong><br/>${trimmedDetails.replace(/\n/g, '<br/>')}</p>
+    `;
+
+    const logoPath = path.join(__dirname, 'public', 'favicon.svg');
     const mailOptions = {
       from: `Milano Security <${DEFAULT_FROM_EMAIL}>`,
       to: recipient,
       replyTo: senderEmail,
       subject: `New Support / Complaint Request from ${name}`,
-      html: `
-        <h3>New support or complaint request</h3>
-        <p>A new support request has been submitted through the Milano Security contact portal.</p>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Phone:</strong> ${phone}</p>
-        <p><strong>Email:</strong> ${senderEmail}</p>
-        <p><strong>Category:</strong> ${category}</p>
-        <p><strong>Region:</strong> ${region}</p>
-        <p><strong>Details:</strong><br/>${details.replace(/\n/g, '<br/>')}</p>
-      `
+      html: buildEmailTemplate({ title: `Support Request – ${name}`, preheader: 'New support request received', bodyHtml: supportBody, logoCid: 'logo@milano' }),
+      attachments: [{ filename: 'logo.svg', path: logoPath, cid: 'logo@milano', contentType: 'image/svg+xml' }]
     };
 
     try {
@@ -293,23 +352,27 @@ app.post('/api/quote/submit', async (req, res) => {
 
     const SALES_EMAIL = process.env.SALES_EMAIL || 'sales@milanosecurity.co.tz';
 
+    const quoteBody = `
+      <p>A new quotation request has been submitted through the Milano Security quotation portal.</p>
+      <h3 style="margin-top:12px">Quotation Summary</h3>
+      <p><strong>Name / Organisation:</strong> ${trimmedName}</p>
+      <p><strong>Phone:</strong> ${trimmedPhone}</p>
+      <p><strong>Email:</strong> ${trimmedEmail}</p>
+      <p><strong>Region:</strong> ${trimmedRegion}</p>
+      <p><strong>Customer Category:</strong> ${customerType} (${premisesType})</p>
+      <p><strong>Urgency:</strong> ${urgency}</p>
+      <p><strong>Requested Services:</strong> ${(selectedServices || []).join(', ')}</p>
+      <p><strong>Description / Instructions:</strong><br/>${trimmedDescription.replace(/\n/g, '<br/>')}</p>
+    `;
+
+    const logoPath = path.join(__dirname, 'public', 'favicon.svg');
     const mailOptions = {
       from: `Milano Security <${DEFAULT_FROM_EMAIL}>`,
       to: SALES_EMAIL,
       replyTo: trimmedEmail,
       subject: `New Quotation Request from ${trimmedName}`,
-      html: `
-        <h3>New quotation request</h3>
-        <p>A new quotation request has been submitted through the Milano Security quotation portal.</p>
-        <p><strong>Name / Organisation:</strong> ${trimmedName}</p>
-        <p><strong>Phone:</strong> ${trimmedPhone}</p>
-        <p><strong>Email:</strong> ${trimmedEmail}</p>
-        <p><strong>Region:</strong> ${trimmedRegion}</p>
-        <p><strong>Customer Category:</strong> ${customerType} (${premisesType})</p>
-        <p><strong>Urgency:</strong> ${urgency}</p>
-        <p><strong>Requested Services:</strong> ${(selectedServices || []).join(', ')}</p>
-        <p><strong>Description / Instructions:</strong><br/>${trimmedDescription.replace(/\n/g, '<br/>')}</p>
-      `
+      html: buildEmailTemplate({ title: `Quotation Request – ${trimmedName}`, preheader: 'New quotation request received', bodyHtml: quoteBody, logoCid: 'logo@milano' }),
+      attachments: [{ filename: 'logo.svg', path: logoPath, cid: 'logo@milano', contentType: 'image/svg+xml' }]
     };
 
     try {

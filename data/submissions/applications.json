@@ -15,5 +15,41 @@
     "fallbackLink": "mailto:careers@milanosecurity.co.tz?subject=New%20Career%20Application%20%E2%80%93%20Security%20Officer&body=Applicant%20Name%3A%20Test%20Applicant%0APhone%3A%20%2B255700000000%0AEmail%3A%20test%40example.com%0ARegion%3A%20Dar%20es%20Salaam%0AEducation%3A%20Bachelor%20Degree%0AExperience%3A%202%20years%0APosition%20Applied%3A%20Security%20Officer%0ALocation%3A%20Dar%20es%20Salaam%0ACover%20Note%3A%20Verification%20test%0ACompany%3A%20Milano%20Security",
     "deliveryStatus": "saved-fallback",
     "createdAt": "2026-07-24T11:15:42.987Z"
+  },
+  {
+    "type": "quotation",
+    "name": "Joseph Genes Senzota",
+    "phone": "+255629019448",
+    "email": "ngutujoseph000@gmail.com",
+    "region": "Morogoro",
+    "customerType": "Residential Estate / House",
+    "premisesType": "NGOs & Organisations",
+    "selectedServices": [
+      "Manned Guarding",
+      "Electric Fencing",
+      "Intruder Alarm Systems"
+    ],
+    "urgency": "Immediate (Within 24 Hours)",
+    "description": "hbvgh",
+    "recipient": "sales@milanosecurity.co.tz",
+    "createdAt": "2026-07-24T13:07:00.371Z"
+  },
+  {
+    "type": "quotation",
+    "name": "Joseph Genes Senzota",
+    "phone": "+255629019448",
+    "email": "ngutujoseph000@gmail.com",
+    "region": "Morogoro",
+    "customerType": "Residential Estate / House",
+    "premisesType": "NGOs & Organisations",
+    "selectedServices": [
+      "Manned Guarding",
+      "Electric Fencing",
+      "Intruder Alarm Systems"
+    ],
+    "urgency": "Immediate (Within 24 Hours)",
+    "description": "hbvgh",
+    "recipient": "sales@milanosecurity.co.tz",
+    "createdAt": "2026-07-24T13:07:02.159Z"
   }
 ]

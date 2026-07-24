@@ -14,18 +14,18 @@ export default function About({ setCurrentPage, lang }) {
 
   return (
     <div className="animate-fade-in">
-      <section style={{ background: 'linear-gradient(135deg, #0A0B3D 0%, #151A66 100%)', color: '#FFF', padding: '4.5rem 0' }}>
+      <section style={{ background: 'linear-gradient(135deg, #0A0B3D 0%, #151A66 100%)', color: '#FFF', padding: 'clamp(2.5rem, 5vw, 4.5rem) 0' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1.15fr 0.85fr', gap: '2.5rem', alignItems: 'center' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 'clamp(1.5rem, 3vw, 2.5rem)', alignItems: 'center' }}>
             <div>
-              <span className="badge badge-gold" style={{ marginBottom: '1rem' }}>Corporate Profile</span>
-              <h1 style={{ fontSize: '2.5rem', color: '#FFF', fontFamily: 'Montserrat, sans-serif', marginBottom: '1rem' }}>
+              <span className="badge badge-gold" style={{ marginBottom: 'clamp(0.6rem, 1.5vw, 1rem)' }}>Corporate Profile</span>
+              <h1 style={{ fontSize: 'clamp(1.8rem, 5vw, 2.5rem)', color: '#FFF', fontFamily: 'Montserrat, sans-serif', marginBottom: 'clamp(0.6rem, 1.5vw, 1rem)' }}>
                 About Milano Security Service Limited
               </h1>
-              <p style={{ color: 'rgba(255,255,255,0.86)', fontSize: '1.05rem', lineHeight: '1.8', maxWidth: '700px' }}>
+              <p style={{ color: 'rgba(255,255,255,0.86)', fontSize: 'clamp(0.9rem, 2.5vw, 1.05rem)', lineHeight: '1.8', maxWidth: '700px' }}>
                 A wholly Tanzanian-owned security provider delivering trusted guarding, electronic surveillance, and integrated protection solutions for homes, businesses, institutions, and critical facilities.
               </p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginTop: '1.6rem' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'clamp(0.5rem, 2vw, 1rem)', marginTop: 'clamp(0.8rem, 2vw, 1.6rem)' }}>
                 <button onClick={() => setCurrentPage('contact')} className="btn btn-navy" style={{ borderRadius: '50px' }}>
                   Contact Our Team <ArrowRight size={16} />
                 </button>
@@ -35,13 +35,13 @@ export default function About({ setCurrentPage, lang }) {
               </div>
             </div>
 
-            <div style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.14)', borderRadius: '18px', padding: '1.4rem' }}>
-              <div style={{ display: 'grid', gap: '0.9rem' }}>
+            <div style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.14)', borderRadius: '18px', padding: 'clamp(0.8rem, 2vw, 1.4rem)' }}>
+              <div style={{ display: 'grid', gap: 'clamp(0.6rem, 1.5vw, 0.9rem)' }}>
                 {highlights.map((item, idx) => (
-                  <div key={idx} style={{ background: 'rgba(255,255,255,0.06)', borderRadius: '12px', padding: '1rem 1.1rem' }}>
-                    <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.16em', color: '#DCE4FF', marginBottom: '0.35rem' }}>{item.title}</div>
-                    <div style={{ fontSize: '1.15rem', fontWeight: '700', color: '#FFFFFF', marginBottom: '0.2rem' }}>{item.value}</div>
-                    <div style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.8)' }}>{item.desc}</div>
+                  <div key={idx} style={{ background: 'rgba(255,255,255,0.06)', borderRadius: '12px', padding: 'clamp(0.7rem, 1.5vw, 1rem) clamp(0.8rem, 1.5vw, 1.1rem)' }}>
+                    <div style={{ fontSize: 'clamp(0.6rem, 1.2vw, 0.72rem)', textTransform: 'uppercase', letterSpacing: '0.16em', color: '#DCE4FF', marginBottom: '0.35rem' }}>{item.title}</div>
+                    <div style={{ fontSize: 'clamp(0.95rem, 2vw, 1.15rem)', fontWeight: '700', color: '#FFFFFF', marginBottom: '0.2rem' }}>{item.value}</div>
+                    <div style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.9rem)', color: 'rgba(255,255,255,0.8)' }}>{item.desc}</div>
                   </div>
                 ))}
               </div>
@@ -50,33 +50,33 @@ export default function About({ setCurrentPage, lang }) {
         </div>
       </section>
 
-      <section style={{ padding: '4.5rem 0', backgroundColor: '#FFF' }}>
+      <section style={{ padding: 'clamp(2.5rem, 5vw, 4.5rem) 0', backgroundColor: '#FFF' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: '2rem', alignItems: 'start' }}>
-            <div className="card" style={{ padding: '2.2rem', background: '#F8FAFC' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.9rem', marginBottom: '1rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 'clamp(1.2rem, 2vw, 2rem)', alignItems: 'start' }}>
+            <div className="card" style={{ padding: 'clamp(1.2rem, 2.5vw, 2.2rem)', background: '#F8FAFC' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.6rem, 1.5vw, 0.9rem)', marginBottom: 'clamp(0.6rem, 1.5vw, 1rem)' }}>
                 <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#0A0B3D', color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <Shield size={22} />
                 </div>
                 <div>
-                  <h2 style={{ fontSize: '1.35rem', color: '#0A0B3D', margin: 0 }}>Company Background</h2>
-                  <span style={{ color: '#64748B', fontSize: '0.85rem' }}>Trusted delivery from day one</span>
+                  <h2 style={{ fontSize: 'clamp(1.1rem, 2.5vw, 1.35rem)', color: '#0A0B3D', margin: 0 }}>Company Background</h2>
+                  <span style={{ color: '#64748B', fontSize: 'clamp(0.7rem, 1.5vw, 0.85rem)' }}>Trusted delivery from day one</span>
                 </div>
               </div>
-              <p style={{ color: '#475569', fontSize: '0.98rem', lineHeight: '1.8', marginBottom: '1.3rem' }}>
+              <p style={{ color: '#475569', fontSize: 'clamp(0.85rem, 1.5vw, 0.98rem)', lineHeight: '1.8', marginBottom: 'clamp(0.8rem, 2vw, 1.3rem)' }}>
                 {COMPANY_INFO.profileText}
               </p>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem' }}>
-                <div style={{ background: '#FFFFFF', borderRadius: '12px', padding: '1rem', border: '1px solid #E2E8F0' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 'clamp(0.8rem, 1.5vw, 1rem)' }}>
+                <div style={{ background: '#FFFFFF', borderRadius: '12px', padding: 'clamp(0.7rem, 1.5vw, 1rem)', border: '1px solid #E2E8F0' }}>
                   <Building2 size={18} color="#0A0B3D" style={{ marginBottom: '0.4rem' }} />
-                  <div style={{ fontWeight: '700', color: '#0A0B3D', marginBottom: '0.2rem' }}>Headquarters</div>
-                  <div style={{ fontSize: '0.82rem', color: '#64748B' }}>Dodoma, Tanzania</div>
+                  <div style={{ fontWeight: '700', color: '#0A0B3D', marginBottom: '0.2rem', fontSize: 'clamp(0.8rem, 1.5vw, 0.9rem)' }}>Headquarters</div>
+                  <div style={{ fontSize: 'clamp(0.7rem, 1.5vw, 0.82rem)', color: '#64748B' }}>Dodoma, Tanzania</div>
                 </div>
-                <div style={{ background: '#FFFFFF', borderRadius: '12px', padding: '1rem', border: '1px solid #E2E8F0' }}>
+                <div style={{ background: '#FFFFFF', borderRadius: '12px', padding: 'clamp(0.7rem, 1.5vw, 1rem)', border: '1px solid #E2E8F0' }}>
                   <Phone size={18} color="#0A0B3D" style={{ marginBottom: '0.4rem' }} />
-                  <div style={{ fontWeight: '700', color: '#0A0B3D', marginBottom: '0.2rem' }}>Contact</div>
-                  <div style={{ fontSize: '0.82rem', color: '#64748B' }}>{COMPANY_INFO.telephones[0]}</div>
+                  <div style={{ fontWeight: '700', color: '#0A0B3D', marginBottom: '0.2rem', fontSize: 'clamp(0.8rem, 1.5vw, 0.9rem)' }}>Contact</div>
+                  <div style={{ fontSize: 'clamp(0.7rem, 1.5vw, 0.82rem)', color: '#64748B' }}>{COMPANY_INFO.telephones[0]}</div>
                 </div>
               </div>
             </div>

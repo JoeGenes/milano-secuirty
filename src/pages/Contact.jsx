@@ -9,32 +9,32 @@ export default function Contact({ setCurrentPage, lang }) {
   return (
     <div className="animate-fade-in">
       {/* Header Banner */}
-      <section style={{ backgroundColor: '#0A0B3D', color: '#FFF', padding: '4rem 0', borderBottom: '3px solid #E7AD18' }}>
+      <section style={{ backgroundColor: '#0A0B3D', color: '#FFF', padding: 'clamp(2rem, 5vw, 4rem) 0', borderBottom: '3px solid #E7AD18' }}>
         <div className="container">
-          <span className="badge badge-gold" style={{ marginBottom: '1rem' }}>Headquarters & Regional Contacts</span>
-          <h1 style={{ fontSize: '2.5rem', color: '#FFF', fontFamily: 'Montserrat, sans-serif' }}>
+          <span className="badge badge-gold" style={{ marginBottom: 'clamp(0.6rem, 1.5vw, 1rem)' }}>Headquarters & Regional Contacts</span>
+          <h1 style={{ fontSize: 'clamp(1.5rem, 5vw, 2.5rem)', color: '#FFF', fontFamily: 'Montserrat, sans-serif' }}>
             Contact Milano Security
           </h1>
-          <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '1.1rem', maxWidth: '800px', marginTop: '0.8rem', lineHeight: '1.6' }}>
+          <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: 'clamp(0.9rem, 2.5vw, 1.1rem)', maxWidth: '800px', marginTop: 'clamp(0.5rem, 1.5vw, 0.8rem)', lineHeight: '1.6' }}>
             Get in touch with our principal headquarters in Dodoma or our regional operational centers across Tanzania.
           </p>
         </div>
       </section>
 
       {/* Main Contact Grid */}
-      <section style={{ padding: '4.5rem 0', backgroundColor: '#F3F5F7' }}>
+      <section style={{ padding: 'clamp(2.5rem, 5vw, 4.5rem) 0', backgroundColor: '#F3F5F7' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 'clamp(1.5rem, 3vw, 2.5rem)' }}>
             
             {/* Contact Information Card */}
-            <div className="card" style={{ padding: '2.5rem', background: '#FFF' }}>
-              <span className="badge badge-navy" style={{ marginBottom: '1rem' }}>Dodoma Headquarters</span>
-              <h2 style={{ fontSize: '1.6rem', color: '#0A0B3D', marginBottom: '1.5rem' }}>
+            <div className="card" style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem)', background: '#FFF' }}>
+              <span className="badge badge-navy" style={{ marginBottom: 'clamp(0.6rem, 1.5vw, 1rem)' }}>Dodoma Headquarters</span>
+              <h2 style={{ fontSize: 'clamp(1.2rem, 3vw, 1.6rem)', color: '#0A0B3D', marginBottom: 'clamp(0.8rem, 2vw, 1.5rem)' }}>
                 Official Contact Directory
               </h2>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', fontSize: '0.95rem', color: '#151821' }}>
-                <div style={{ display: 'flex', gap: '1rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(0.8rem, 2vw, 1.5rem)', fontSize: 'clamp(0.8rem, 1.5vw, 0.95rem)', color: '#151821' }}>
+                <div style={{ display: 'flex', gap: 'clamp(0.6rem, 1.5vw, 1rem)' }}>
                   <MapPin size={22} className="text-navy" style={{ flexShrink: 0, marginTop: '0.2rem' }} />
                   <div>
                     <strong>Physical Address:</strong><br />
@@ -42,7 +42,7 @@ export default function Contact({ setCurrentPage, lang }) {
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', gap: '1rem' }}>
+                <div style={{ display: 'flex', gap: 'clamp(0.6rem, 1.5vw, 1rem)' }}>
                   <Building2 size={22} className="text-navy" style={{ flexShrink: 0, marginTop: '0.2rem' }} />
                   <div>
                     <strong>Postal Address:</strong><br />
@@ -50,7 +50,7 @@ export default function Contact({ setCurrentPage, lang }) {
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', gap: '1rem' }}>
+                <div style={{ display: 'flex', gap: 'clamp(0.6rem, 1.5vw, 1rem)' }}>
                   <Phone size={22} className="text-navy" style={{ flexShrink: 0, marginTop: '0.2rem' }} />
                   <div>
                     <strong>Telephone Numbers:</strong><br />
@@ -60,7 +60,7 @@ export default function Contact({ setCurrentPage, lang }) {
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', gap: '1rem' }}>
+                <div style={{ display: 'flex', gap: 'clamp(0.6rem, 1.5vw, 1rem)' }}>
                   <Mail size={22} className="text-navy" style={{ flexShrink: 0, marginTop: '0.2rem' }} />
                   <div>
                     <strong>Official Email:</strong><br />
@@ -68,7 +68,7 @@ export default function Contact({ setCurrentPage, lang }) {
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', gap: '1rem' }}>
+                <div style={{ display: 'flex', gap: 'clamp(0.6rem, 1.5vw, 1rem)' }}>
                   <Clock size={22} className="text-navy" style={{ flexShrink: 0, marginTop: '0.2rem' }} />
                   <div>
                     <strong>Control Room & Emergency Response:</strong><br />
@@ -77,13 +77,13 @@ export default function Contact({ setCurrentPage, lang }) {
                 </div>
               </div>
 
-              <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid #E2E8F0' }}>
+              <div style={{ marginTop: 'clamp(1rem, 2.5vw, 2rem)', paddingTop: 'clamp(1rem, 2vw, 1.5rem)', borderTop: '1px solid #E2E8F0' }}>
                 <a
                   href={`https://wa.me/${COMPANY_INFO.whatsApp.replace(/[^0-9]/g, '')}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn"
-                  style={{ width: '100%', backgroundColor: '#25D366', color: '#FFF', justifyContent: 'center' }}
+                  style={{ width: '100%', backgroundColor: '#25D366', color: '#FFF', justifyContent: 'center', padding: 'clamp(0.6rem, 1.5vw, 0.75rem) 1rem' }}
                 >
                   <MessageSquare size={18} /> Chat Directly on WhatsApp
                 </a>
@@ -91,8 +91,8 @@ export default function Contact({ setCurrentPage, lang }) {
             </div>
 
             {/* Quick Contact Form */}
-            <div className="card" style={{ padding: '2.5rem', background: '#FFF' }}>
-              <h2 style={{ fontSize: '1.6rem', color: '#0A0B3D', marginBottom: '1.2rem' }}>
+            <div className="card" style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem)', background: '#FFF' }}>
+              <h2 style={{ fontSize: 'clamp(1.2rem, 3vw, 1.6rem)', color: '#0A0B3D', marginBottom: 'clamp(0.8rem, 2vw, 1.2rem)' }}>
                 Send Us a Direct Message
               </h2>
 

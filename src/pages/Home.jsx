@@ -59,36 +59,36 @@ export default function Home({ setCurrentPage, lang }) {
       {/* ------------------------------------------------------------- */}
       {/* SECTION 1: HERO BANNER (Deep Navy Blue #0A0B3D Accents)       */}
       {/* ------------------------------------------------------------- */}
-      <section style={{ backgroundColor: '#FFFFFF', padding: '4rem 0 5rem 0', borderBottom: '1px solid #E2E8F0' }}>
+      <section style={{ backgroundColor: '#FFFFFF', padding: 'clamp(2rem, 5vw, 4rem) 0 clamp(2.5rem, 6vw, 5rem) 0', borderBottom: '1px solid #E2E8F0' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '3.5rem', alignItems: 'center' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 'clamp(2rem, 5vw, 3.5rem)', alignItems: 'center' }}>
             
             {/* Left Hero Content */}
             <div>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(10, 11, 61, 0.06)', color: '#0A0B3D', padding: '0.4rem 0.9rem', borderRadius: '50px', fontSize: '0.82rem', fontWeight: '700', marginBottom: '1.5rem', border: '1px solid rgba(10, 11, 61, 0.15)' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(10, 11, 61, 0.06)', color: '#0A0B3D', padding: 'clamp(0.3rem, 1vw, 0.4rem) clamp(0.6rem, 1.5vw, 0.9rem)', borderRadius: '50px', fontSize: 'clamp(0.7rem, 1.5vw, 0.82rem)', fontWeight: '700', marginBottom: 'clamp(0.8rem, 2vw, 1.5rem)', border: '1px solid rgba(10, 11, 61, 0.15)' }}>
                 <Shield size={16} /> BRELA Reg #154815619 &bull; Tanzania
               </div>
 
-              <h1 style={{ fontSize: '3rem', color: '#0A0B3D', lineHeight: '1.15', marginBottom: '1.2rem', fontFamily: 'Montserrat, sans-serif', fontWeight: 900 }}>
+              <h1 style={{ fontSize: 'clamp(1.8rem, 6vw, 3rem)', color: '#0A0B3D', lineHeight: '1.15', marginBottom: 'clamp(0.8rem, 2vw, 1.2rem)', fontFamily: 'Montserrat, sans-serif', fontWeight: 900 }}>
                 Top-Rated Security Company in Tanzania: <span style={{ color: '#D4AF37' }}>Affordable, Reliable & Trusted</span>
               </h1>
 
-              <p style={{ fontSize: '1.1rem', color: '#475569', lineHeight: '1.7', marginBottom: '2rem', maxWidth: '600px' }}>
+              <p style={{ fontSize: 'clamp(0.9rem, 2.5vw, 1.1rem)', color: '#475569', lineHeight: '1.7', marginBottom: 'clamp(1.2rem, 3vw, 2rem)', maxWidth: '600px' }}>
                 Ensuring Peace of Mind: Your Trusted Partner for Professional Guarding, CCTV, Access Control, Electric Fencing, and K9 Security Services in Dodoma & Across Tanzania.
               </p>
 
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '2.5rem' }}>
-                <button onClick={() => setCurrentPage('quote')} className="btn btn-navy" style={{ borderRadius: '50px', padding: '0.95rem 2.2rem', fontSize: '0.9rem', backgroundColor: '#0A0B3D' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'clamp(0.5rem, 2vw, 1rem)', marginBottom: 'clamp(1.5rem, 3vw, 2.5rem)' }}>
+                <button onClick={() => setCurrentPage('quote')} className="btn btn-navy" style={{ borderRadius: '50px', padding: 'clamp(0.65rem, 1.5vw, 0.95rem) clamp(1.2rem, 3vw, 2.2rem)', fontSize: 'clamp(0.75rem, 1.5vw, 0.9rem)', backgroundColor: '#0A0B3D' }}>
                   REQUEST A QUOTE <ArrowUpRight size={18} />
                 </button>
                 
-                <a href={`tel:${COMPANY_INFO.telephones[0]}`} className="btn btn-outline-blue" style={{ borderRadius: '50px', padding: '0.95rem 1.8rem', fontSize: '0.9rem', borderColor: '#0A0B3D', color: '#0A0B3D' }}>
+                <a href={`tel:${COMPANY_INFO.telephones[0]}`} className="btn btn-outline-blue" style={{ borderRadius: '50px', padding: 'clamp(0.65rem, 1.5vw, 0.95rem) clamp(1rem, 2.5vw, 1.8rem)', fontSize: 'clamp(0.75rem, 1.5vw, 0.9rem)', borderColor: '#0A0B3D', color: '#0A0B3D' }}>
                   <Phone size={16} /> CALL NOW
                 </a>
               </div>
 
               {/* Trust Badges */}
-              <div style={{ display: 'flex', gap: '1.8rem', fontSize: '0.82rem', color: '#64748B', borderTop: '1px solid #E2E8F0', paddingTop: '1.2rem' }}>
+              <div style={{ display: 'flex', gap: 'clamp(0.8rem, 2vw, 1.8rem)', fontSize: 'clamp(0.7rem, 1.5vw, 0.82rem)', color: '#64748B', borderTop: '1px solid #E2E8F0', paddingTop: 'clamp(0.8rem, 2vw, 1.2rem)', flexWrap: 'wrap' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                   <CheckCircle2 size={16} style={{ color: '#0A0B3D' }} />
                   <span>Fully Vetted Guards</span>
@@ -105,7 +105,7 @@ export default function Home({ setCurrentPage, lang }) {
             </div>
 
             {/* Right Hero Image */}
-            <div style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
+            <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', marginTop: 'clamp(1.5rem, 3vw, 0rem)' }}>
               <div style={{
                 position: 'relative',
                 width: '100%',
@@ -149,15 +149,15 @@ export default function Home({ setCurrentPage, lang }) {
                   textAlign: 'left',
                   color: '#FFFFFF',
                   background: 'rgba(10, 11, 61, 0.72)',
-                  padding: '0.7rem 0.9rem',
+                  padding: 'clamp(0.5rem, 1.5vw, 0.7rem) clamp(0.6rem, 1.5vw, 0.9rem)',
                   borderRadius: '999px',
                   backdropFilter: 'blur(6px)',
                   boxShadow: '0 10px 24px rgba(0,0,0,0.18)'
                 }}>
-                  <div style={{ fontSize: '0.68rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 700, opacity: 0.9 }}>
+                  <div style={{ fontSize: 'clamp(0.55rem, 1.2vw, 0.68rem)', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 700, opacity: 0.9 }}>
                     Security That Protects
                   </div>
-                  <div style={{ fontSize: '0.9rem', fontWeight: 700, marginTop: '0.15rem' }}>
+                  <div style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.9rem)', fontWeight: 700, marginTop: '0.15rem' }}>
                     Peace of Mind Daily
                   </div>
                 </div>
@@ -167,11 +167,11 @@ export default function Home({ setCurrentPage, lang }) {
                   left: '1rem',
                   color: '#FFFFFF',
                   background: 'rgba(212, 175, 55, 0.92)',
-                  padding: '0.7rem 0.9rem',
+                  padding: 'clamp(0.5rem, 1.5vw, 0.7rem) clamp(0.6rem, 1.5vw, 0.9rem)',
                   borderRadius: '999px',
                   boxShadow: '0 10px 24px rgba(0,0,0,0.18)',
                   fontWeight: 700,
-                  fontSize: '0.85rem'
+                  fontSize: 'clamp(0.75rem, 1.5vw, 0.85rem)'
                 }}>
                   24/7 Protection
                 </div>

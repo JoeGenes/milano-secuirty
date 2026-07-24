@@ -81,20 +81,20 @@ export default function Quotation({ setCurrentPage, lang }) {
   return (
     <div className="animate-fade-in">
       {/* Header Banner */}
-      <section style={{ backgroundColor: '#0A0B3D', color: '#FFF', padding: '4rem 0', borderBottom: '3px solid #E7AD18' }}>
+      <section style={{ backgroundColor: '#0A0B3D', color: '#FFF', padding: 'clamp(2rem, 5vw, 4rem) 0', borderBottom: '3px solid #E7AD18' }}>
         <div className="container">
-          <span className="badge badge-gold" style={{ marginBottom: '1rem' }}>Instant Security Proposal</span>
-          <h1 style={{ fontSize: '2.5rem', color: '#FFF', fontFamily: 'Montserrat, sans-serif' }}>
+          <span className="badge badge-gold" style={{ marginBottom: 'clamp(0.6rem, 1.5vw, 1rem)' }}>Instant Security Proposal</span>
+          <h1 style={{ fontSize: 'clamp(1.5rem, 5vw, 2.5rem)', color: '#FFF', fontFamily: 'Montserrat, sans-serif' }}>
             Request a Security Quotation
           </h1>
-          <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '1.1rem', maxWidth: '800px', marginTop: '0.8rem', lineHeight: '1.6' }}>
+          <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: 'clamp(0.9rem, 2.5vw, 1.1rem)', maxWidth: '800px', marginTop: 'clamp(0.5rem, 1.5vw, 0.8rem)', lineHeight: '1.6' }}>
             Complete the form below to receive an official site risk assessment proposal tailored to your premises, sector, and budget.
           </p>
         </div>
       </section>
 
       {/* Main Quotation Form Section */}
-      <section style={{ padding: '4.5rem 0', backgroundColor: '#F3F5F7' }}>
+      <section style={{ padding: 'clamp(2.5rem, 5vw, 4.5rem) 0', backgroundColor: '#F3F5F7' }}>
         <div className="container">
           <div style={{ maxWidth: '850px', margin: '0 auto' }}>
             
