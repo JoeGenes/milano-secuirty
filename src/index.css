@@ -1,0 +1,251 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@500;600;700;800;900&display=swap');
+
+:root {
+  /* Deep Navy Blue Exact Brand Code #0A0B3D */
+  --primary-blue: #0A0B3D;
+  --blue-hover: #16185E;
+  --blue-bg: #F1F3FA;
+  
+  --corporate-navy: #0A0B3D;
+  --milano-gold: #D4AF37;
+  --gold-hover: #B59227;
+  
+  --pure-white: #FFFFFF;
+  --off-white: #F8FAFC;
+  --slate-100: #F1F5F9;
+  --slate-200: #E2E8F0;
+  --slate-600: #475569;
+  --slate-900: #0A0B3D;
+  
+  --shadow-sm: 0 1px 3px rgba(10, 11, 61, 0.06);
+  --shadow-md: 0 4px 20px rgba(10, 11, 61, 0.08);
+  --shadow-hover: 0 12px 30px rgba(10, 11, 61, 0.14);
+  
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+  
+  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--slate-600);
+  background-color: var(--pure-white) !important;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background-color: var(--pure-white) !important;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif;
+  color: var(--slate-900);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+.container {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Deep Navy Blue Buttons (#0A0B3D) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.8rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: var(--transition);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.btn-blue {
+  background-color: #0A0B3D;
+  color: var(--pure-white);
+  border-color: #0A0B3D;
+}
+
+.btn-blue:hover {
+  background-color: #16185E;
+  border-color: #16185E;
+  box-shadow: 0 4px 14px rgba(10, 11, 61, 0.3);
+}
+
+.btn-gold {
+  background-color: var(--milano-gold);
+  color: #0A0B3D;
+  border-color: var(--milano-gold);
+}
+
+.btn-gold:hover {
+  background-color: var(--gold-hover);
+  border-color: var(--gold-hover);
+}
+
+.btn-navy {
+  background-color: #0A0B3D;
+  color: var(--pure-white);
+  border-color: #0A0B3D;
+}
+
+.btn-navy:hover {
+  background-color: #16185E;
+}
+
+.btn-outline-blue {
+  background-color: var(--pure-white);
+  color: #0A0B3D;
+  border-color: #0A0B3D;
+}
+
+.btn-outline-blue:hover {
+  background-color: #0A0B3D;
+  color: var(--pure-white);
+}
+
+/* Template Card Styling */
+.card {
+  background: var(--pure-white);
+  border-radius: var(--radius-md);
+  padding: 2rem;
+  border: 1px solid var(--slate-200);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-3px);
+}
+
+/* Section Header Typography */
+.section-subtitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #0A0B3D;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.section-title {
+  font-size: 2.2rem;
+  color: #0A0B3D;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+/* Circular Feature Badges */
+.circle-icon-box {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.2rem auto;
+  transition: var(--transition);
+}
+
+/* Deep Navy Blue Banner CTA Strip (#0A0B3D) */
+.cta-banner-blue {
+  background: linear-gradient(135deg, #0A0B3D 0%, #16185E 100%);
+  color: var(--pure-white);
+  padding: 3.5rem 0;
+}
+
+/* Form Controls */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1.2rem;
+}
+
+.form-group label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #0A0B3D;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  font-size: 0.95rem;
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-sm);
+  background-color: var(--pure-white);
+  color: #0A0B3D;
+  transition: var(--transition);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #0A0B3D;
+  box-shadow: 0 0 0 3px rgba(10, 11, 61, 0.12);
+}
+
+/* Modals */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(10, 11, 61, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.modal-content {
+  background: var(--pure-white);
+  border-radius: var(--radius-md);
+  max-width: 680px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 2.5rem;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--slate-200);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--pure-white); }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
