@@ -81,27 +81,27 @@ export default function About({ setCurrentPage, lang }) {
               </div>
             </div>
 
-            <div className="card" style={{ padding: '2.2rem', background: '#FFFFFF' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '1rem' }}>
+            <div className="card" style={{ padding: 'clamp(1.2rem, 2.5vw, 2.2rem)', background: '#FFFFFF' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.5rem, 1.2vw, 0.8rem)', marginBottom: 'clamp(0.6rem, 1.5vw, 1rem)' }}>
                 <div style={{ width: '44px', height: '44px', borderRadius: '50%', background: 'rgba(10,11,61,0.1)', color: '#0A0B3D', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <Compass size={20} />
                 </div>
                 <div>
-                  <h3 style={{ fontSize: '1.2rem', color: '#0A0B3D', margin: 0 }}>Why Clients Choose Us</h3>
-                  <span style={{ color: '#64748B', fontSize: '0.82rem' }}>Professional, responsive, and technology-led</span>
+                  <h3 style={{ fontSize: 'clamp(1rem, 2.2vw, 1.2rem)', color: '#0A0B3D', margin: 0 }}>Why Clients Choose Us</h3>
+                  <span style={{ color: '#64748B', fontSize: 'clamp(0.7rem, 1.4vw, 0.82rem)' }}>Professional, responsive, and technology-led</span>
                 </div>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(0.6rem, 1.2vw, 0.85rem)' }}>
                 {[
                   'Highly trained security personnel with strict supervision.',
                   'Integrated physical and electronic security solutions.',
                   'Site-specific risk analysis and rapid response planning.',
                   'Long-term service support for commercial, industrial, and residential clients.'
                 ].map((item, idx) => (
-                  <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.7rem', background: '#F8FAFC', borderRadius: '10px', padding: '0.9rem 1rem' }}>
+                  <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: 'clamp(0.5rem, 1vw, 0.7rem)', background: '#F8FAFC', borderRadius: '10px', padding: 'clamp(0.6rem, 1.2vw, 0.9rem) clamp(0.7rem, 1.5vw, 1rem)' }}>
                     <CheckCircle2 size={18} color="#0A0B3D" style={{ flexShrink: 0, marginTop: '0.15rem' }} />
-                    <span style={{ color: '#475569', fontSize: '0.95rem', lineHeight: '1.6' }}>{item}</span>
+                    <span style={{ color: '#475569', fontSize: 'clamp(0.8rem, 1.6vw, 0.95rem)', lineHeight: '1.6' }}>{item}</span>
                   </div>
                 ))}
               </div>
@@ -110,40 +110,40 @@ export default function About({ setCurrentPage, lang }) {
         </div>
       </section>
 
-      <section style={{ padding: '4.5rem 0', backgroundColor: '#F3F5F7' }}>
+      <section style={{ padding: 'clamp(2.5rem, 5vw, 4.5rem) 0', backgroundColor: '#F3F5F7' }}>
         <div className="container">
-          <div style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto 3rem auto' }}>
-            <span className="badge badge-navy" style={{ marginBottom: '0.7rem' }}>Our Purpose</span>
-            <h2 style={{ fontSize: '2.1rem', color: '#0A0B3D' }}>Built around trust, accountability, and operational excellence</h2>
+          <div style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto clamp(1.5rem, 3vw, 3rem) auto' }}>
+            <span className="badge badge-navy" style={{ marginBottom: 'clamp(0.5rem, 1vw, 0.7rem)' }}>Our Purpose</span>
+            <h2 style={{ fontSize: 'clamp(1.4rem, 4vw, 2.1rem)', color: '#0A0B3D' }}>Built around trust, accountability, and operational excellence</h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.4rem' }}>
-            <div className="card" style={{ padding: '2rem', textAlign: 'center' }}>
-              <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'rgba(10,11,61,0.08)', color: '#0A0B3D', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 'clamp(1rem, 2vw, 1.4rem)' }}>
+            <div className="card" style={{ padding: 'clamp(1.2rem, 2.5vw, 2rem)', textAlign: 'center' }}>
+              <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'rgba(10,11,61,0.08)', color: '#0A0B3D', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto clamp(0.6rem, 1.5vw, 1rem) auto' }}>
                 <Eye size={26} />
               </div>
-              <h3 style={{ fontSize: '1.2rem', color: '#0A0B3D', marginBottom: '0.8rem' }}>Our Vision</h3>
-              <p style={{ color: '#64748B', fontSize: '0.95rem', lineHeight: '1.7' }}>
+              <h3 style={{ fontSize: 'clamp(1rem, 2.2vw, 1.2rem)', color: '#0A0B3D', marginBottom: 'clamp(0.5rem, 1vw, 0.8rem)' }}>Our Vision</h3>
+              <p style={{ color: '#64748B', fontSize: 'clamp(0.8rem, 1.6vw, 0.95rem)', lineHeight: '1.7' }}>
                 {COMPANY_INFO.vision}
               </p>
             </div>
 
-            <div className="card" style={{ padding: '2rem', textAlign: 'center' }}>
-              <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'rgba(10,11,61,0.08)', color: '#0A0B3D', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem auto' }}>
+            <div className="card" style={{ padding: 'clamp(1.2rem, 2.5vw, 2rem)', textAlign: 'center' }}>
+              <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'rgba(10,11,61,0.08)', color: '#0A0B3D', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto clamp(0.6rem, 1.5vw, 1rem) auto' }}>
                 <Target size={26} />
               </div>
-              <h3 style={{ fontSize: '1.2rem', color: '#0A0B3D', marginBottom: '0.8rem' }}>Our Mission</h3>
-              <p style={{ color: '#64748B', fontSize: '0.95rem', lineHeight: '1.7' }}>
+              <h3 style={{ fontSize: 'clamp(1rem, 2.2vw, 1.2rem)', color: '#0A0B3D', marginBottom: 'clamp(0.5rem, 1vw, 0.8rem)' }}>Our Mission</h3>
+              <p style={{ color: '#64748B', fontSize: 'clamp(0.8rem, 1.6vw, 0.95rem)', lineHeight: '1.7' }}>
                 {COMPANY_INFO.mission}
               </p>
             </div>
 
-            <div className="card" style={{ padding: '2rem', textAlign: 'center' }}>
-              <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'rgba(10,11,61,0.08)', color: '#0A0B3D', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem auto' }}>
+            <div className="card" style={{ padding: 'clamp(1.2rem, 2.5vw, 2rem)', textAlign: 'center' }}>
+              <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'rgba(10,11,61,0.08)', color: '#0A0B3D', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto clamp(0.6rem, 1.5vw, 1rem) auto' }}>
                 <History size={26} />
               </div>
-              <h3 style={{ fontSize: '1.2rem', color: '#0A0B3D', marginBottom: '0.8rem' }}>Our Journey</h3>
-              <p style={{ color: '#64748B', fontSize: '0.95rem', lineHeight: '1.7' }}>
+              <h3 style={{ fontSize: 'clamp(1rem, 2.2vw, 1.2rem)', color: '#0A0B3D', marginBottom: 'clamp(0.5rem, 1vw, 0.8rem)' }}>Our Journey</h3>
+              <p style={{ color: '#64748B', fontSize: 'clamp(0.8rem, 1.6vw, 0.95rem)', lineHeight: '1.7' }}>
                 From our early operations in Bariadi to our present presence across 12 regions, we have steadily grown with discipline and purpose.
               </p>
             </div>
@@ -151,23 +151,23 @@ export default function About({ setCurrentPage, lang }) {
         </div>
       </section>
 
-      <section style={{ padding: '5rem 0', backgroundColor: '#0A0B3D', color: '#FFF' }}>
+      <section style={{ padding: 'clamp(2.5rem, 5vw, 5rem) 0', backgroundColor: '#0A0B3D', color: '#FFF' }}>
         <div className="container">
-          <div style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto 3rem auto' }}>
-            <span className="badge badge-gold" style={{ marginBottom: '0.8rem' }}>Guiding Principles</span>
-            <h2 style={{ fontSize: '2.2rem', color: '#FFF' }}>Core values that define our service culture</h2>
-            <p style={{ color: 'rgba(255,255,255,0.8)', marginTop: '0.5rem', lineHeight: '1.7' }}>
+          <div style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto clamp(1.5rem, 3vw, 3rem) auto' }}>
+            <span className="badge badge-gold" style={{ marginBottom: 'clamp(0.6rem, 1vw, 0.8rem)' }}>Guiding Principles</span>
+            <h2 style={{ fontSize: 'clamp(1.4rem, 4vw, 2.2rem)', color: '#FFF' }}>Core values that define our service culture</h2>
+            <p style={{ color: 'rgba(255,255,255,0.8)', marginTop: 'clamp(0.3rem, 0.8vw, 0.5rem)', fontSize: 'clamp(0.85rem, 1.8vw, 1rem)', lineHeight: '1.7' }}>
               The standards that shape our personnel conduct, client communication, and operational delivery.
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.3rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 'clamp(1rem, 2vw, 1.3rem)' }}>
             {COMPANY_INFO.coreValues.map((val, idx) => (
-              <div key={idx} style={{ background: 'rgba(255,255,255,0.06)', borderRadius: '14px', padding: '1.3rem', border: '1px solid rgba(255,255,255,0.1)' }}>
-                <div style={{ color: '#FFFFFF', fontWeight: '700', fontSize: '1rem', marginBottom: '0.55rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <div key={idx} style={{ background: 'rgba(255,255,255,0.06)', borderRadius: '14px', padding: 'clamp(0.9rem, 1.8vw, 1.3rem)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                <div style={{ color: '#FFFFFF', fontWeight: '700', fontSize: 'clamp(0.85rem, 1.6vw, 1rem)', marginBottom: 'clamp(0.4rem, 0.8vw, 0.55rem)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <CheckCircle2 size={17} color="#DCE4FF" /> {val.title}
                 </div>
-                <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.8)', lineHeight: '1.6' }}>{val.desc}</p>
+                <p style={{ fontSize: 'clamp(0.8rem, 1.5vw, 0.9rem)', color: 'rgba(255,255,255,0.8)', lineHeight: '1.6' }}>{val.desc}</p>
               </div>
             ))}
           </div>
