@@ -185,59 +185,59 @@ export default function Home({ setCurrentPage, lang }) {
       {/* ------------------------------------------------------------- */}
       {/* SECTION 2: WELCOME SECTION                                   */}
       {/* ------------------------------------------------------------- */}
-      <section style={{ padding: '5.5rem 0', backgroundColor: '#F8FAFC', borderBottom: '1px solid #E2E8F0' }}>
+      <section style={{ padding: 'clamp(2.5rem, 5vw, 5.5rem) 0', backgroundColor: '#F8FAFC', borderBottom: '1px solid #E2E8F0' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '3.5rem', alignItems: 'center' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 'clamp(1.5rem, 3vw, 3.5rem)', alignItems: 'center' }}>
             
             {/* Left 3 Card Layout */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.2rem' }}>
-              <div className="card" style={{ padding: '1.8rem', background: '#FFFFFF', textAlign: 'center' }}>
-                <UserCheck size={36} color="#0A0B3D" style={{ marginBottom: '0.8rem' }} />
-                <h4 style={{ fontSize: '1.1rem', color: '#0A0B3D', marginBottom: '0.3rem' }}>Vetted Guards</h4>
-                <p style={{ fontSize: '0.82rem', color: '#64748B' }}>Background checks & police clearance</p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(0.8rem, 2vw, 1.2rem)' }}>
+              <div className="card" style={{ padding: 'clamp(1rem, 2.5vw, 1.8rem)', background: '#FFFFFF', textAlign: 'center' }}>
+                <UserCheck size={36} color="#0A0B3D" style={{ marginBottom: 'clamp(0.5rem, 1.5vw, 0.8rem)' }} />
+                <h4 style={{ fontSize: 'clamp(0.95rem, 2vw, 1.1rem)', color: '#0A0B3D', marginBottom: '0.3rem' }}>Vetted Guards</h4>
+                <p style={{ fontSize: 'clamp(0.7rem, 1.5vw, 0.82rem)', color: '#64748B' }}>Background checks & police clearance</p>
               </div>
 
-              <div className="card" style={{ padding: '1.8rem', background: '#FFFFFF', textAlign: 'center' }}>
-                <Camera size={36} color="#0A0B3D" style={{ marginBottom: '0.8rem' }} />
-                <h4 style={{ fontSize: '1.1rem', color: '#0A0B3D', marginBottom: '0.3rem' }}>CCTV Systems</h4>
-                <p style={{ fontSize: '0.82rem', color: '#64748B' }}>HD mobile remote viewing</p>
+              <div className="card" style={{ padding: 'clamp(1rem, 2.5vw, 1.8rem)', background: '#FFFFFF', textAlign: 'center' }}>
+                <Camera size={36} color="#0A0B3D" style={{ marginBottom: 'clamp(0.5rem, 1.5vw, 0.8rem)' }} />
+                <h4 style={{ fontSize: 'clamp(0.95rem, 2vw, 1.1rem)', color: '#0A0B3D', marginBottom: '0.3rem' }}>CCTV Systems</h4>
+                <p style={{ fontSize: 'clamp(0.7rem, 1.5vw, 0.82rem)', color: '#64748B' }}>HD mobile remote viewing</p>
               </div>
 
-              <div className="card" style={{ padding: '1.8rem', background: '#FFFFFF', textAlign: 'center', gridColumn: 'span 2' }}>
-                <Dog size={36} color="#0A0B3D" style={{ marginBottom: '0.8rem' }} />
-                <h4 style={{ fontSize: '1.1rem', color: '#0A0B3D', marginBottom: '0.3rem' }}>K9 Patrol & Fencing</h4>
-                <p style={{ fontSize: '0.82rem', color: '#64748B' }}>Specialized dog handlers & high-voltage energizers</p>
+              <div className="card" style={{ padding: 'clamp(1rem, 2.5vw, 1.8rem)', background: '#FFFFFF', textAlign: 'center', gridColumn: 'span 2' }}>
+                <Dog size={36} color="#0A0B3D" style={{ marginBottom: 'clamp(0.5rem, 1.5vw, 0.8rem)' }} />
+                <h4 style={{ fontSize: 'clamp(0.95rem, 2vw, 1.1rem)', color: '#0A0B3D', marginBottom: '0.3rem' }}>K9 Patrol & Fencing</h4>
+                <p style={{ fontSize: 'clamp(0.7rem, 1.5vw, 0.82rem)', color: '#64748B' }}>Specialized dog handlers & high-voltage energizers</p>
               </div>
             </div>
 
             {/* Right Welcome Description */}
             <div>
               <span className="section-subtitle" style={{ color: '#0A0B3D' }}>WELCOME TO MILANO SECURITY</span>
-              <h2 className="section-title" style={{ color: '#0A0B3D' }}>
+              <h2 className="section-title" style={{ color: '#0A0B3D', fontSize: 'clamp(1.4rem, 4vw, 2.2rem)' }}>
                 Professional Security Services Built on Trust & Excellence
               </h2>
 
-              <p style={{ fontSize: '1rem', color: '#475569', lineHeight: '1.7', marginBottom: '1.8rem' }}>
+              <p style={{ fontSize: 'clamp(0.85rem, 2vw, 1rem)', color: '#475569', lineHeight: '1.7', marginBottom: 'clamp(1rem, 2.5vw, 1.8rem)' }}>
                 At Milano Security Service Limited, we offer a comprehensive range of site-inspected protection services to shield residential properties, corporate headquarters, industrial parks, and public sector organizations across Tanzania.
               </p>
 
-              <h4 style={{ fontSize: '1rem', color: '#0A0B3D', marginBottom: '1rem', fontFamily: 'Montserrat, sans-serif' }}>Our Proposed Core Values:</h4>
+              <h4 style={{ fontSize: 'clamp(0.85rem, 1.8vw, 1rem)', color: '#0A0B3D', marginBottom: 'clamp(0.6rem, 1.5vw, 1rem)', fontFamily: 'Montserrat, sans-serif' }}>Our Proposed Core Values:</h4>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', marginBottom: '2rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(0.5rem, 1.5vw, 0.8rem)', marginBottom: 'clamp(1.2rem, 2.5vw, 2rem)' }}>
                 {[
                   "Integrity & Confidentiality in all operations",
                   "Vigilance & Preparedness 24 hours a day",
                   "Reliability & Accountability to fulfill agreed client SLAs",
                   "Continuous Training for Guards & Technical Personnel"
                 ].map((val, idx) => (
-                  <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '0.92rem', color: '#0A0B3D', fontWeight: '600' }}>
+                  <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.4rem, 1vw, 0.6rem)', fontSize: 'clamp(0.8rem, 1.8vw, 0.92rem)', color: '#0A0B3D', fontWeight: '600' }}>
                     <CheckCircle2 size={18} style={{ color: '#0A0B3D', flexShrink: 0 }} />
                     <span>{val}</span>
                   </div>
                 ))}
               </div>
 
-              <button onClick={() => setCurrentPage('about')} className="btn btn-navy" style={{ borderRadius: '50px', backgroundColor: '#0A0B3D' }}>
+              <button onClick={() => setCurrentPage('about')} className="btn btn-navy" style={{ borderRadius: '50px', backgroundColor: '#0A0B3D', padding: 'clamp(0.6rem, 1.5vw, 0.85rem) clamp(1rem, 2.5vw, 1.8rem)', fontSize: 'clamp(0.75rem, 1.5vw, 0.9rem)' }}>
                 KNOW MORE ABOUT US <ArrowRight size={16} />
               </button>
             </div>
@@ -249,55 +249,55 @@ export default function Home({ setCurrentPage, lang }) {
       {/* ------------------------------------------------------------- */}
       {/* SECTION 3: FEATURED SERVICES (4 Circular Icon Cards)        */}
       {/* ------------------------------------------------------------- */}
-      <section style={{ padding: '5.5rem 0', backgroundColor: '#FFFFFF', borderBottom: '1px solid #E2E8F0' }}>
+      <section style={{ padding: 'clamp(2.5rem, 5vw, 5.5rem) 0', backgroundColor: '#FFFFFF', borderBottom: '1px solid #E2E8F0' }}>
         <div className="container">
-          <div style={{ textAlign: 'center', maxWidth: '650px', margin: '0 auto 3.5rem auto' }}>
+          <div style={{ textAlign: 'center', maxWidth: '650px', margin: '0 auto clamp(1.5rem, 3vw, 3.5rem) auto' }}>
             <span className="section-subtitle" style={{ color: '#0A0B3D' }}>FEATURED SERVICES</span>
-            <h2 className="section-title" style={{ color: '#0A0B3D' }}>Customized Exceptional Security Solutions</h2>
-            <p style={{ color: '#64748B', fontSize: '1rem' }}>Tailored to your property's specific risks and operational requirements.</p>
+            <h2 className="section-title" style={{ color: '#0A0B3D', fontSize: 'clamp(1.4rem, 4vw, 2.2rem)' }}>Customized Exceptional Security Solutions</h2>
+            <p style={{ color: '#64748B', fontSize: 'clamp(0.8rem, 2vw, 1rem)' }}>Tailored to your property's specific risks and operational requirements.</p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 'clamp(1rem, 2vw, 2rem)' }}>
             
             {/* Card 1: Manned Guarding */}
-            <div className="card" style={{ textAlign: 'center', padding: '2.5rem 1.5rem' }}>
-              <div className="circle-icon-box" style={{ background: 'rgba(10, 11, 61, 0.06)', color: '#0A0B3D' }}>
+            <div className="card" style={{ textAlign: 'center', padding: 'clamp(1.2rem, 2.5vw, 2.5rem) clamp(0.8rem, 2vw, 1.5rem)' }}>
+              <div className="circle-icon-box" style={{ background: 'rgba(10, 11, 61, 0.06)', color: '#0A0B3D', marginBottom: 'clamp(0.6rem, 1.5vw, 1rem)' }}>
                 <Shield size={32} />
               </div>
-              <h3 style={{ fontSize: '1.2rem', color: '#0A0B3D', marginBottom: '0.8rem' }}>Security Guarding</h3>
-              <p style={{ fontSize: '0.88rem', color: '#64748B', lineHeight: '1.6' }}>
+              <h3 style={{ fontSize: 'clamp(1rem, 2.5vw, 1.2rem)', color: '#0A0B3D', marginBottom: 'clamp(0.4rem, 1vw, 0.8rem)' }}>Security Guarding</h3>
+              <p style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.88rem)', color: '#64748B', lineHeight: '1.6' }}>
                 Professional uniformed security guards for residential, commercial & industrial premises.
               </p>
             </div>
 
             {/* Card 2: Mobile Patrol */}
-            <div className="card" style={{ textAlign: 'center', padding: '2.5rem 1.5rem' }}>
-              <div className="circle-icon-box" style={{ background: '#FEF3C7', color: '#B59227' }}>
+            <div className="card" style={{ textAlign: 'center', padding: 'clamp(1.2rem, 2.5vw, 2.5rem) clamp(0.8rem, 2vw, 1.5rem)' }}>
+              <div className="circle-icon-box" style={{ background: '#FEF3C7', color: '#B59227', marginBottom: 'clamp(0.6rem, 1.5vw, 1rem)' }}>
                 <Car size={32} />
               </div>
-              <h3 style={{ fontSize: '1.2rem', color: '#0A0B3D', marginBottom: '0.8rem' }}>Mobile Patrol</h3>
-              <p style={{ fontSize: '0.88rem', color: '#64748B', lineHeight: '1.6' }}>
+              <h3 style={{ fontSize: 'clamp(1rem, 2.5vw, 1.2rem)', color: '#0A0B3D', marginBottom: 'clamp(0.4rem, 1vw, 0.8rem)' }}>Mobile Patrol</h3>
+              <p style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.88rem)', color: '#64748B', lineHeight: '1.6' }}>
                 Scheduled inspections and emergency response using branded patrol vehicles.
               </p>
             </div>
 
             {/* Card 3: CCTV & Alarms */}
-            <div className="card" style={{ textAlign: 'center', padding: '2.5rem 1.5rem' }}>
-              <div className="circle-icon-box" style={{ background: 'rgba(10, 11, 61, 0.06)', color: '#0A0B3D' }}>
+            <div className="card" style={{ textAlign: 'center', padding: 'clamp(1.2rem, 2.5vw, 2.5rem) clamp(0.8rem, 2vw, 1.5rem)' }}>
+              <div className="circle-icon-box" style={{ background: 'rgba(10, 11, 61, 0.06)', color: '#0A0B3D', marginBottom: 'clamp(0.6rem, 1.5vw, 1rem)' }}>
                 <Camera size={32} />
               </div>
-              <h3 style={{ fontSize: '1.2rem', color: '#0A0B3D', marginBottom: '0.8rem' }}>CCTV & Alarms</h3>
-              <p style={{ fontSize: '0.88rem', color: '#64748B', lineHeight: '1.6' }}>
+              <h3 style={{ fontSize: 'clamp(1rem, 2.5vw, 1.2rem)', color: '#0A0B3D', marginBottom: 'clamp(0.4rem, 1vw, 0.8rem)' }}>CCTV & Alarms</h3>
+              <p style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.88rem)', color: '#64748B', lineHeight: '1.6' }}>
                 AI motion detection, remote smartphone viewing, and GSM intruder alarms.
               </p>
             </div>
 
             {/* Card 4: K9 Services */}
-            <div className="card" style={{ textAlign: 'center', padding: '2.5rem 1.5rem' }}>
-              <div className="circle-icon-box" style={{ background: 'rgba(10, 11, 61, 0.06)', color: '#0A0B3D' }}>
+            <div className="card" style={{ textAlign: 'center', padding: 'clamp(1.2rem, 2.5vw, 2.5rem) clamp(0.8rem, 2vw, 1.5rem)' }}>
+              <div className="circle-icon-box" style={{ background: 'rgba(10, 11, 61, 0.06)', color: '#0A0B3D', marginBottom: 'clamp(0.6rem, 1.5vw, 1rem)' }}>
                 <Dog size={32} />
               </div>
-              <h3 style={{ fontSize: '1.2rem', color: '#0A0B3D', marginBottom: '0.8rem' }}>K9 Patrol Units</h3>
+              <h3 style={{ fontSize: 'clamp(1rem, 2.5vw, 1.2rem)', color: '#0A0B3D', marginBottom: 'clamp(0.4rem, 1vw, 0.8rem)' }}>K9 Patrol Units</h3>
               <p style={{ fontSize: '0.88rem', color: '#64748B', lineHeight: '1.6' }}>
                 Trained security dogs with certified handlers for perimeter night security.
               </p>
@@ -312,17 +312,17 @@ export default function Home({ setCurrentPage, lang }) {
       {/* ------------------------------------------------------------- */}
       <section className="cta-banner-blue" style={{ background: 'linear-gradient(135deg, #0A0B3D 0%, #16185E 100%)' }}>
         <div className="container">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '2rem' }}>
-            <div>
-              <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '800', color: '#0A0B3D' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 'clamp(1rem, 2vw, 2rem)' }}>
+            <div style={{ flex: '1 1 auto', minWidth: '0' }}>
+              <span style={{ fontSize: 'clamp(0.65rem, 1.5vw, 0.8rem)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '800', color: '#0A0B3D' }}>
                 SECURITY FOR ALL
               </span>
-              <h2 style={{ fontSize: '2rem', color: '#FFFFFF', marginTop: '0.4rem', fontFamily: 'Montserrat, sans-serif' }}>
+              <h2 style={{ fontSize: 'clamp(1.3rem, 4vw, 2rem)', color: '#FFFFFF', marginTop: '0.4rem', fontFamily: 'Montserrat, sans-serif', lineHeight: '1.3' }}>
                 Our technology-driven security solutions enhance safety and peace of mind.
               </h2>
             </div>
 
-            <button onClick={() => setCurrentPage('contact')} className="btn" style={{ background: '#D4AF37', color: '#0A0B3D', borderRadius: '50px', padding: '0.9rem 2.2rem', fontWeight: 'bold' }}>
+            <button onClick={() => setCurrentPage('contact')} className="btn" style={{ background: '#D4AF37', color: '#0A0B3D', borderRadius: '50px', padding: 'clamp(0.6rem, 1.5vw, 0.9rem) clamp(1.2rem, 2.5vw, 2.2rem)', fontWeight: 'bold', fontSize: 'clamp(0.75rem, 1.5vw, 0.9rem)', whiteSpace: 'nowrap' }}>
               LET'S TALK <ArrowRight size={16} />
             </button>
           </div>
@@ -332,15 +332,15 @@ export default function Home({ setCurrentPage, lang }) {
       {/* ------------------------------------------------------------- */}
       {/* SECTION 5: INTERACTIVE SERVICES SHOWCASE TABS                */}
       {/* ------------------------------------------------------------- */}
-      <section style={{ padding: '5.5rem 0', backgroundColor: '#FFFFFF', borderBottom: '1px solid #E2E8F0' }}>
+      <section style={{ padding: 'clamp(2.5rem, 5vw, 5.5rem) 0', backgroundColor: '#FFFFFF', borderBottom: '1px solid #E2E8F0' }}>
         <div className="container">
-          <div style={{ textAlign: 'center', maxWidth: '650px', margin: '0 auto 3rem auto' }}>
+          <div style={{ textAlign: 'center', maxWidth: '650px', margin: '0 auto clamp(1.5rem, 3vw, 3rem) auto' }}>
             <span className="section-subtitle" style={{ color: '#0A0B3D' }}>SERVICES RANGE</span>
-            <h2 className="section-title" style={{ color: '#0A0B3D' }}>Give us a chance to make secure you!</h2>
+            <h2 className="section-title" style={{ color: '#0A0B3D', fontSize: 'clamp(1.4rem, 4vw, 2.2rem)' }}>Give us a chance to make secure you!</h2>
           </div>
 
           {/* Service Tab Pills */}
-          <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '0.8rem', marginBottom: '3rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 'clamp(0.5rem, 1.5vw, 0.8rem)', marginBottom: 'clamp(1.5rem, 3vw, 3rem)' }}>
             {[
               { id: 'manned', label: 'Manned Guarding' },
               { id: 'cctv', label: 'CCTV Surveillance' },
@@ -351,17 +351,18 @@ export default function Home({ setCurrentPage, lang }) {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 style={{
-                  padding: '0.75rem 1.5rem',
+                  padding: 'clamp(0.5rem, 1vw, 0.75rem) clamp(0.8rem, 1.5vw, 1.5rem)',
                   borderRadius: '50px',
                   fontFamily: 'Montserrat, sans-serif',
                   fontWeight: '700',
-                  fontSize: '0.85rem',
+                  fontSize: 'clamp(0.65rem, 1.5vw, 0.85rem)',
                   cursor: 'pointer',
                   border: '1.5px solid',
                   borderColor: activeTab === tab.id ? '#0A0B3D' : '#E2E8F0',
                   backgroundColor: activeTab === tab.id ? '#0A0B3D' : '#FFFFFF',
                   color: activeTab === tab.id ? '#FFFFFF' : '#0A0B3D',
-                  transition: 'all 0.2s ease'
+                  transition: 'all 0.2s ease',
+                  whiteSpace: 'nowrap'
                 }}
               >
                 {tab.label}
@@ -370,35 +371,35 @@ export default function Home({ setCurrentPage, lang }) {
           </div>
 
           {/* Tab Content Display */}
-          <div className="card" style={{ padding: '3rem', background: '#F8FAFC' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '3rem', alignItems: 'center' }}>
+          <div className="card" style={{ padding: 'clamp(1.5rem, 2.5vw, 3rem)', background: '#F8FAFC' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 'clamp(1.5rem, 3vw, 3rem)', alignItems: 'center' }}>
               <div>
-                <span className="badge badge-gold" style={{ marginBottom: '0.8rem' }}>{currentTab.tag}</span>
-                <h3 style={{ fontSize: '1.8rem', color: '#0A0B3D', marginBottom: '1rem', fontFamily: 'Montserrat, sans-serif' }}>
+                <span className="badge badge-gold" style={{ marginBottom: 'clamp(0.5rem, 1vw, 0.8rem)' }}>{currentTab.tag}</span>
+                <h3 style={{ fontSize: 'clamp(1.3rem, 3.5vw, 1.8rem)', color: '#0A0B3D', marginBottom: 'clamp(0.6rem, 1.5vw, 1rem)', fontFamily: 'Montserrat, sans-serif' }}>
                   {currentTab.title}
                 </h3>
-                <p style={{ fontSize: '1rem', color: '#475569', lineHeight: '1.7', marginBottom: '1.5rem' }}>
+                <p style={{ fontSize: 'clamp(0.85rem, 1.8vw, 1rem)', color: '#475569', lineHeight: '1.7', marginBottom: 'clamp(0.8rem, 2vw, 1.5rem)' }}>
                   {currentTab.desc}
                 </p>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', marginBottom: '2rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(0.5rem, 1.2vw, 0.8rem)', marginBottom: 'clamp(1.2rem, 2.5vw, 2rem)' }}>
                   {currentTab.points.map((pt, idx) => (
-                    <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '0.92rem', color: '#0A0B3D', fontWeight: '600' }}>
-                      <CheckCircle2 size={18} style={{ color: '#0A0B3D', flexShrink: 0 }} />
+                    <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: 'clamp(0.4rem, 1vw, 0.6rem)', fontSize: 'clamp(0.8rem, 1.6vw, 0.92rem)', color: '#0A0B3D', fontWeight: '600' }}>
+                      <CheckCircle2 size={18} style={{ color: '#0A0B3D', flexShrink: 0, marginTop: '0.1rem' }} />
                       <span>{pt}</span>
                     </div>
                   ))}
                 </div>
 
-                <button onClick={() => setCurrentPage('quote')} className="btn btn-navy" style={{ borderRadius: '50px', backgroundColor: '#0A0B3D' }}>
+                <button onClick={() => setCurrentPage('quote')} className="btn btn-navy" style={{ borderRadius: '50px', backgroundColor: '#0A0B3D', padding: 'clamp(0.6rem, 1.5vw, 0.85rem) clamp(1rem, 2.5vw, 1.8rem)', fontSize: 'clamp(0.75rem, 1.5vw, 0.9rem)' }}>
                   REQUEST A QUOTE <ArrowRight size={16} />
                 </button>
               </div>
 
-              <div style={{ background: '#FFFFFF', padding: '2.5rem', borderRadius: '16px', border: '1px solid #E2E8F0', textAlign: 'center' }}>
-                <Shield size={64} color="#0A0B3D" style={{ marginBottom: '1.2rem' }} />
-                <h4 style={{ fontSize: '1.3rem', color: '#0A0B3D', marginBottom: '0.6rem' }}>Tanzania Statutory Approval</h4>
-                <p style={{ fontSize: '0.88rem', color: '#64748B', lineHeight: '1.6' }}>
+              <div style={{ background: '#FFFFFF', padding: 'clamp(1.2rem, 2.5vw, 2.5rem)', borderRadius: '16px', border: '1px solid #E2E8F0', textAlign: 'center' }}>
+                <Shield size={64} color="#0A0B3D" style={{ marginBottom: 'clamp(0.8rem, 1.5vw, 1.2rem)' }} />
+                <h4 style={{ fontSize: 'clamp(1rem, 2.5vw, 1.3rem)', color: '#0A0B3D', marginBottom: 'clamp(0.4rem, 1vw, 0.6rem)' }}>Tanzania Statutory Approval</h4>
+                <p style={{ fontSize: 'clamp(0.7rem, 1.5vw, 0.88rem)', color: '#64748B', lineHeight: '1.6' }}>
                   BRELA Reg No. 154815619 &bull; Police Authorisation Dated 18 Jan 2022 &bull; PDPC Data Controller Registration No. 0-000-010-187
                 </p>
               </div>
@@ -411,14 +412,14 @@ export default function Home({ setCurrentPage, lang }) {
       {/* ------------------------------------------------------------- */}
       {/* SECTION 6: INDUSTRIES (8 Template Cards)                     */}
       {/* ------------------------------------------------------------- */}
-      <section style={{ padding: '5.5rem 0', backgroundColor: '#FFFFFF', borderBottom: '1px solid #E2E8F0' }}>
+      <section style={{ padding: 'clamp(2.5rem, 5vw, 5.5rem) 0', backgroundColor: '#FFFFFF', borderBottom: '1px solid #E2E8F0' }}>
         <div className="container">
-          <div style={{ textAlign: 'center', maxWidth: '650px', margin: '0 auto 3.5rem auto' }}>
+          <div style={{ textAlign: 'center', maxWidth: '650px', margin: '0 auto clamp(1.5rem, 3vw, 3.5rem) auto' }}>
             <span className="section-subtitle" style={{ color: '#0A0B3D' }}>WHO WE ARE SERVING</span>
-            <h2 className="section-title" style={{ color: '#0A0B3D' }}>Guardians of Prestigious Places: Our Trusted Legacy</h2>
+            <h2 className="section-title" style={{ color: '#0A0B3D', fontSize: 'clamp(1.4rem, 4vw, 2.2rem)' }}>Guardians of Prestigious Places: Our Trusted Legacy</h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.8rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 'clamp(1rem, 2vw, 1.8rem)' }}>
             {[
               { title: "Metropolitan Areas", desc: "City center commercial offices & high-density property guarding.", icon: Building2 },
               { title: "Residential Communities", desc: "Private estate gates, perimeter fences, and visitor management.", icon: Shield },
@@ -431,17 +432,17 @@ export default function Home({ setCurrentPage, lang }) {
             ].map((item, idx) => {
               const IconComp = item.icon;
               return (
-                <div key={idx} className="card" style={{ padding: '1.8rem', background: '#F8FAFC', textAlign: 'center' }}>
-                  <IconComp size={36} color="#0A0B3D" style={{ marginBottom: '1rem' }} />
-                  <h4 style={{ fontSize: '1.1rem', color: '#0A0B3D', marginBottom: '0.5rem' }}>{item.title}</h4>
-                  <p style={{ fontSize: '0.82rem', color: '#64748B', lineHeight: '1.6' }}>{item.desc}</p>
+                <div key={idx} className="card" style={{ padding: 'clamp(1rem, 2vw, 1.8rem)', background: '#F8FAFC', textAlign: 'center' }}>
+                  <IconComp size={36} color="#0A0B3D" style={{ marginBottom: 'clamp(0.5rem, 1vw, 1rem)' }} />
+                  <h4 style={{ fontSize: 'clamp(0.9rem, 2vw, 1.1rem)', color: '#0A0B3D', marginBottom: 'clamp(0.3rem, 0.8vw, 0.5rem)' }}>{item.title}</h4>
+                  <p style={{ fontSize: 'clamp(0.7rem, 1.4vw, 0.82rem)', color: '#64748B', lineHeight: '1.6' }}>{item.desc}</p>
                 </div>
               );
             })}
           </div>
 
-          <div style={{ textAlign: 'center', marginTop: '3.5rem' }}>
-            <button onClick={() => setCurrentPage('quote')} className="btn btn-navy" style={{ borderRadius: '50px', backgroundColor: '#0A0B3D' }}>
+          <div style={{ textAlign: 'center', marginTop: 'clamp(2rem, 3vw, 3.5rem)' }}>
+            <button onClick={() => setCurrentPage('quote')} className="btn btn-navy" style={{ borderRadius: '50px', backgroundColor: '#0A0B3D', padding: 'clamp(0.6rem, 1.5vw, 0.85rem) clamp(1.2rem, 2.5vw, 1.8rem)', fontSize: 'clamp(0.75rem, 1.5vw, 0.9rem)' }}>
               REQUEST A QUOTE FOR YOUR SECTOR <ArrowRight size={16} />
             </button>
           </div>
@@ -451,31 +452,31 @@ export default function Home({ setCurrentPage, lang }) {
       {/* ------------------------------------------------------------- */}
       {/* SECTION 7: CLIENT TESTIMONIALS                               */}
       {/* ------------------------------------------------------------- */}
-      <section style={{ padding: '5.5rem 0', backgroundColor: '#F8FAFC', borderBottom: '1px solid #E2E8F0' }}>
+      <section style={{ padding: 'clamp(2.5rem, 5vw, 5.5rem) 0', backgroundColor: '#F8FAFC', borderBottom: '1px solid #E2E8F0' }}>
         <div className="container">
-          <div style={{ textAlign: 'center', maxWidth: '650px', margin: '0 auto 3.5rem auto' }}>
+          <div style={{ textAlign: 'center', maxWidth: '650px', margin: '0 auto clamp(1.5rem, 3vw, 3.5rem) auto' }}>
             <span className="section-subtitle" style={{ color: '#0A0B3D' }}>CLIENT TESTIMONIALS</span>
-            <h2 className="section-title" style={{ color: '#0A0B3D' }}>Success Stories, to know about our Security</h2>
+            <h2 className="section-title" style={{ color: '#0A0B3D', fontSize: 'clamp(1.4rem, 4vw, 2.2rem)' }}>Success Stories, to know about our Security</h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 'clamp(1rem, 2vw, 2rem)' }}>
             {CASE_STUDIES.map(cs => (
-              <div key={cs.id} className="card" style={{ padding: '2rem', background: '#FFFFFF' }}>
-                <div style={{ display: 'flex', gap: '0.2rem', color: '#D4AF37', marginBottom: '1rem' }}>
+              <div key={cs.id} className="card" style={{ padding: 'clamp(1.2rem, 2.5vw, 2rem)', background: '#FFFFFF' }}>
+                <div style={{ display: 'flex', gap: '0.2rem', color: '#D4AF37', marginBottom: 'clamp(0.6rem, 1.5vw, 1rem)' }}>
                   {[...Array(5)].map((_, i) => <Star key={i} size={16} fill="#0A0B3D" />)}
                 </div>
 
-                <p style={{ fontSize: '0.92rem', color: '#475569', fontStyle: 'italic', lineHeight: '1.6', marginBottom: '1.5rem' }}>
+                <p style={{ fontSize: 'clamp(0.8rem, 1.6vw, 0.92rem)', color: '#475569', fontStyle: 'italic', lineHeight: '1.6', marginBottom: 'clamp(1rem, 1.5vw, 1.5rem)' }}>
                   "{cs.solution} Results achieved: {cs.results}"
                 </p>
 
-                <div style={{ borderTop: '1px solid #E2E8F0', paddingTop: '1rem', display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
-                  <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(10, 11, 61, 0.08)', color: '#0A0B3D', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ borderTop: '1px solid #E2E8F0', paddingTop: 'clamp(0.6rem, 1vw, 1rem)', display: 'flex', alignItems: 'center', gap: 'clamp(0.5rem, 1vw, 0.8rem)' }}>
+                  <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(10, 11, 61, 0.08)', color: '#0A0B3D', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 'clamp(0.75rem, 1.5vw, 0.85rem)' }}>
                     MS
                   </div>
                   <div>
-                    <h5 style={{ fontSize: '0.95rem', color: '#0A0B3D', margin: 0 }}>{cs.client}</h5>
-                    <span style={{ fontSize: '0.75rem', color: '#64748B' }}>{cs.industry}</span>
+                    <h5 style={{ fontSize: 'clamp(0.8rem, 1.6vw, 0.95rem)', color: '#0A0B3D', margin: 0 }}>{cs.client}</h5>
+                    <span style={{ fontSize: 'clamp(0.65rem, 1.3vw, 0.75rem)', color: '#64748B' }}>{cs.industry}</span>
                   </div>
                 </div>
               </div>
@@ -489,13 +490,13 @@ export default function Home({ setCurrentPage, lang }) {
       {/* ------------------------------------------------------------- */}
       <section className="cta-banner-blue" style={{ background: 'linear-gradient(135deg, #0A0B3D 0%, #16185E 100%)' }}>
         <div className="container" style={{ textAlign: 'center' }}>
-          <h2 style={{ fontSize: '2.2rem', color: '#FFFFFF', marginBottom: '1rem', fontFamily: 'Montserrat, sans-serif' }}>
+          <h2 style={{ fontSize: 'clamp(1.3rem, 4vw, 2.2rem)', color: '#FFFFFF', marginBottom: 'clamp(0.6rem, 1.5vw, 1rem)', fontFamily: 'Montserrat, sans-serif', lineHeight: '1.3' }}>
             Our Security Experts Are Here To Help
           </h2>
-          <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '1.05rem', maxWidth: '650px', margin: '0 auto 2rem auto' }}>
+          <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: 'clamp(0.85rem, 2vw, 1.05rem)', maxWidth: '650px', margin: '0 auto clamp(1rem, 2vw, 2rem) auto', lineHeight: '1.6' }}>
             Contact our Dodoma Headquarters team to schedule a site risk assessment and receive an official commercial proposal.
           </p>
-          <button onClick={() => setCurrentPage('contact')} className="btn" style={{ background: '#D4AF37', color: '#0A0B3D', borderRadius: '50px', padding: '0.95rem 2.5rem', fontWeight: 'bold' }}>
+          <button onClick={() => setCurrentPage('contact')} className="btn" style={{ background: '#D4AF37', color: '#0A0B3D', borderRadius: '50px', padding: 'clamp(0.65rem, 1.5vw, 0.95rem) clamp(1.5rem, 2.5vw, 2.5rem)', fontWeight: 'bold', fontSize: 'clamp(0.75rem, 1.5vw, 0.9rem)' }}>
             GET STARTED NOW <ArrowRight size={16} />
           </button>
         </div>
