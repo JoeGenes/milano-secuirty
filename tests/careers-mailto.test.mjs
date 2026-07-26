@@ -16,5 +16,6 @@ test('buildFallbackMailto creates a usable mailto link', () => {
 
   assert.match(link, /^mailto:careers@example.com/);
   assert.match(link, /subject=/);
-  assert.match(link, /Jane Doe/);
+  const decodedBody = decodeURIComponent(link.split('body=')[1].split('&')[0]);
+  assert.match(decodedBody, /Jane Doe/);
 });

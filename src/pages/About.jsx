@@ -16,7 +16,7 @@ export default function About({ setCurrentPage, lang }) {
     <div className="animate-fade-in">
       <section style={{ background: 'linear-gradient(135deg, #0A0B3D 0%, #151A66 100%)', color: '#FFF', padding: 'clamp(2.5rem, 5vw, 4.5rem) 0' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 'clamp(1.5rem, 3vw, 2.5rem)', alignItems: 'center' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.05fr) minmax(280px, 0.95fr)', gap: 'clamp(1.5rem, 3vw, 2.5rem)', alignItems: 'center' }} className="about-hero-grid">
             <div>
               <span className="badge badge-gold" style={{ marginBottom: 'clamp(0.6rem, 1.5vw, 1rem)' }}>Corporate Profile</span>
               <h1 style={{ fontSize: 'clamp(1.8rem, 5vw, 2.5rem)', color: '#FFF', fontFamily: 'Montserrat, sans-serif', marginBottom: 'clamp(0.6rem, 1.5vw, 1rem)' }}>
@@ -25,17 +25,17 @@ export default function About({ setCurrentPage, lang }) {
               <p style={{ color: 'rgba(255,255,255,0.86)', fontSize: 'clamp(0.9rem, 2.5vw, 1.05rem)', lineHeight: '1.8', maxWidth: '700px' }}>
                 A wholly Tanzanian-owned security provider delivering trusted guarding, electronic surveillance, and integrated protection solutions for homes, businesses, institutions, and critical facilities.
               </p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'clamp(0.5rem, 2vw, 1rem)', marginTop: 'clamp(0.8rem, 2vw, 1.6rem)' }}>
-                <button onClick={() => setCurrentPage('contact')} className="btn btn-navy" style={{ borderRadius: '50px' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'clamp(0.5rem, 2vw, 1rem)', marginTop: 'clamp(0.8rem, 2vw, 1.6rem)' }} className="about-hero-actions">
+                <button onClick={() => setCurrentPage('contact')} className="btn btn-navy" style={{ borderRadius: '999px' }}>
                   Contact Our Team <ArrowRight size={16} />
                 </button>
-                <button onClick={() => setCurrentPage('services')} className="btn btn-outline-blue" style={{ borderRadius: '50px', borderColor: '#FFFFFF', color: '#FFFFFF', background: 'transparent' }}>
+                <button onClick={() => setCurrentPage('services')} className="btn btn-outline-blue" style={{ borderRadius: '999px', borderColor: '#FFFFFF', color: '#FFFFFF', background: 'transparent' }}>
                   Explore Services
                 </button>
               </div>
             </div>
 
-            <div style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.14)', borderRadius: '18px', padding: 'clamp(0.8rem, 2vw, 1.4rem)' }}>
+            <div style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.14)', borderRadius: '18px', padding: 'clamp(0.8rem, 2vw, 1.4rem)', width: '100%' }}>
               <div style={{ display: 'grid', gap: 'clamp(0.6rem, 1.5vw, 0.9rem)' }}>
                 {highlights.map((item, idx) => (
                   <div key={idx} style={{ background: 'rgba(255,255,255,0.06)', borderRadius: '12px', padding: 'clamp(0.7rem, 1.5vw, 1rem) clamp(0.8rem, 1.5vw, 1.1rem)' }}>
@@ -52,7 +52,7 @@ export default function About({ setCurrentPage, lang }) {
 
       <section style={{ padding: 'clamp(2.5rem, 5vw, 4.5rem) 0', backgroundColor: '#FFF' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 'clamp(1.2rem, 2vw, 2rem)', alignItems: 'start' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: 'clamp(1.2rem, 2vw, 2rem)', alignItems: 'start' }} className="about-content-grid">
             <div className="card" style={{ padding: 'clamp(1.2rem, 2.5vw, 2.2rem)', background: '#F8FAFC' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.6rem, 1.5vw, 0.9rem)', marginBottom: 'clamp(0.6rem, 1.5vw, 1rem)' }}>
                 <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#0A0B3D', color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -113,7 +113,7 @@ export default function About({ setCurrentPage, lang }) {
       <section style={{ padding: 'clamp(2.5rem, 5vw, 4.5rem) 0', backgroundColor: '#F3F5F7' }}>
         <div className="container">
           <div style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto clamp(1.5rem, 3vw, 3rem) auto' }}>
-            <span className="badge badge-navy" style={{ marginBottom: 'clamp(0.5rem, 1vw, 0.7rem)' }}>Our Purpose</span>
+            <span className="badge badge-gold" style={{ marginBottom: 'clamp(0.5rem, 1vw, 0.7rem)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', padding: '0.6rem 1rem', borderRadius: '999px', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', boxShadow: '0 8px 20px rgba(212, 175, 55, 0.16)' }}>Our Purpose</span>
             <h2 style={{ fontSize: 'clamp(1.4rem, 4vw, 2.1rem)', color: '#0A0B3D' }}>Built around trust, accountability, and operational excellence</h2>
           </div>
 

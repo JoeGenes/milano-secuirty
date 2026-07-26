@@ -156,15 +156,15 @@ export default function Careers({ setCurrentPage, lang }) {
 
   return (
     <div className="animate-fade-in">
-      <section style={{ background: 'linear-gradient(135deg, #0A0B3D 0%, #151A66 100%)', color: '#FFF', padding: '4.5rem 0' }}>
+      <section style={{ background: 'linear-gradient(135deg, #0A0B3D 0%, #151A66 100%)', color: '#FFF', padding: 'clamp(2.5rem, 5vw, 4.5rem) 0' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1.05fr 0.95fr', gap: '2rem', alignItems: 'center' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: 'clamp(1.2rem, 3vw, 2rem)', alignItems: 'center' }}>
             <div>
               <span className="badge badge-navy" style={{ marginBottom: '1rem' }}>Join Our Security Team</span>
-              <h1 style={{ fontSize: '2.5rem', color: '#FFF', fontFamily: 'Montserrat, sans-serif', marginBottom: '1rem' }}>
+              <h1 style={{ fontSize: 'clamp(1.8rem, 4.5vw, 2.5rem)', color: '#FFF', fontFamily: 'Montserrat, sans-serif', marginBottom: '1rem' }}>
                 Professional careers at Milano Security
               </h1>
-              <p style={{ color: 'rgba(255,255,255,0.86)', fontSize: '1.05rem', lineHeight: '1.8', maxWidth: '720px' }}>
+              <p style={{ color: 'rgba(255,255,255,0.86)', fontSize: 'clamp(0.9rem, 2.2vw, 1.05rem)', lineHeight: '1.8', maxWidth: '720px' }}>
                 We are recruiting dependable professionals for guarding, technical security, and specialist operations across Tanzania. Applications are reviewed by our HR team and acknowledged by email.
               </p>
             </div>
@@ -179,7 +179,7 @@ export default function Careers({ setCurrentPage, lang }) {
                   <div style={{ fontSize: '1rem', fontWeight: '700', color: '#FFFFFF' }}>Secure, guided, and HR-ready</div>
                 </div>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '0.8rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '0.8rem' }}>
                 {['Fast review', 'Email notification', 'Privacy-safe', 'Merit-based'].map((item) => (
                   <div key={item} style={{ padding: '0.8rem 0.9rem', borderRadius: '10px', background: 'rgba(255,255,255,0.08)', color: '#FFFFFF', fontSize: '0.92rem' }}>
                     {item}
@@ -191,9 +191,9 @@ export default function Careers({ setCurrentPage, lang }) {
         </div>
       </section>
 
-      <section style={{ padding: '1.2rem 0', backgroundColor: '#FFF8E6', borderBottom: '1px solid #F1D79A' }}>
+      <section style={{ padding: 'clamp(0.9rem, 2vw, 1.2rem) 0', backgroundColor: '#FFF8E6', borderBottom: '1px solid #F1D79A' }}>
         <div className="container">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', color: '#8A5A00', fontSize: '0.9rem' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.8rem', color: '#8A5A00', fontSize: 'clamp(0.8rem, 1.8vw, 0.9rem)' }}>
             <AlertCircle size={20} style={{ flexShrink: 0 }} />
             <span>
               <strong>Recruitment security notice:</strong> Please use only this official portal. Never send money or documents to unauthorized contacts.
@@ -202,11 +202,11 @@ export default function Careers({ setCurrentPage, lang }) {
         </div>
       </section>
 
-      <section style={{ padding: '4.5rem 0', backgroundColor: '#F3F5F7' }}>
+      <section style={{ padding: 'clamp(2.5rem, 5vw, 4.5rem) 0', backgroundColor: '#F3F5F7' }}>
         <div className="container">
-          <div style={{ textAlign: 'center', maxWidth: '760px', margin: '0 auto 3rem auto' }}>
+          <div style={{ textAlign: 'center', maxWidth: '760px', margin: '0 auto clamp(1.8rem, 3vw, 3rem) auto' }}>
             <span className="badge badge-navy" style={{ marginBottom: '0.6rem' }}>Open Vacancies</span>
-            <h2 style={{ fontSize: '2rem', color: '#0A0B3D' }}>Current career opportunities</h2>
+            <h2 style={{ fontSize: 'clamp(1.4rem, 3.5vw, 2rem)', color: '#0A0B3D' }}>Current career opportunities</h2>
             <p style={{ color: '#5A6072', marginTop: '0.7rem', lineHeight: '1.7' }}>
               Browse current vacancies and submit your application directly through our portal. HR receives the submission instantly and can respond by email.
             </p>
@@ -214,8 +214,8 @@ export default function Careers({ setCurrentPage, lang }) {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             {publicJobs.map(job => (
-              <div key={job.id} className="card" style={{ padding: '2rem', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'start', gap: '1.5rem' }}>
-                <div style={{ flex: '1 1 500px' }}>
+              <div key={job.id} className="card" style={{ padding: 'clamp(1.2rem, 2.5vw, 2rem)', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'start', gap: 'clamp(1rem, 2vw, 1.5rem)' }}>
+                <div style={{ flex: '1 1 320px', minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '0.6rem' }}>
                     <h3 style={{ fontSize: '1.3rem', color: '#0A0B3D', margin: 0, fontFamily: 'Montserrat, sans-serif' }}>
                       {job.title}
@@ -250,7 +250,7 @@ export default function Careers({ setCurrentPage, lang }) {
                   </ul>
                 </div>
 
-                <div style={{ alignSelf: 'center', display: 'flex', flexDirection: 'column', gap: '0.7rem', alignItems: 'flex-start' }}>
+                <div style={{ alignSelf: 'center', display: 'flex', flexDirection: 'column', gap: '0.7rem', alignItems: 'flex-start', width: '100%', maxWidth: '220px' }}>
                   <button onClick={() => handleApplyClick(job)} className="btn btn-navy" style={{ padding: '0.85rem 1.8rem' }}>
                     Apply for Position
                   </button>
@@ -328,7 +328,7 @@ export default function Careers({ setCurrentPage, lang }) {
                 )}
 
                 <form onSubmit={handleSubmitApplication}>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '1rem' }}>
                     <div className="form-group">
                       <label>Full Legal Name *</label>
                       <input
@@ -354,7 +354,7 @@ export default function Careers({ setCurrentPage, lang }) {
                     </div>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '1rem' }}>
                     <div className="form-group">
                       <label>Email Address</label>
                       <input
@@ -448,7 +448,7 @@ export default function Careers({ setCurrentPage, lang }) {
                     </div>
                   )}
 
-                  <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.8rem' }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end', gap: '0.8rem' }}>
                     <button type="button" onClick={() => setSelectedJob(null)} className="btn btn-outline-navy">
                       Cancel
                     </button>

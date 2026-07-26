@@ -67,15 +67,15 @@ export default function Licences({ setCurrentPage, lang }) {
 
   return (
     <div className="animate-fade-in">
-      <section style={{ background: 'linear-gradient(135deg, #0A0B3D 0%, #151A66 100%)', color: '#FFF', padding: '4.5rem 0' }}>
+      <section style={{ background: 'linear-gradient(135deg, #0A0B3D 0%, #151A66 100%)', color: '#FFF', padding: 'clamp(2.5rem, 5vw, 4.5rem) 0' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1.05fr 0.95fr', gap: '2rem', alignItems: 'center' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: 'clamp(1.2rem, 3vw, 2rem)', alignItems: 'center' }}>
             <div>
               <span className="badge badge-navy" style={{ marginBottom: '1rem' }}>Statutory & Legal Credentials</span>
-              <h1 style={{ fontSize: '2.5rem', color: '#FFF', fontFamily: 'Montserrat, sans-serif', marginBottom: '1rem' }}>
+              <h1 style={{ fontSize: 'clamp(1.8rem, 4.5vw, 2.5rem)', color: '#FFF', fontFamily: 'Montserrat, sans-serif', marginBottom: '1rem' }}>
                 Licences, registrations and certifications held by Milano Security
               </h1>
-              <p style={{ color: 'rgba(255,255,255,0.86)', fontSize: '1.05rem', lineHeight: '1.8', maxWidth: '720px' }}>
+              <p style={{ color: 'rgba(255,255,255,0.86)', fontSize: 'clamp(0.9rem, 2.2vw, 1.05rem)', lineHeight: '1.8', maxWidth: '720px' }}>
                 Milano Security maintains compliance across registration, licensing, tax administration, police authorization, and data-protection requirements in Tanzania.
               </p>
             </div>
@@ -98,9 +98,9 @@ export default function Licences({ setCurrentPage, lang }) {
         </div>
       </section>
 
-      <section style={{ padding: '1.2rem 0', backgroundColor: '#FFF8E6', borderBottom: '1px solid #F1D79A' }}>
+      <section style={{ padding: 'clamp(0.9rem, 2vw, 1.2rem) 0', backgroundColor: '#FFF8E6', borderBottom: '1px solid #F1D79A' }}>
         <div className="container">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', color: '#8A5A00', fontSize: '0.9rem' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.8rem', color: '#8A5A00', fontSize: 'clamp(0.8rem, 1.8vw, 0.9rem)' }}>
             <AlertCircle size={20} style={{ flexShrink: 0 }} />
             <span>
               <strong>Management verification policy:</strong> Only approved credential summaries are published online. Sensitive certificate details are redacted before publication.
@@ -109,9 +109,9 @@ export default function Licences({ setCurrentPage, lang }) {
         </div>
       </section>
 
-      <section style={{ padding: '4.5rem 0', backgroundColor: '#F3F5F7' }}>
+      <section style={{ padding: 'clamp(2.5rem, 5vw, 4.5rem) 0', backgroundColor: '#F3F5F7' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 'clamp(1rem, 2.2vw, 1.5rem)' }}>
             {credentialsList.map((cred, idx) => (
               <div key={idx} className="card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '1.6rem' }}>
                 <div>
@@ -143,7 +143,7 @@ export default function Licences({ setCurrentPage, lang }) {
             ))}
           </div>
 
-          <div style={{ textAlign: 'center', marginTop: '3rem' }}>
+          <div style={{ textAlign: 'center', marginTop: 'clamp(2rem, 4vw, 3rem)' }}>
             <button 
               onClick={() => alert("Simulated PDF Download: Milano Security Official Profile & Credential Summary PDF will download automatically.")} 
               className="btn btn-navy"

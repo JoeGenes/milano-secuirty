@@ -20,6 +20,39 @@ export default function Quotation({ setCurrentPage, lang }) {
   });
 
   const t = TRANSLATIONS[lang];
+  const [errors, setErrors] = useState({});
+
+  const renderError = (fieldName) => errors[fieldName] ? (
+    <div style={{ color: '#B91C1C', fontSize: '0.8rem', marginTop: '0.4rem' }}>{errors[fieldName]}</div>
+  ) : null;
+
+  const validateStep = (currentStep) => {
+    const nextErrors = {};
+
+    if (currentStep === 1) {
+      if (!formData.customerType) nextErrors.customerType = 'Please select a customer category.';
+      if (!formData.region) nextErrors.region = 'Please select a region.';
+      if (!formData.premisesType) nextErrors.premisesType = 'Please select a premises type.';
+      if (!formData.urgency) nextErrors.urgency = 'Please select an urgency level.';
+    }
+
+    if (currentStep === 2) {
+      if (!formData.selectedServices || formData.selectedServices.length === 0) {
+        nextErrors.selectedServices = 'Please select at least one service.';
+      }
+    }
+
+    if (currentStep === 3) {
+      if (!formData.name.trim()) nextErrors.name = 'Please enter your name or organisation.';
+      if (!formData.phone.trim()) nextErrors.phone = 'Please enter a phone number.';
+      if (!formData.email.trim()) nextErrors.email = 'Please enter an email address.';
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) nextErrors.email = 'Please enter a valid email address.';
+      if (!formData.privacyConsent) nextErrors.privacyConsent = 'Please accept the privacy notice before submitting.';
+    }
+
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
+  };
 
   const handleServiceToggle = (serviceTitle) => {
     if (formData.selectedServices.includes(serviceTitle)) {
@@ -35,12 +68,16 @@ export default function Quotation({ setCurrentPage, lang }) {
     }
   };
 
+  const handleNextStep = (nextStep) => {
+    if (validateStep(step)) {
+      setStep(nextStep);
+      setErrors({});
+    }
+  };
+
   const handleSubmitQuote = async (e) => {
     e.preventDefault();
-    if (!formData.privacyConsent) {
-      alert("Please acknowledge the Privacy Notice before submitting.");
-      return;
-    }
+    if (!validateStep(3)) return;
 
     try {
       const res = await fetch('/api/quote/submit', {
@@ -99,11 +136,11 @@ export default function Quotation({ setCurrentPage, lang }) {
           <div style={{ maxWidth: '850px', margin: '0 auto' }}>
             
             {!quoteSubmitted ? (
-              <div className="card" style={{ padding: '2.8rem', background: '#FFF' }}>
+              <div className="card" style={{ padding: 'clamp(1.25rem, 3vw, 2.8rem)', background: '#FFF' }}>
                 
                 {/* Step Progress Bar */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2.5rem', borderBottom: '2px solid #E2E8F0', paddingBottom: '1rem' }}>
-                  <div style={{ fontWeight: 'bold', color: step >= 1 ? '#0A0B3D' : '#CBD5E1', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '0.75rem', marginBottom: 'clamp(1.5rem, 3vw, 2.5rem)', borderBottom: '2px solid #E2E8F0', paddingBottom: '1rem' }}>
+                  <div style={{ fontWeight: 'bold', color: step >= 1 ? '#0A0B3D' : '#CBD5E1', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: 'clamp(0.8rem, 1.8vw, 1rem)' }}>
                     <span style={{ width: '28px', height: '28px', borderRadius: '50%', background: step >= 1 ? '#E7AD18' : '#CBD5E1', color: '#0A0B3D', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem' }}>1</span>
                     Requirements & Site
                   </div>
@@ -126,32 +163,42 @@ export default function Quotation({ setCurrentPage, lang }) {
                         Step 1: Premise & Sector Information
                       </h3>
 
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.2rem' }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '1.2rem' }}>
                         <div className="form-group">
                           <label>Customer Category *</label>
                           <select
                             value={formData.customerType}
-                            onChange={(e) => setFormData({ ...formData, customerType: e.target.value })}
+                            onChange={(e) => {
+                              setFormData({ ...formData, customerType: e.target.value });
+                              if (errors.customerType) setErrors({ ...errors, customerType: '' });
+                            }}
                             className="form-control"
+                            style={errors.customerType ? { borderColor: '#B91C1C' } : undefined}
                           >
                             <option value="Commercial Business">Commercial Business</option>
                             <option value="Residential Estate / House">Residential Estate / House</option>
                             <option value="Industrial & Factory">Industrial & Factory</option>
                             <option value="NGO or Public Institution">NGO or Public Institution</option>
                           </select>
+                          {renderError('customerType')}
                         </div>
 
                         <div className="form-group">
                           <label>Location Region *</label>
                           <select
                             value={formData.region}
-                            onChange={(e) => setFormData({ ...formData, region: e.target.value })}
+                            onChange={(e) => {
+                              setFormData({ ...formData, region: e.target.value });
+                              if (errors.region) setErrors({ ...errors, region: '' });
+                            }}
                             className="form-control"
+                            style={errors.region ? { borderColor: '#B91C1C' } : undefined}
                           >
                             {COVERAGE_REGIONS.map(r => (
                               <option key={r.name} value={r.name}>{r.name} Region</option>
                             ))}
                           </select>
+                          {renderError('region')}
                         </div>
                       </div>
 
@@ -159,30 +206,40 @@ export default function Quotation({ setCurrentPage, lang }) {
                         <label>Premises Type / Industry Sector *</label>
                         <select
                           value={formData.premisesType}
-                          onChange={(e) => setFormData({ ...formData, premisesType: e.target.value })}
+                          onChange={(e) => {
+                            setFormData({ ...formData, premisesType: e.target.value });
+                            if (errors.premisesType) setErrors({ ...errors, premisesType: '' });
+                          }}
                           className="form-control"
+                          style={errors.premisesType ? { borderColor: '#B91C1C' } : undefined}
                         >
                           {INDUSTRIES.map(i => (
                             <option key={i.title} value={i.title}>{i.title}</option>
                           ))}
                         </select>
+                        {renderError('premisesType')}
                       </div>
 
                       <div className="form-group">
                         <label>Deployment Urgency *</label>
                         <select
                           value={formData.urgency}
-                          onChange={(e) => setFormData({ ...formData, urgency: e.target.value })}
+                          onChange={(e) => {
+                            setFormData({ ...formData, urgency: e.target.value });
+                            if (errors.urgency) setErrors({ ...errors, urgency: '' });
+                          }}
                           className="form-control"
+                          style={errors.urgency ? { borderColor: '#B91C1C' } : undefined}
                         >
                           <option value="Immediate (Within 24 Hours)">Immediate (Within 24 Hours)</option>
                           <option value="Standard (Within 1 week)">Standard (Within 1 week)</option>
                           <option value="Planning Phase (Next 30 days)">Planning Phase (Next 30 days)</option>
                         </select>
+                        {renderError('urgency')}
                       </div>
 
                       <div style={{ textAlign: 'right', marginTop: '2rem' }}>
-                        <button type="button" onClick={() => setStep(2)} className="btn btn-navy">
+                        <button type="button" onClick={() => handleNextStep(2)} className="btn btn-navy">
                           Next: Select Services <ArrowRight size={16} />
                         </button>
                       </div>
@@ -199,7 +256,7 @@ export default function Quotation({ setCurrentPage, lang }) {
                         Select all physical, electronic, or specialized services required for your premises:
                       </p>
 
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '0.8rem', marginBottom: '2rem' }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '0.8rem', marginBottom: '1rem' }}>
                         {SERVICES.map(s => (
                           <div
                             key={s.id}
@@ -228,11 +285,12 @@ export default function Quotation({ setCurrentPage, lang }) {
                         ))}
                       </div>
 
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '2rem' }}>
+                      {errors.selectedServices && <div style={{ color: '#B91C1C', fontSize: '0.85rem', marginBottom: '1rem' }}>{errors.selectedServices}</div>}
+                      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '0.75rem', marginTop: '2rem' }}>
                         <button type="button" onClick={() => setStep(1)} className="btn btn-outline-navy">
                           Back
                         </button>
-                        <button type="button" onClick={() => setStep(3)} className="btn btn-navy">
+                        <button type="button" onClick={() => handleNextStep(3)} className="btn btn-navy">
                           Next: Contact Details <ArrowRight size={16} />
                         </button>
                       </div>
@@ -246,7 +304,7 @@ export default function Quotation({ setCurrentPage, lang }) {
                         Step 3: Contact & Submission
                       </h3>
 
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.2rem' }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '1.2rem' }}>
                         <div className="form-group">
                           <label>Full Name or Organisation *</label>
                           <input
@@ -254,9 +312,14 @@ export default function Quotation({ setCurrentPage, lang }) {
                             required
                             placeholder="e.g. Tanzanian Logistics Ltd"
                             value={formData.name}
-                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                            onChange={(e) => {
+                              setFormData({ ...formData, name: e.target.value });
+                              if (errors.name) setErrors({ ...errors, name: '' });
+                            }}
                             className="form-control"
+                            style={errors.name ? { borderColor: '#B91C1C' } : undefined}
                           />
+                          {renderError('name')}
                         </div>
 
                         <div className="form-group">
@@ -266,9 +329,14 @@ export default function Quotation({ setCurrentPage, lang }) {
                             required
                             placeholder="+255 700 000 000"
                             value={formData.phone}
-                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                            onChange={(e) => {
+                              setFormData({ ...formData, phone: e.target.value });
+                              if (errors.phone) setErrors({ ...errors, phone: '' });
+                            }}
                             className="form-control"
+                            style={errors.phone ? { borderColor: '#B91C1C' } : undefined}
                           />
+                          {renderError('phone')}
                         </div>
                       </div>
 
@@ -279,9 +347,14 @@ export default function Quotation({ setCurrentPage, lang }) {
                           required
                           placeholder="contact@company.co.tz"
                           value={formData.email}
-                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          onChange={(e) => {
+                            setFormData({ ...formData, email: e.target.value });
+                            if (errors.email) setErrors({ ...errors, email: '' });
+                          }}
                           className="form-control"
+                          style={errors.email ? { borderColor: '#B91C1C' } : undefined}
                         />
+                        {renderError('email')}
                       </div>
 
                       <div className="form-group">
@@ -302,20 +375,24 @@ export default function Quotation({ setCurrentPage, lang }) {
                             type="checkbox"
                             required
                             checked={formData.privacyConsent}
-                            onChange={(e) => setFormData({ ...formData, privacyConsent: e.target.checked })}
+                            onChange={(e) => {
+                              setFormData({ ...formData, privacyConsent: e.target.checked });
+                              if (errors.privacyConsent) setErrors({ ...errors, privacyConsent: '' });
+                            }}
                             style={{ marginTop: '0.2rem' }}
                           />
                           <span>
                             <strong>General Form Acknowledgement:</strong> I confirm that I have read the <button type="button" onClick={() => setCurrentPage('privacy')} style={{ color: '#0A0B3D', textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>Privacy Notice</button> and understand how Milano Security will process the information submitted through this form.
                           </span>
                         </label>
+                        {renderError('privacyConsent')}
                       </div>
 
-                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '0.75rem' }}>
                         <button type="button" onClick={() => setStep(2)} className="btn btn-outline-navy">
                           Back
                         </button>
-                        <button type="submit" className="btn btn-gold" style={{ padding: '0.9rem 2.2rem' }}>
+                        <button type="submit" className="btn btn-gold" style={{ padding: 'clamp(0.75rem, 2vw, 0.9rem) clamp(1.2rem, 3vw, 2.2rem)' }}>
                           Submit Quotation Request <Send size={18} />
                         </button>
                       </div>
@@ -326,7 +403,7 @@ export default function Quotation({ setCurrentPage, lang }) {
               </div>
             ) : (
               /* Submission Success View */
-              <div className="card" style={{ padding: '3rem', textAlign: 'center', background: '#FFF' }}>
+              <div className="card" style={{ padding: 'clamp(1.5rem, 3vw, 3rem)', textAlign: 'center', background: '#FFF' }}>
                 <div style={{ width: '70px', height: '70px', borderRadius: '50%', background: '#DCFCE7', color: '#166534', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem auto' }}>
                   <CheckCircle2 size={42} />
                 </div>

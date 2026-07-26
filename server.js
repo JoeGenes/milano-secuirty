@@ -233,6 +233,80 @@ app.post('/api/careers/submit', upload.single('cv'), async (req, res) => {
   }
 });
 
+app.post('/api/contact/submit', async (req, res) => {
+  try {
+    const { name, phone, email, message, privacyConsent } = req.body;
+    const trimmedName = String(name || '').trim();
+    const trimmedPhone = String(phone || '').trim();
+    const trimmedEmail = String(email || '').trim();
+    const trimmedMessage = String(message || '').trim();
+    const consentGiven = privacyConsent === true || privacyConsent === 'true' || privacyConsent === 'on' || privacyConsent === 'yes' || privacyConsent === '1';
+
+    const missing = [];
+    if (!trimmedName) missing.push('name');
+    if (!trimmedPhone) missing.push('telephone number');
+    if (!trimmedEmail) missing.push('email address');
+    if (!trimmedMessage) missing.push('message');
+    if (!consentGiven) missing.push('privacy consent');
+
+    if (missing.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: `Please complete the required fields: ${missing.join(', ')}.`
+      });
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please enter a valid email address.'
+      });
+    }
+
+    const recipient = SUPPORT_EMAIL;
+    const contactBody = `
+      <p>A new contact message has been submitted through the Milano Security website.</p>
+      <h3 style="margin-top:12px">Contact Details</h3>
+      <p><strong>Name:</strong> ${trimmedName}</p>
+      <p><strong>Phone:</strong> ${trimmedPhone}</p>
+      <p><strong>Email:</strong> ${trimmedEmail}</p>
+      <p><strong>Message:</strong><br/>${trimmedMessage.replace(/\n/g, '<br/>')}</p>
+    `;
+
+    const logoPath = path.join(__dirname, 'public', 'favicon.svg');
+    const mailOptions = {
+      from: `Milano Security <${DEFAULT_FROM_EMAIL}>`,
+      to: recipient,
+      replyTo: trimmedEmail,
+      subject: `New Contact Form Message from ${trimmedName}`,
+      html: buildEmailTemplate({ title: `Contact Form – ${trimmedName}`, preheader: 'New contact form message received', bodyHtml: contactBody, logoCid: 'logo@milano' }),
+      attachments: [{ filename: 'logo.svg', path: logoPath, cid: 'logo@milano', contentType: 'image/svg+xml' }]
+    };
+
+    try {
+      await transporter.sendMail(mailOptions);
+      await persistSubmission({ type: 'contact', name: trimmedName, phone: trimmedPhone, email: trimmedEmail, message: trimmedMessage, recipient });
+      res.json({ success: true, message: `Your message has been sent to ${recipient}.` });
+      return;
+    } catch (smtpError) {
+      console.error('Contact SMTP delivery failed, switching to fallback:', smtpError);
+      const fallbackLink = buildFallbackMailto(recipient, 'Contact Form Message', { fullName: trimmedName, phone: trimmedPhone, email: trimmedEmail, region: 'Not provided', coverMessage: trimmedMessage, companyName: 'Milano Security' });
+      await persistSubmission({ type: 'contact', name: trimmedName, phone: trimmedPhone, email: trimmedEmail, message: trimmedMessage, recipient, fallbackLink, deliveryStatus: 'saved-fallback' });
+
+      res.json({
+        success: true,
+        fallbackMode: true,
+        mailtoLink: fallbackLink,
+        message: `Your message was received and a fallback draft has been prepared for ${recipient}.`
+      });
+      return;
+    }
+  } catch (error) {
+    console.error('Contact submission failed:', error);
+    res.status(500).json({ success: false, message: 'The contact message could not be submitted right now. Please try again later.' });
+  }
+});
+
 app.post('/api/support/submit', async (req, res) => {
   try {
     const { name, phone, email, category, region, details, privacyConsent } = req.body;

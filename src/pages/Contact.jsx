@@ -1,10 +1,73 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MapPin, Phone, Mail, Clock, MessageSquare, Building2, Send } from 'lucide-react';
 import { COMPANY_INFO } from '../data/content';
 import { TRANSLATIONS } from '../data/translations';
 
 export default function Contact({ setCurrentPage, lang }) {
   const t = TRANSLATIONS[lang];
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    message: '',
+    privacyConsent: false
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState('');
+  const [submitError, setSubmitError] = useState('');
+
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  const handleSubmitContact = async (e) => {
+    e.preventDefault();
+    setSubmitError('');
+    setSubmitMessage('');
+
+    const name = formData.name.trim();
+    const phone = formData.phone.trim();
+    const email = formData.email.trim();
+    const message = formData.message.trim();
+
+    if (!name || !phone || !email || !message || !formData.privacyConsent) {
+      setSubmitError('Please complete all required fields and confirm the Privacy Notice.');
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setSubmitError('Please enter a valid email address.');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('/api/contact/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          phone,
+          email,
+          message,
+          privacyConsent: formData.privacyConsent ? 'true' : 'false'
+        })
+      });
+
+      const result = await response.json();
+      if (!response.ok || !result.success) {
+        setSubmitError(result.message || 'Unable to send your message right now. Please try again later.');
+        return;
+      }
+
+      setSubmitMessage(result.message || 'Your message has been sent successfully.');
+      setFormData({ name: '', phone: '', email: '', message: '', privacyConsent: false });
+    } catch (error) {
+      console.error('Contact submission error:', error);
+      setSubmitError('Unable to send your message right now. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="animate-fade-in">
@@ -24,7 +87,7 @@ export default function Contact({ setCurrentPage, lang }) {
       {/* Main Contact Grid */}
       <section style={{ padding: 'clamp(2.5rem, 5vw, 4.5rem) 0', backgroundColor: '#F3F5F7' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 'clamp(1.5rem, 3vw, 2.5rem)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 'clamp(1.2rem, 3vw, 2.5rem)' }}>
             
             {/* Contact Information Card */}
             <div className="card" style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem)', background: '#FFF' }}>
@@ -96,33 +159,48 @@ export default function Contact({ setCurrentPage, lang }) {
                 Send Us a Direct Message
               </h2>
 
-              <form onSubmit={(e) => { e.preventDefault(); alert("Message Sent! Milano Security team will contact you shortly."); }}>
+              <form onSubmit={handleSubmitContact}>
                 <div className="form-group">
                   <label>Your Name *</label>
-                  <input type="text" required placeholder="Full Name" className="form-control" />
+                  <input type="text" required placeholder="Full Name" className="form-control" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
                 </div>
 
                 <div className="form-group">
                   <label>Telephone Number *</label>
-                  <input type="tel" required placeholder="+255 700 000 000" className="form-control" />
+                  <input type="tel" required placeholder="+255 700 000 000" className="form-control" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} />
                 </div>
 
                 <div className="form-group">
-                  <label>Email Address</label>
-                  <input type="email" placeholder="name@domain.com" className="form-control" />
+                  <label>Email Address *</label>
+                  <input type="email" required placeholder="name@domain.com" className="form-control" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
                 </div>
 
                 <div className="form-group">
                   <label>Message *</label>
-                  <textarea rows={4} required placeholder="Write your inquiry here..." className="form-control"></textarea>
+                  <textarea rows={4} required placeholder="Write your inquiry here..." className="form-control" value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })}></textarea>
                 </div>
 
                 <div style={{ padding: '0.8rem', backgroundColor: '#F3F5F7', borderRadius: '6px', marginBottom: '1.2rem', fontSize: '0.8rem', color: '#5A6072' }}>
-                  By submitting this form, you acknowledge that Milano Security Service Limited will process your contact details in accordance with our Privacy Notice.
+                  <label style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem', cursor: 'pointer' }}>
+                    <input type="checkbox" checked={formData.privacyConsent} onChange={(e) => setFormData({ ...formData, privacyConsent: e.target.checked })} style={{ marginTop: '0.2rem' }} />
+                    <span>I consent to Milano Security processing my contact details in accordance with the Privacy Notice.</span>
+                  </label>
                 </div>
 
-                <button type="submit" className="btn btn-navy" style={{ width: '100%', justifyContent: 'center' }}>
-                  Send Message <Send size={16} />
+                {submitError && (
+                  <div style={{ marginBottom: '1rem', padding: '0.8rem 1rem', borderRadius: '8px', background: '#FEF2F2', color: '#991B1B', fontSize: '0.9rem' }}>
+                    {submitError}
+                  </div>
+                )}
+
+                {submitMessage && (
+                  <div style={{ marginBottom: '1rem', padding: '0.8rem 1rem', borderRadius: '8px', background: '#ECFDF3', color: '#166534', fontSize: '0.9rem' }}>
+                    {submitMessage}
+                  </div>
+                )}
+
+                <button type="submit" className="btn btn-navy" style={{ width: '100%', justifyContent: 'center' }} disabled={isSubmitting}>
+                  {isSubmitting ? 'Sending...' : <>Send Message <Send size={16} /></>}
                 </button>
               </form>
             </div>
@@ -132,16 +210,20 @@ export default function Contact({ setCurrentPage, lang }) {
       </section>
 
       {/* Map Locator Preview */}
-      <section style={{ padding: '4rem 0', backgroundColor: '#0A0B3D', color: '#FFF', textAlign: 'center' }}>
+      <section style={{ padding: 'clamp(2.5rem, 5vw, 4rem) 0', backgroundColor: '#0A0B3D', color: '#FFF', textAlign: 'center' }}>
         <div className="container">
-          <h3 style={{ fontSize: '1.6rem', color: '#FFF', marginBottom: '0.8rem' }}>Milano Security Dodoma Control Center</h3>
-          <p style={{ color: 'rgba(255,255,255,0.8)', marginBottom: '2rem' }}>Hazina Ward, Kinyambwa Road, Dodoma, Tanzania</p>
-          <div style={{ height: '280px', borderRadius: '16px', background: 'rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(255,255,255,0.15)' }}>
-            <div style={{ textAlign: 'center' }}>
-              <MapPin size={48} className="text-navy" style={{ marginBottom: '0.8rem' }} />
-              <div style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Interactive Google Map Locator</div>
-              <div style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', marginTop: '0.3rem' }}>Approved Headquarters Coordinate: Dodoma City Council</div>
-            </div>
+          <h3 style={{ fontSize: 'clamp(1.2rem, 3vw, 1.6rem)', color: '#FFF', marginBottom: '0.8rem' }}>Milano Security Dodoma Control Center</h3>
+          <p style={{ color: 'rgba(255,255,255,0.8)', marginBottom: 'clamp(1.2rem, 3vw, 2rem)' }}>Hazina Ward, Kinyambwa Road, Dodoma, Tanzania</p>
+          <div style={{ height: 'clamp(220px, 42vw, 280px)', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.15)' }}>
+            <iframe
+              title="Milano Security Dodoma Headquarters"
+              src="https://www.google.com/maps?q=Dodoma%20City%20Council%2C%20Dodoma%2C%20Tanzania&z=13&output=embed"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
           </div>
         </div>
       </section>

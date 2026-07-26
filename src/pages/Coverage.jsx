@@ -46,20 +46,20 @@ export default function Coverage({ setCurrentPage, lang }) {
 
   return (
     <div className="animate-fade-in">
-      <section style={{ background: 'linear-gradient(135deg, #0A0B3D 0%, #151A66 100%)', color: '#FFF', padding: '4.5rem 0' }}>
+      <section style={{ background: 'linear-gradient(135deg, #0A0B3D 0%, #151A66 100%)', color: '#FFF', padding: 'clamp(2.5rem, 5vw, 4.5rem) 0' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1.05fr 0.95fr', gap: '2.2rem', alignItems: 'center' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: 'clamp(1.2rem, 3vw, 2.2rem)', alignItems: 'center' }}>
             <div>
               <span className="badge badge-gold" style={{ marginBottom: '1rem' }}>Nationwide Operational Reach</span>
-              <h1 style={{ fontSize: '2.5rem', color: '#FFF', fontFamily: 'Montserrat, sans-serif', marginBottom: '1rem' }}>
+              <h1 style={{ fontSize: 'clamp(1.8rem, 4.5vw, 2.5rem)', color: '#FFF', fontFamily: 'Montserrat, sans-serif', marginBottom: '1rem' }}>
                 Coverage across Tanzania, built for responsive security delivery
               </h1>
-              <p style={{ color: 'rgba(255,255,255,0.86)', fontSize: '1.05rem', lineHeight: '1.8', maxWidth: '700px' }}>
+              <p style={{ color: 'rgba(255,255,255,0.86)', fontSize: 'clamp(0.9rem, 2.2vw, 1.05rem)', lineHeight: '1.8', maxWidth: '700px' }}>
                 Milano Security maintains an operational footprint across 12 key regions, with coordinated field support and rapid response capability for clients nationwide.
               </p>
             </div>
 
-            <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: '18px', padding: '1.2rem', border: '1px solid rgba(255,255,255,0.14)' }}>
+            <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: '18px', padding: 'clamp(0.9rem, 2vw, 1.2rem)', border: '1px solid rgba(255,255,255,0.14)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '0.8rem' }}>
                 <div style={{ width: '44px', height: '44px', borderRadius: '50%', background: 'rgba(255,255,255,0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <ShieldCheck size={20} color="#FFFFFF" />
@@ -69,7 +69,7 @@ export default function Coverage({ setCurrentPage, lang }) {
                   <div style={{ fontSize: '1rem', fontWeight: '700', color: '#FFFFFF' }}>{activeRegionData.name}, Tanzania</div>
                 </div>
               </div>
-              <div style={{ height: '260px', borderRadius: '14px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.12)' }}>
+              <div style={{ height: 'clamp(220px, 42vw, 320px)', minHeight: '220px', borderRadius: '14px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.12)' }}>
                 <MapContainer center={regionCoordinates[activeRegionData.name] || [-6.1622, 35.7516]} zoom={6} scrollWheelZoom={false} style={{ height: '100%', width: '100%' }}>
                   <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -95,10 +95,10 @@ export default function Coverage({ setCurrentPage, lang }) {
         </div>
       </section>
 
-      <section style={{ padding: '4.5rem 0', backgroundColor: '#F3F5F7' }}>
+      <section style={{ padding: 'clamp(2.5rem, 5vw, 4.5rem) 0', backgroundColor: '#F3F5F7' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '0.95fr 1.05fr', gap: '2rem', alignItems: 'start' }}>
-            <div className="card" style={{ padding: '1.8rem', background: '#FFFFFF' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: 'clamp(1rem, 2.5vw, 2rem)', alignItems: 'start' }}>
+            <div className="card" style={{ padding: 'clamp(1.2rem, 2.5vw, 1.8rem)', background: '#FFFFFF' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '1rem' }}>
                 <Compass size={22} color="#0A0B3D" />
                 <h2 style={{ fontSize: '1.35rem', color: '#0A0B3D', margin: 0 }}>Operational Regions</h2>

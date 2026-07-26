@@ -28,8 +28,8 @@ export default function Services({ setCurrentPage, lang }) {
     <div className="animate-fade-in">
       <section style={{ background: 'linear-gradient(135deg, #0A0B3D 0%, #151A66 100%)', color: '#FFF', padding: 'clamp(2.5rem, 5vw, 4.5rem) 0' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 'clamp(1.5rem, 3vw, 2.5rem)', alignItems: 'center' }}>
-            <div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'clamp(1.5rem, 3vw, 2.5rem)', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ flex: '1 1 480px', minWidth: 0 }}>
               <span className="badge badge-navy" style={{ marginBottom: 'clamp(0.6rem, 1.5vw, 1rem)' }}>Comprehensive Protection Solutions</span>
               <h1 style={{ fontSize: 'clamp(1.8rem, 5vw, 2.5rem)', color: '#FFF', fontFamily: 'Montserrat, sans-serif', marginBottom: 'clamp(0.6rem, 2vw, 1rem)' }}>
                 Professional security services tailored to your environment
@@ -47,7 +47,7 @@ export default function Services({ setCurrentPage, lang }) {
               </div>
             </div>
 
-            <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: '18px', padding: 'clamp(0.8rem, 2vw, 1.2rem)', border: '1px solid rgba(255,255,255,0.14)' }}>
+            <div style={{ flex: '0 1 360px', width: '100%', maxWidth: '360px', background: 'rgba(255,255,255,0.08)', borderRadius: '18px', padding: 'clamp(0.8rem, 2vw, 1.2rem)', border: '1px solid rgba(255,255,255,0.14)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.5rem, 1.5vw, 0.8rem)', marginBottom: 'clamp(0.6rem, 1.5vw, 0.9rem)' }}>
                 <div style={{ width: '44px', height: '44px', borderRadius: '50%', background: 'rgba(255,255,255,0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <Sparkles size={20} color="#FFFFFF" />

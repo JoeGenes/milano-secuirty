@@ -61,10 +61,10 @@ export default function Home({ setCurrentPage, lang }) {
       {/* ------------------------------------------------------------- */}
       <section style={{ backgroundColor: '#FFFFFF', padding: 'clamp(2rem, 5vw, 4rem) 0 clamp(2.5rem, 6vw, 5rem) 0', borderBottom: '1px solid #E2E8F0' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 'clamp(2rem, 5vw, 3.5rem)', alignItems: 'center' }}>
+          <div className="home-hero-grid">
             
             {/* Left Hero Content */}
-            <div>
+            <div className="home-hero-content">
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(10, 11, 61, 0.06)', color: '#0A0B3D', padding: 'clamp(0.3rem, 1vw, 0.4rem) clamp(0.6rem, 1.5vw, 0.9rem)', borderRadius: '50px', fontSize: 'clamp(0.7rem, 1.5vw, 0.82rem)', fontWeight: '700', marginBottom: 'clamp(0.8rem, 2vw, 1.5rem)', border: '1px solid rgba(10, 11, 61, 0.15)' }}>
                 <Shield size={16} /> BRELA Reg #154815619 &bull; Tanzania
               </div>
@@ -105,7 +105,7 @@ export default function Home({ setCurrentPage, lang }) {
             </div>
 
             {/* Right Hero Image */}
-            <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', marginTop: 'clamp(1.5rem, 3vw, 0rem)' }}>
+            <div className="home-hero-visual" style={{ position: 'relative', display: 'flex', justifyContent: 'center', marginTop: 'clamp(1.5rem, 3vw, 0rem)', width: '100%' }}>
               <div style={{
                 position: 'relative',
                 width: '100%',
@@ -187,10 +187,10 @@ export default function Home({ setCurrentPage, lang }) {
       {/* ------------------------------------------------------------- */}
       <section style={{ padding: 'clamp(2.5rem, 5vw, 5.5rem) 0', backgroundColor: '#F8FAFC', borderBottom: '1px solid #E2E8F0' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 'clamp(1.5rem, 3vw, 3.5rem)', alignItems: 'center' }}>
+          <div className="welcome-section-grid">
             
             {/* Left 3 Card Layout */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(0.8rem, 2vw, 1.2rem)' }}>
+            <div className="welcome-cards-grid">
               <div className="card" style={{ padding: 'clamp(1rem, 2.5vw, 1.8rem)', background: '#FFFFFF', textAlign: 'center' }}>
                 <UserCheck size={36} color="#0A0B3D" style={{ marginBottom: 'clamp(0.5rem, 1.5vw, 0.8rem)' }} />
                 <h4 style={{ fontSize: 'clamp(0.95rem, 2vw, 1.1rem)', color: '#0A0B3D', marginBottom: '0.3rem' }}>Vetted Guards</h4>
@@ -211,7 +211,7 @@ export default function Home({ setCurrentPage, lang }) {
             </div>
 
             {/* Right Welcome Description */}
-            <div>
+            <div className="welcome-content">
               <span className="section-subtitle" style={{ color: '#0A0B3D' }}>WELCOME TO MILANO SECURITY</span>
               <h2 className="section-title" style={{ color: '#0A0B3D', fontSize: 'clamp(1.4rem, 4vw, 2.2rem)' }}>
                 Professional Security Services Built on Trust & Excellence
@@ -312,8 +312,8 @@ export default function Home({ setCurrentPage, lang }) {
       {/* ------------------------------------------------------------- */}
       <section className="cta-banner-blue" style={{ background: 'linear-gradient(135deg, #0A0B3D 0%, #16185E 100%)' }}>
         <div className="container">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 'clamp(1rem, 2vw, 2rem)' }}>
-            <div style={{ flex: '1 1 auto', minWidth: '0' }}>
+          <div className="cta-banner-row">
+            <div className="cta-banner-copy">
               <span style={{ fontSize: 'clamp(0.65rem, 1.5vw, 0.8rem)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '800', color: '#0A0B3D' }}>
                 SECURITY FOR ALL
               </span>
@@ -322,7 +322,7 @@ export default function Home({ setCurrentPage, lang }) {
               </h2>
             </div>
 
-            <button onClick={() => setCurrentPage('contact')} className="btn" style={{ background: '#D4AF37', color: '#0A0B3D', borderRadius: '50px', padding: 'clamp(0.6rem, 1.5vw, 0.9rem) clamp(1.2rem, 2.5vw, 2.2rem)', fontWeight: 'bold', fontSize: 'clamp(0.75rem, 1.5vw, 0.9rem)', whiteSpace: 'nowrap' }}>
+            <button onClick={() => setCurrentPage('contact')} className="btn cta-banner-button" style={{ background: '#D4AF37', color: '#0A0B3D', borderRadius: '50px', padding: 'clamp(0.6rem, 1.5vw, 0.9rem) clamp(1.2rem, 2.5vw, 2.2rem)', fontWeight: 'bold', fontSize: 'clamp(0.75rem, 1.5vw, 0.9rem)', whiteSpace: 'nowrap' }}>
               LET'S TALK <ArrowRight size={16} />
             </button>
           </div>
@@ -340,7 +340,7 @@ export default function Home({ setCurrentPage, lang }) {
           </div>
 
           {/* Service Tab Pills */}
-          <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 'clamp(0.5rem, 1.5vw, 0.8rem)', marginBottom: 'clamp(1.5rem, 3vw, 3rem)' }}>
+          <div className="service-tabs-row">
             {[
               { id: 'manned', label: 'Manned Guarding' },
               { id: 'cctv', label: 'CCTV Surveillance' },
@@ -371,8 +371,8 @@ export default function Home({ setCurrentPage, lang }) {
           </div>
 
           {/* Tab Content Display */}
-          <div className="card" style={{ padding: 'clamp(1.5rem, 2.5vw, 3rem)', background: '#F8FAFC' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 'clamp(1.5rem, 3vw, 3rem)', alignItems: 'center' }}>
+          <div className="card services-showcase-card" style={{ padding: 'clamp(1.5rem, 2.5vw, 3rem)', background: '#F8FAFC' }}>
+            <div className="services-showcase-grid">
               <div>
                 <span className="badge badge-gold" style={{ marginBottom: 'clamp(0.5rem, 1vw, 0.8rem)' }}>{currentTab.tag}</span>
                 <h3 style={{ fontSize: 'clamp(1.3rem, 3.5vw, 1.8rem)', color: '#0A0B3D', marginBottom: 'clamp(0.6rem, 1.5vw, 1rem)', fontFamily: 'Montserrat, sans-serif' }}>
@@ -396,7 +396,7 @@ export default function Home({ setCurrentPage, lang }) {
                 </button>
               </div>
 
-              <div style={{ background: '#FFFFFF', padding: 'clamp(1.2rem, 2.5vw, 2.5rem)', borderRadius: '16px', border: '1px solid #E2E8F0', textAlign: 'center' }}>
+              <div style={{ background: '#FFFFFF', padding: 'clamp(1.2rem, 2.5vw, 2.5rem)', borderRadius: '16px', border: '1px solid #E2E8F0', textAlign: 'center', width: '100%' }}>
                 <Shield size={64} color="#0A0B3D" style={{ marginBottom: 'clamp(0.8rem, 1.5vw, 1.2rem)' }} />
                 <h4 style={{ fontSize: 'clamp(1rem, 2.5vw, 1.3rem)', color: '#0A0B3D', marginBottom: 'clamp(0.4rem, 1vw, 0.6rem)' }}>Tanzania Statutory Approval</h4>
                 <p style={{ fontSize: 'clamp(0.7rem, 1.5vw, 0.88rem)', color: '#64748B', lineHeight: '1.6' }}>
