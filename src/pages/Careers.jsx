@@ -56,7 +56,18 @@ export default function Careers({ setCurrentPage, lang }) {
   });
 
   useEffect(() => {
-    setPublicJobs(loadPublishedJobs());
+    fetch('/api/vacancies')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.vacancies)) {
+          setPublicJobs(data.vacancies);
+        } else {
+          setPublicJobs(loadPublishedJobs());
+        }
+      })
+      .catch(() => {
+        setPublicJobs(loadPublishedJobs());
+      });
   }, []);
 
   const t = TRANSLATIONS[lang];

@@ -45,6 +45,17 @@ export default function HrPortal({ setCurrentPage }) {
   const [status, setStatus] = useState('');
 
   useEffect(() => {
+    fetch('/api/vacancies')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.vacancies) && data.vacancies.length > 0) {
+          setJobs(data.vacancies);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
     if (typeof window !== 'undefined') {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(jobs));
     }
@@ -67,8 +78,7 @@ export default function HrPortal({ setCurrentPage }) {
       return;
     }
 
-    const newJob = {
-      id: `job-${Date.now()}`,
+    const reqPayload = {
       title: draft.title.trim(),
       location: draft.location.trim(),
       type: draft.type,
@@ -78,14 +88,30 @@ export default function HrPortal({ setCurrentPage }) {
         .map((item) => item.trim())
         .filter(Boolean),
       deadline: draft.deadline,
-      publishedOn: new Date().toISOString(),
       pdfFileName: draft.pdfFileName,
       pdfDataUrl: draft.pdfDataUrl
     };
 
-    setJobs([newJob, ...jobs]);
+    try {
+      const res = await fetch('/api/vacancies', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(reqPayload)
+      });
+      const data = await res.json();
+      if (data.success && data.vacancy) {
+        setJobs((prev) => [data.vacancy, ...prev.filter((j) => String(j.id) !== String(data.vacancy.id))]);
+        setStatus(data.message || 'Job ad published successfully to MongoDB database.');
+      } else {
+        throw new Error(data.message || 'Failed');
+      }
+    } catch {
+      const localJob = { ...reqPayload, id: `job-${Date.now()}`, publishedOn: new Date().toISOString() };
+      setJobs((prev) => [localJob, ...prev]);
+      setStatus('Vacancy saved to published list.');
+    }
+
     setDraft({ title: '', location: '', type: 'Full-Time', desc: '', requirements: '', deadline: '', pdfFileName: '', pdfDataUrl: '' });
-    setStatus('Job ad published successfully. It is now visible on the public careers page.');
   };
 
   const handlePdfChange = (event) => {
@@ -108,8 +134,13 @@ export default function HrPortal({ setCurrentPage }) {
     reader.readAsDataURL(file);
   };
 
-  const handleDeleteJob = (id) => {
-    setJobs(jobs.filter((job) => job.id !== id));
+  const handleDeleteJob = async (id) => {
+    try {
+      await fetch(`/api/vacancies/${id}`, { method: 'DELETE' });
+    } catch {
+      // ignore
+    }
+    setJobs((prev) => prev.filter((job) => String(job.id) !== String(id) && String(job._id) !== String(id)));
     setStatus('The selected vacancy has been removed from the published list.');
   };
 

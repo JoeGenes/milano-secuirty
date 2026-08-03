@@ -51,5 +51,44 @@
     "description": "hbvgh",
     "recipient": "sales@milanosecurity.co.tz",
     "createdAt": "2026-07-24T13:07:02.159Z"
+  },
+  {
+    "type": "quotation",
+    "name": "Joe Senzota",
+    "phone": "+255 671677468",
+    "email": "ngutujoseph000@gmail.com",
+    "region": "Dodoma",
+    "customerType": "Commercial Business",
+    "premisesType": "Office Complex",
+    "selectedServices": [
+      "Manned Guarding",
+      "Vehicle Search Mirrors"
+    ],
+    "urgency": "Standard (Within 1 week)",
+    "description": "v vc vgcgfcyf",
+    "recipient": "sales@milanosecurity.co.tz",
+    "fallbackLink": "mailto:sales@milanosecurity.co.tz?subject=New%20Career%20Application%20%E2%80%93%20Quotation%20Request&body=Applicant%20Name%3A%20Joe%20Senzota%0APhone%3A%20%2B255%20671677468%0AEmail%3A%20ngutujoseph000%40gmail.com%0ARegion%3A%20Dodoma%0AEducation%3A%20Not%20provided%0AExperience%3A%20Not%20provided%0APosition%20Applied%3A%20Not%20provided%0ALocation%3A%20Not%20provided%0ACover%20Note%3A%20v%20vc%20vgcgfcyf%0ACompany%3A%20Milano%20Security",
+    "deliveryStatus": "saved-fallback",
+    "createdAt": "2026-08-03T13:34:30.759Z"
+  },
+  {
+    "type": "quotation",
+    "name": "Primematrix Tanzania",
+    "phone": "+255 671677468",
+    "email": "ngutujoseph000@gmail.com",
+    "region": "Dodoma",
+    "customerType": "Commercial Business",
+    "premisesType": "Office Complex",
+    "selectedServices": [
+      "Manned Guarding",
+      "Intruder Alarm Systems",
+      "Fire-Safety Training"
+    ],
+    "urgency": "Standard (Within 1 week)",
+    "description": "cjdascbhjsdcvbdshjvcbdsh",
+    "recipient": "sales@milanosecurity.co.tz",
+    "fallbackLink": "mailto:sales@milanosecurity.co.tz?subject=New%20Career%20Application%20%E2%80%93%20Quotation%20Request&body=Applicant%20Name%3A%20Primematrix%20Tanzania%0APhone%3A%20%2B255%20671677468%0AEmail%3A%20ngutujoseph000%40gmail.com%0ARegion%3A%20Dodoma%0AEducation%3A%20Not%20provided%0AExperience%3A%20Not%20provided%0APosition%20Applied%3A%20Not%20provided%0ALocation%3A%20Not%20provided%0ACover%20Note%3A%20cjdascbhjsdcvbdshjvcbdsh%0ACompany%3A%20Milano%20Security",
+    "deliveryStatus": "saved-fallback",
+    "createdAt": "2026-08-03T13:43:04.405Z"
   }
 ]

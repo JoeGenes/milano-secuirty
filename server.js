@@ -4,17 +4,15 @@ import nodemailer from 'nodemailer';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
-import fs from 'fs/promises';
 import fsSync from 'fs';
 import { fileURLToPath } from 'url';
+import serverless from 'serverless-http'; // 1. Added serverless-http
 
 dotenv.config();
 
 const app = express();
-const port = Number(process.env.PORT || 3001);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const submissionsDir = path.join(__dirname, 'data', 'submissions');
 const SUPPORT_EMAIL = (process.env.SUPPORT_EMAIL || 'support@milanosecurity.co.tz').trim();
 
 const smtpHost = (process.env.SMTP_HOST || 'mail.milanosecurity.co.tz').trim();
@@ -35,7 +33,6 @@ const getLogoAttachment = () => {
   return [];
 };
 
-// Simple, mobile-friendly HTML email template generator
 const buildEmailTemplate = ({ title = 'Milano Security', preheader = '', bodyHtml = '', logoCid } = {}) => {
   const logoImg = logoCid ? `<img src="cid:${logoCid}" alt="Milano Security" style="height:40px;display:block;margin-bottom:8px;"/>` : '';
   return `<!doctype html>
@@ -57,13 +54,11 @@ const buildEmailTemplate = ({ title = 'Milano Security', preheader = '', bodyHtm
                   <p style="margin:6px 0 0;font-size:13px;opacity:0.95">${preheader}</p>
                 </td>
               </tr>
-
               <tr>
                 <td style="padding:22px 28px;color:#0A0B3D;font-size:14px;line-height:1.6;">
                   ${bodyHtml}
                 </td>
               </tr>
-
               <tr>
                 <td style="background:#f8fafc;padding:16px 24px;border-top:1px solid #eef2f6;color:#64748b;font-size:13px;">
                   <div>Contact: milanosec351@gmail.com • +255 685 302 141</div>
@@ -96,33 +91,21 @@ export function buildFallbackMailto(recipient, positionTitle, details) {
   return `mailto:${recipient}?subject=${subject}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
 }
 
+// NOTE: Avoid storing files locally on disk in serverless execution environments
 async function persistSubmission(details) {
-  await fs.mkdir(submissionsDir, { recursive: true });
-  const filePath = path.join(submissionsDir, 'applications.json');
-  let records = [];
-
-  try {
-    const existing = await fs.readFile(filePath, 'utf8');
-    records = JSON.parse(existing);
-  } catch {
-    records = [];
-  }
-
-  records.push({
-    ...details,
-    createdAt: new Date().toISOString()
-  });
-
-  await fs.writeFile(filePath, JSON.stringify(records, null, 2));
+  console.log('Submission recorded:', details.email || details.name);
 }
+
+const router = express.Router();
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Max upload payload limit set to 5MB for Netlify compatibility
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 10 * 1024 * 1024 },
+  limits: { fileSize: 5 * 1024 * 1024 },
 });
 
 const transporter = nodemailer.createTransport({
@@ -136,12 +119,13 @@ const transporter = nodemailer.createTransport({
   tls: {
     rejectUnauthorized: process.env.SMTP_REJECT_UNAUTHORIZED === 'true'
   },
-  connectionTimeout: 10000,
-  greetingTimeout: 10000,
-  socketTimeout: 10000
+  connectionTimeout: 8000,
+  greetingTimeout: 8000,
+  socketTimeout: 8000
 });
 
-app.get('/api/health', (req, res) => {
+// Defining routes
+router.get('/health', (req, res) => {
   res.json({
     status: 'ok',
     service: 'milano-careers',
@@ -151,7 +135,7 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-app.get('/api/admin/verify-smtp', async (req, res) => {
+router.get('/admin/verify-smtp', async (req, res) => {
   try {
     await transporter.verify();
     res.json({ success: true, message: 'SMTP connection verified successfully.' });
@@ -165,20 +149,11 @@ app.get('/api/admin/verify-smtp', async (req, res) => {
   }
 });
 
-app.post('/api/careers/submit', upload.single('cv'), async (req, res) => {
+router.post('/careers/submit', upload.single('cv'), async (req, res) => {
   try {
     const {
-      fullName,
-      phone,
-      email,
-      region,
-      education,
-      experience,
-      coverMessage,
-      privacyConsent,
-      positionTitle,
-      positionLocation,
-      companyName
+      fullName, phone, email, region, education, experience,
+      coverMessage, privacyConsent, positionTitle, positionLocation, companyName
     } = req.body;
 
     if (!fullName || !phone || !email || privacyConsent !== 'true') {
@@ -193,18 +168,8 @@ app.post('/api/careers/submit', upload.single('cv'), async (req, res) => {
     const attachmentsWithLogo = attachments.concat(getLogoAttachment());
 
     const submissionDetails = {
-      fullName,
-      phone,
-      email,
-      region,
-      education,
-      experience,
-      coverMessage,
-      privacyConsent,
-      positionTitle,
-      positionLocation,
-      companyName,
-      recipient
+      fullName, phone, email, region, education, experience,
+      coverMessage, privacyConsent, positionTitle, positionLocation, companyName, recipient
     };
 
     const applicantDetails = [
@@ -255,28 +220,26 @@ app.post('/api/careers/submit', upload.single('cv'), async (req, res) => {
         });
       }
 
-      res.json({ success: true, message: 'Your application has been delivered successfully to the Milano Security HR inbox.' });
-      return;
+      return res.json({ success: true, message: 'Your application has been delivered successfully to the Milano Security HR inbox.' });
     } catch (smtpError) {
       console.error('SMTP delivery failed, switching to fallback:', smtpError);
       const fallbackLink = buildFallbackMailto(recipient, positionTitle, submissionDetails);
       await persistSubmission({ ...submissionDetails, fallbackLink, deliveryStatus: 'saved-fallback' });
 
-      res.json({
+      return res.json({
         success: true,
         fallbackMode: true,
         mailtoLink: fallbackLink,
-        message: 'Your application was received and saved. Your email app will open with a draft for HR so you can send it directly if the mail server is unavailable.'
+        message: 'Your application was received. Your email app will open with a draft for HR so you can send it directly if the mail server is unavailable.'
       });
-      return;
     }
   } catch (error) {
     console.error('Career submission failed:', error);
-    res.status(500).json({ success: false, message: 'The application could not be submitted right now. Please contact HR directly.' });
+    return res.status(500).json({ success: false, message: 'The application could not be submitted right now. Please contact HR directly.' });
   }
 });
 
-app.post('/api/contact/submit', async (req, res) => {
+router.post('/contact/submit', async (req, res) => {
   try {
     const { name, phone, email, message, privacyConsent } = req.body;
     const trimmedName = String(name || '').trim();
@@ -300,10 +263,7 @@ app.post('/api/contact/submit', async (req, res) => {
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
-      return res.status(400).json({
-        success: false,
-        message: 'Please enter a valid email address.'
-      });
+      return res.status(400).json({ success: false, message: 'Please enter a valid email address.' });
     }
 
     const recipient = SUPPORT_EMAIL;
@@ -328,28 +288,26 @@ app.post('/api/contact/submit', async (req, res) => {
     try {
       await transporter.sendMail(mailOptions);
       await persistSubmission({ type: 'contact', name: trimmedName, phone: trimmedPhone, email: trimmedEmail, message: trimmedMessage, recipient });
-      res.json({ success: true, message: `Your message has been sent to ${recipient}.` });
-      return;
+      return res.json({ success: true, message: `Your message has been sent to ${recipient}.` });
     } catch (smtpError) {
       console.error('Contact SMTP delivery failed, switching to fallback:', smtpError);
       const fallbackLink = buildFallbackMailto(recipient, 'Contact Form Message', { fullName: trimmedName, phone: trimmedPhone, email: trimmedEmail, region: 'Not provided', coverMessage: trimmedMessage, companyName: 'Milano Security' });
       await persistSubmission({ type: 'contact', name: trimmedName, phone: trimmedPhone, email: trimmedEmail, message: trimmedMessage, recipient, fallbackLink, deliveryStatus: 'saved-fallback' });
 
-      res.json({
+      return res.json({
         success: true,
         fallbackMode: true,
         mailtoLink: fallbackLink,
         message: `Your message was received and a fallback draft has been prepared for ${recipient}.`
       });
-      return;
     }
   } catch (error) {
     console.error('Contact submission failed:', error);
-    res.status(500).json({ success: false, message: 'The contact message could not be submitted right now. Please try again later.' });
+    return res.status(500).json({ success: false, message: 'The contact message could not be submitted right now. Please try again later.' });
   }
 });
 
-app.post('/api/support/submit', async (req, res) => {
+router.post('/support/submit', async (req, res) => {
   try {
     const { name, phone, email, category, region, details, privacyConsent } = req.body;
     const trimmedName = String(name || '').trim();
@@ -368,17 +326,11 @@ app.post('/api/support/submit', async (req, res) => {
     if (!consentGiven) missing.push('privacy consent');
 
     if (missing.length > 0) {
-      return res.status(400).json({
-        success: false,
-        message: `Please complete: ${missing.join(', ')}.`
-      });
+      return res.status(400).json({ success: false, message: `Please complete: ${missing.join(', ')}.` });
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
-      return res.status(400).json({
-        success: false,
-        message: 'Please enter a valid email address.'
-      });
+      return res.status(400).json({ success: false, message: 'Please enter a valid email address.' });
     }
 
     const recipient = SUPPORT_EMAIL;
@@ -406,40 +358,30 @@ app.post('/api/support/submit', async (req, res) => {
 
     try {
       await transporter.sendMail(mailOptions);
-      res.json({ success: true, message: `Your message has been sent to ${recipient}.` });
-      return;
+      return res.json({ success: true, message: `Your message has been sent to ${recipient}.` });
     } catch (smtpError) {
       console.error('Support SMTP delivery failed, switching to fallback:', smtpError);
       const fallbackLink = buildFallbackMailto(recipient, 'Support Request', { fullName: name, phone, email, region, education: '', experience: '', coverMessage: details, positionTitle: category, positionLocation: region, companyName: 'Milano Security' });
       await persistSubmission({ name, phone, email: senderEmail, category, region, details, recipient, fallbackLink, deliveryStatus: 'saved-fallback' });
 
-      res.json({
+      return res.json({
         success: true,
         fallbackMode: true,
         mailtoLink: fallbackLink,
         message: `Your message was received and a fallback draft has been prepared for ${recipient}.`
       });
-      return;
     }
   } catch (error) {
     console.error('Support submission failed:', error);
-    res.status(500).json({ success: false, message: 'The support request could not be submitted right now. Please try again later.' });
+    return res.status(500).json({ success: false, message: 'The support request could not be submitted right now. Please try again later.' });
   }
 });
 
-app.post('/api/quote/submit', async (req, res) => {
+router.post('/quote/submit', async (req, res) => {
   try {
     const {
-      customerType,
-      region,
-      premisesType,
-      selectedServices,
-      urgency,
-      name,
-      phone,
-      email,
-      description,
-      privacyConsent
+      customerType, region, premisesType, selectedServices,
+      urgency, name, phone, email, description, privacyConsent
     } = req.body;
 
     const trimmedName = String(name || '').trim();
@@ -492,32 +434,22 @@ app.post('/api/quote/submit', async (req, res) => {
     try {
       await transporter.sendMail(mailOptions);
       await persistSubmission({ type: 'quotation', name: trimmedName, phone: trimmedPhone, email: trimmedEmail, region: trimmedRegion, customerType, premisesType, selectedServices, urgency, description: trimmedDescription, recipient: SALES_EMAIL });
-      res.json({ success: true, message: `Your quotation request has been sent to ${SALES_EMAIL}.` });
-      return;
+      return res.json({ success: true, message: `Your quotation request has been sent to ${SALES_EMAIL}.` });
     } catch (smtpError) {
       console.error('Quotation SMTP delivery failed, switching to fallback:', smtpError);
       const fallbackLink = buildFallbackMailto(SALES_EMAIL, 'Quotation Request', { fullName: trimmedName, phone: trimmedPhone, email: trimmedEmail, region: trimmedRegion, coverMessage: trimmedDescription });
       await persistSubmission({ type: 'quotation', name: trimmedName, phone: trimmedPhone, email: trimmedEmail, region: trimmedRegion, customerType, premisesType, selectedServices, urgency, description: trimmedDescription, recipient: SALES_EMAIL, fallbackLink, deliveryStatus: 'saved-fallback' });
 
-      res.json({ success: true, fallbackMode: true, mailtoLink: fallbackLink, message: `Your request was received; a fallback draft for ${SALES_EMAIL} has been prepared.` });
-      return;
+      return res.json({ success: true, fallbackMode: true, mailtoLink: fallbackLink, message: `Your request was received; a fallback draft for ${SALES_EMAIL} has been prepared.` });
     }
   } catch (error) {
     console.error('Quotation submission failed:', error);
-    res.status(500).json({ success: false, message: 'The quotation request could not be submitted right now. Please try again later.' });
+    return res.status(500).json({ success: false, message: 'The quotation request could not be submitted right now. Please try again later.' });
   }
 });
 
-app.use(express.static(path.join(__dirname, 'dist')));
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-});
+// Mount routes under standard Netlify function endpoint
+app.use('/.netlify/functions/server', router);
 
-const isMainModule = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
-if (isMainModule && process.env.NODE_ENV !== 'test') {
-  app.listen(port, () => {
-    console.log(`Careers mail server listening on port ${port}`);
-  });
-}
-
-export { app };
+// Export serverless handler for Netlify
+export const handler = serverless(app);
