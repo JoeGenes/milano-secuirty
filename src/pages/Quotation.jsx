@@ -97,15 +97,24 @@ export default function Quotation({ setCurrentPage, lang }) {
         })
       });
 
-      const data = await res.json();
+      let data = {};
+      try {
+        data = await res.json();
+      } catch {
+        data = {};
+      }
+
       if (!res.ok) {
         alert(data.message || 'Failed to submit quotation request.');
         return;
       }
 
       if (data.fallbackMode && data.mailtoLink) {
-        // open mailto fallback for user convenience
         window.location.href = data.mailtoLink;
+      }
+
+      if (data.message) {
+        console.info('Quotation submission response:', data.message);
       }
 
       setQuoteSubmitted(true);
