@@ -10,7 +10,7 @@ import serverless from 'serverless-http'; // 1. Added serverless-http
 
 dotenv.config();
 
-const app = express();
+export const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const SUPPORT_EMAIL = (process.env.SUPPORT_EMAIL || 'support@milanosecurity.co.tz').trim();
@@ -448,7 +448,9 @@ router.post('/quote/submit', async (req, res) => {
   }
 });
 
-// Mount routes under standard Netlify function endpoint
+// Mount routes under both standard API and Netlify function endpoints
+app.use(router);
+app.use('/api', router);
 app.use('/.netlify/functions/server', router);
 
 // Export serverless handler for Netlify
