@@ -59,6 +59,13 @@ export default function Contact({ setCurrentPage, lang }) {
         return;
       }
 
+      if (result.mailtoLink) {
+        const popUp = window.open(result.mailtoLink, '_blank', 'noopener,noreferrer');
+        if (!popUp) {
+          window.location.href = result.mailtoLink;
+        }
+      }
+
       setSubmitMessage(result.message || 'Your message has been sent successfully.');
       setFormData({ name: '', phone: '', email: '', message: '', privacyConsent: false });
     } catch (error) {

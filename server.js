@@ -5,6 +5,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import fs from 'fs/promises';
+import fsSync from 'fs';
 import { fileURLToPath } from 'url';
 
 dotenv.config();
@@ -14,8 +15,25 @@ const port = Number(process.env.PORT || 3001);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const submissionsDir = path.join(__dirname, 'data', 'submissions');
-const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL || 'support@milanosecurity.co.tz';
-const DEFAULT_FROM_EMAIL = process.env.SMTP_USER || 'careers@milanosecurity.co.tz';
+const SUPPORT_EMAIL = (process.env.SUPPORT_EMAIL || 'support@milanosecurity.co.tz').trim();
+
+const smtpHost = (process.env.SMTP_HOST || 'mail.milanosecurity.co.tz').trim();
+const smtpPort = Number(process.env.SMTP_PORT || 465);
+const isSecure = process.env.SMTP_SECURE !== undefined
+  ? process.env.SMTP_SECURE === 'true'
+  : smtpPort === 465;
+
+const DEFAULT_FROM_EMAIL = process.env.SMTP_FROM ? process.env.SMTP_FROM.trim() : (
+  process.env.SMTP_USER ? `Milano Security <${process.env.SMTP_USER.trim()}>` : 'Milano Security <careers@milanosecurity.co.tz>'
+);
+
+const getLogoAttachment = () => {
+  const logoPath = path.join(__dirname, 'public', 'favicon.svg');
+  if (fsSync.existsSync(logoPath)) {
+    return [{ filename: 'logo.svg', path: logoPath, cid: 'logo@milano', contentType: 'image/svg+xml' }];
+  }
+  return [];
+};
 
 // Simple, mobile-friendly HTML email template generator
 const buildEmailTemplate = ({ title = 'Milano Security', preheader = '', bodyHtml = '', logoCid } = {}) => {
@@ -108,17 +126,43 @@ const upload = multer({
 });
 
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'mail.milanosecurity.co.tz',
-  port: Number(process.env.SMTP_PORT || 465),
-  secure: true,
+  host: smtpHost,
+  port: smtpPort,
+  secure: isSecure,
   auth: {
-    user: process.env.SMTP_USER || 'careers@milanosecurity.co.tz',
-    pass: process.env.SMTP_PASS || 'Mocu@2026'
-  }
+    user: (process.env.SMTP_USER || 'careers@milanosecurity.co.tz').trim(),
+    pass: (process.env.SMTP_PASS || 'Mocu@2026').trim()
+  },
+  tls: {
+    rejectUnauthorized: process.env.SMTP_REJECT_UNAUTHORIZED === 'true'
+  },
+  connectionTimeout: 10000,
+  greetingTimeout: 10000,
+  socketTimeout: 10000
 });
 
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', service: 'milano-careers' });
+  res.json({
+    status: 'ok',
+    service: 'milano-careers',
+    smtpHost: process.env.SMTP_HOST || 'mail.milanosecurity.co.tz',
+    smtpPort,
+    smtpSecure: isSecure
+  });
+});
+
+app.get('/api/admin/verify-smtp', async (req, res) => {
+  try {
+    await transporter.verify();
+    res.json({ success: true, message: 'SMTP connection verified successfully.' });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'SMTP connection failed.',
+      code: error.code,
+      details: error.message
+    });
+  }
 });
 
 app.post('/api/careers/submit', upload.single('cv'), async (req, res) => {
@@ -146,8 +190,7 @@ app.post('/api/careers/submit', upload.single('cv'), async (req, res) => {
     const attachments = req.file
       ? [{ filename: req.file.originalname, content: req.file.buffer, contentType: req.file.mimetype }]
       : [];
-    const logoPath = path.join(__dirname, 'public', 'favicon.svg');
-    const attachmentsWithLogo = attachments.concat([{ filename: 'logo.svg', path: logoPath, cid: 'logo@milano', contentType: 'image/svg+xml' }]);
+    const attachmentsWithLogo = attachments.concat(getLogoAttachment());
 
     const submissionDetails = {
       fullName,
@@ -184,7 +227,7 @@ app.post('/api/careers/submit', upload.single('cv'), async (req, res) => {
     `;
 
     const mailOptions = {
-      from: `${companyName || 'Milano Security'} <${process.env.SMTP_USER || 'careers@milanosecurity.co.tz'}>`,
+      from: DEFAULT_FROM_EMAIL,
       to: recipient,
       replyTo: applicantEmail,
       subject: `New Career Application – ${positionTitle || 'General Enquiry'}`,
@@ -204,11 +247,11 @@ app.post('/api/careers/submit', upload.single('cv'), async (req, res) => {
         `;
 
         await transporter.sendMail({
-          from: `${companyName || 'Milano Security'} <${process.env.SMTP_USER || 'careers@milanosecurity.co.tz'}>`,
+          from: DEFAULT_FROM_EMAIL,
           to: applicantEmail,
           subject: 'Your career application has been received',
           html: buildEmailTemplate({ title: 'Application Received', preheader: 'We received your application', bodyHtml: ackBody, logoCid: 'logo@milano' }),
-          attachments: [{ filename: 'logo.svg', path: path.join(__dirname, 'public', 'favicon.svg'), cid: 'logo@milano', contentType: 'image/svg+xml' }]
+          attachments: getLogoAttachment()
         });
       }
 
@@ -273,14 +316,13 @@ app.post('/api/contact/submit', async (req, res) => {
       <p><strong>Message:</strong><br/>${trimmedMessage.replace(/\n/g, '<br/>')}</p>
     `;
 
-    const logoPath = path.join(__dirname, 'public', 'favicon.svg');
     const mailOptions = {
-      from: `Milano Security <${DEFAULT_FROM_EMAIL}>`,
+      from: DEFAULT_FROM_EMAIL,
       to: recipient,
       replyTo: trimmedEmail,
       subject: `New Contact Form Message from ${trimmedName}`,
       html: buildEmailTemplate({ title: `Contact Form – ${trimmedName}`, preheader: 'New contact form message received', bodyHtml: contactBody, logoCid: 'logo@milano' }),
-      attachments: [{ filename: 'logo.svg', path: logoPath, cid: 'logo@milano', contentType: 'image/svg+xml' }]
+      attachments: getLogoAttachment()
     };
 
     try {
@@ -353,14 +395,13 @@ app.post('/api/support/submit', async (req, res) => {
       <p><strong>Details:</strong><br/>${trimmedDetails.replace(/\n/g, '<br/>')}</p>
     `;
 
-    const logoPath = path.join(__dirname, 'public', 'favicon.svg');
     const mailOptions = {
-      from: `Milano Security <${DEFAULT_FROM_EMAIL}>`,
+      from: DEFAULT_FROM_EMAIL,
       to: recipient,
       replyTo: senderEmail,
       subject: `New Support / Complaint Request from ${name}`,
       html: buildEmailTemplate({ title: `Support Request – ${name}`, preheader: 'New support request received', bodyHtml: supportBody, logoCid: 'logo@milano' }),
-      attachments: [{ filename: 'logo.svg', path: logoPath, cid: 'logo@milano', contentType: 'image/svg+xml' }]
+      attachments: getLogoAttachment()
     };
 
     try {
@@ -439,14 +480,13 @@ app.post('/api/quote/submit', async (req, res) => {
       <p><strong>Description / Instructions:</strong><br/>${trimmedDescription.replace(/\n/g, '<br/>')}</p>
     `;
 
-    const logoPath = path.join(__dirname, 'public', 'favicon.svg');
     const mailOptions = {
-      from: `Milano Security <${DEFAULT_FROM_EMAIL}>`,
+      from: DEFAULT_FROM_EMAIL,
       to: SALES_EMAIL,
       replyTo: trimmedEmail,
       subject: `New Quotation Request from ${trimmedName}`,
       html: buildEmailTemplate({ title: `Quotation Request – ${trimmedName}`, preheader: 'New quotation request received', bodyHtml: quoteBody, logoCid: 'logo@milano' }),
-      attachments: [{ filename: 'logo.svg', path: logoPath, cid: 'logo@milano', contentType: 'image/svg+xml' }]
+      attachments: getLogoAttachment()
     };
 
     try {
@@ -473,7 +513,8 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
-if (process.env.NODE_ENV !== 'test') {
+const isMainModule = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
+if (isMainModule && process.env.NODE_ENV !== 'test') {
   app.listen(port, () => {
     console.log(`Careers mail server listening on port ${port}`);
   });

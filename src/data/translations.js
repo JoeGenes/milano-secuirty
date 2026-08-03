@@ -16,7 +16,8 @@ export const TRANSLATIONS = {
       privacy: "Privacy Notice",
       cookie: "Cookie Notice",
       terms: "Terms & Conditions",
-      applicantPrivacy: "Applicant Privacy"
+      applicantPrivacy: "Applicant Privacy Notice",
+      hrLogin: "HR Login Portal"
     },
     topBar: {
       tagline: "BRELA Reg. No. 154815619 | Dodoma HQ & Operational Across 12 Regions",
@@ -78,7 +79,8 @@ export const TRANSLATIONS = {
       privacy: "Sera ya Faragha",
       cookie: "Sera ya Vidakuzi (Cookies)",
       terms: "Vigezo na Masharti",
-      applicantPrivacy: "Faragha ya Waombaji"
+      applicantPrivacy: "Faragha ya Waombaji",
+      hrLogin: "Ingia Portal ya HR"
     },
     topBar: {
       tagline: "Usajili wa BRELA Na. 154815619 | Makao Makuu Dodoma na Huduma Katika Mikoa 12",

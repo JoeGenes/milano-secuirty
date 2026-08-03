@@ -68,6 +68,13 @@ export default function Support() {
         return;
       }
 
+      if (result.mailtoLink) {
+        const popUp = window.open(result.mailtoLink, '_blank', 'noopener,noreferrer');
+        if (!popUp) {
+          window.location.href = result.mailtoLink;
+        }
+      }
+
       const newTicketId = `TKT-2026-${Math.floor(100000 + Math.random() * 900000)}`;
       setTicketId(newTicketId);
       setSubmitted(true);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Phone, Mail, MapPin, CheckCircle2 } from 'lucide-react';
+import { Phone, Mail, MapPin, CheckCircle2, Lock } from 'lucide-react';
 import Logo from './Logo';
 import { COMPANY_INFO } from '../data/content';
 import { TRANSLATIONS } from '../data/translations';
@@ -81,16 +81,30 @@ export default function Footer({ setCurrentPage, lang }) {
                 { id: 'licences', label: t.nav.licences },
                 { id: 'careers', label: t.nav.careers },
                 { id: 'privacy', label: t.nav.privacy },
-                { id: 'applicant-privacy', label: t.nav.applicantPrivacy }
+                { id: 'applicant-privacy', label: t.nav.applicantPrivacy },
+                { id: 'hr-portal', label: t.nav.hrLogin || 'HR Login Portal', isHr: true }
               ].map(item => (
                 <li key={item.id}>
                   <button 
                     onClick={() => handleNavigate(item.id)}
-                    style={{ background: 'none', border: 'none', color: '#475569', cursor: 'pointer', textAlign: 'left', padding: 0, fontSize: 'inherit', transition: '0.2s' }}
-                    onMouseOver={(e) => e.target.style.color = '#0A0B3D'}
-                    onMouseOut={(e) => e.target.style.color = '#475569'}
+                    style={{ 
+                      background: 'none', 
+                      border: 'none', 
+                      color: item.isHr ? '#0A0B3D' : '#475569', 
+                      fontWeight: item.isHr ? '600' : 'normal',
+                      cursor: 'pointer', 
+                      textAlign: 'left', 
+                      padding: 0, 
+                      fontSize: 'inherit', 
+                      transition: '0.2s',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.3rem'
+                    }}
+                    onMouseOver={(e) => e.target.style.color = '#E7AD18'}
+                    onMouseOut={(e) => e.target.style.color = item.isHr ? '#0A0B3D' : '#475569'}
                   >
-                    › {item.label}
+                    › {item.isHr && <Lock size={12} style={{ color: '#E7AD18' }} />} {item.label}
                   </button>
                 </li>
               ))}
@@ -125,8 +139,29 @@ export default function Footer({ setCurrentPage, lang }) {
 
       {/* Bottom Copyright Strip */}
       <div style={{ backgroundColor: '#F8FAFC', borderTop: '1px solid #E2E8F0', padding: 'clamp(0.75rem, 2vw, 1.2rem) 0', textAlign: 'center', fontSize: 'clamp(0.65rem, 1.5vw, 0.78rem)', color: '#64748B' }}>
-        <div className="container">
-          <p>{COMPANY_INFO.brelaName} &bull; BRELA Reg No. 154815619 &bull; {t.footer.copyright}</p>
+        <div className="container" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem' }}>
+          <p style={{ margin: 0 }}>{COMPANY_INFO.brelaName} &bull; BRELA Reg No. 154815619 &bull; {t.footer.copyright}</p>
+          <button 
+            onClick={() => handleNavigate('hr-portal')}
+            style={{ 
+              background: '#0A0B3D', 
+              color: '#FFFFFF', 
+              border: 'none', 
+              borderRadius: '4px', 
+              padding: '0.3rem 0.75rem', 
+              fontSize: '0.75rem', 
+              fontWeight: '500',
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              transition: 'background 0.2s'
+            }}
+            onMouseOver={(e) => e.currentTarget.style.background = '#16185E'}
+            onMouseOut={(e) => e.currentTarget.style.background = '#0A0B3D'}
+          >
+            <Lock size={12} style={{ color: '#E7AD18' }} /> {t.nav.hrLogin || 'HR Portal Login'}
+          </button>
         </div>
       </div>
     </footer>
