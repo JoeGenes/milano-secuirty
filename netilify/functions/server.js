@@ -21,6 +21,8 @@ const isSecure = process.env.SMTP_SECURE !== undefined
   ? process.env.SMTP_SECURE === 'true'
   : smtpPort === 465;
 
+const mailTimeoutMs = Number(process.env.SMTP_TIMEOUT_MS || 4000);
+
 const DEFAULT_FROM_EMAIL = process.env.SMTP_FROM ? process.env.SMTP_FROM.trim() : (
   process.env.SMTP_USER ? `Milano Security <${process.env.SMTP_USER.trim()}>` : 'Milano Security <careers@milanosecurity.co.tz>'
 );
@@ -119,10 +121,18 @@ const transporter = nodemailer.createTransport({
   tls: {
     rejectUnauthorized: process.env.SMTP_REJECT_UNAUTHORIZED === 'true'
   },
-  connectionTimeout: 8000,
-  greetingTimeout: 8000,
-  socketTimeout: 8000
+  connectionTimeout: mailTimeoutMs,
+  greetingTimeout: mailTimeoutMs,
+  socketTimeout: mailTimeoutMs
 });
+
+const sendMailWithTimeout = async (mailOptions) => {
+  const timeoutPromise = new Promise((_, reject) => {
+    setTimeout(() => reject(new Error(`SMTP timeout after ${mailTimeoutMs}ms`)), mailTimeoutMs);
+  });
+
+  return Promise.race([transporter.sendMail(mailOptions), timeoutPromise]);
+};
 
 // Defining routes
 router.get('/health', (req, res) => {
@@ -201,7 +211,7 @@ router.post('/careers/submit', upload.single('cv'), async (req, res) => {
     };
 
     try {
-      await transporter.sendMail(mailOptions);
+      await sendMailWithTimeout(mailOptions);
 
       if (applicantEmail) {
         const ackBody = `
@@ -211,7 +221,7 @@ router.post('/careers/submit', upload.single('cv'), async (req, res) => {
           <p>Best regards,<br/>Milano Security HR</p>
         `;
 
-        await transporter.sendMail({
+        await sendMailWithTimeout({
           from: DEFAULT_FROM_EMAIL,
           to: applicantEmail,
           subject: 'Your career application has been received',
@@ -286,7 +296,7 @@ router.post('/contact/submit', async (req, res) => {
     };
 
     try {
-      await transporter.sendMail(mailOptions);
+      await sendMailWithTimeout(mailOptions);
       await persistSubmission({ type: 'contact', name: trimmedName, phone: trimmedPhone, email: trimmedEmail, message: trimmedMessage, recipient });
       return res.json({ success: true, message: `Your message has been sent to ${recipient}.` });
     } catch (smtpError) {
@@ -357,7 +367,7 @@ router.post('/support/submit', async (req, res) => {
     };
 
     try {
-      await transporter.sendMail(mailOptions);
+      await sendMailWithTimeout(mailOptions);
       return res.json({ success: true, message: `Your message has been sent to ${recipient}.` });
     } catch (smtpError) {
       console.error('Support SMTP delivery failed, switching to fallback:', smtpError);
@@ -432,7 +442,7 @@ router.post('/quote/submit', async (req, res) => {
     };
 
     try {
-      await transporter.sendMail(mailOptions);
+      await sendMailWithTimeout(mailOptions);
       await persistSubmission({ type: 'quotation', name: trimmedName, phone: trimmedPhone, email: trimmedEmail, region: trimmedRegion, customerType, premisesType, selectedServices, urgency, description: trimmedDescription, recipient: SALES_EMAIL });
       return res.json({ success: true, message: `Your quotation request has been sent to ${SALES_EMAIL}.` });
     } catch (smtpError) {
