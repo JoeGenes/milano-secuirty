@@ -6,7 +6,6 @@ import dotenv from 'dotenv';
 import path from 'path';
 import fsSync from 'fs';
 import { fileURLToPath } from 'url';
-import serverless from 'serverless-http';
 
 dotenv.config();
 
@@ -413,4 +412,64 @@ app.use(router);
 app.use('/api', router);
 app.use('/.netlify/functions/server', router);
 
-export const handler = serverless(app);
+export const handler = async (event, context) => {
+  const method = event?.httpMethod || 'GET';
+  const path = event?.path || '/';
+  const headers = event?.headers || {};
+  const body = event?.body ? event.body : undefined;
+
+  const req = {
+    method,
+    url: path,
+    headers,
+    body,
+    query: {},
+    params: {},
+    connection: {}
+  };
+
+  const res = {
+    statusCode: 200,
+    headers: {},
+    body: '',
+    setHeader(name, value) { this.headers[name] = value; },
+    status(code) { this.statusCode = code; return this; },
+    json(payload) { this.headers['content-type'] = 'application/json'; this.body = JSON.stringify(payload); return this; },
+    send(payload) { this.headers['content-type'] = 'text/plain'; this.body = payload; return this; }
+  };
+
+  const expressRes = {
+    status(code) { res.status(code); return expressRes; },
+    setHeader(name, value) { res.setHeader(name, value); return expressRes; },
+    end(payload) { res.body = payload; return expressRes; },
+    json(payload) { res.json(payload); return expressRes; },
+    send(payload) { res.send(payload); return expressRes; }
+  };
+
+  const match = path.match(/^(.+?)(\?.*)?$/);
+  const normalizedPath = match ? match[1] : path;
+
+  const expressReq = {
+    method,
+    url: path,
+    originalUrl: path,
+    path: normalizedPath,
+    headers,
+    body: body ? JSON.parse(body) : {},
+    query: {},
+    params: {},
+    connection: {},
+    on() {},
+    socket: {}
+  };
+
+  return new Promise((resolve) => {
+    const callback = () => resolve({
+      statusCode: res.statusCode,
+      headers: res.headers,
+      body: res.body
+    });
+
+    app.handle(expressReq, expressRes, callback);
+  });
+};
