@@ -21,6 +21,7 @@ export default function Quotation({ setCurrentPage, lang }) {
 
   const t = TRANSLATIONS[lang];
   const [errors, setErrors] = useState({});
+  const [submitMessage, setSubmitMessage] = useState('');
 
   const renderError = (fieldName) => errors[fieldName] ? (
     <div style={{ color: '#B91C1C', fontSize: '0.8rem', marginTop: '0.4rem' }}>{errors[fieldName]}</div>
@@ -80,6 +81,8 @@ export default function Quotation({ setCurrentPage, lang }) {
     if (!validateStep(3)) return;
 
     try {
+      setSubmitMessage('Submitting your quotation request...');
+
       const res = await fetch('/api/quote/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -105,22 +108,21 @@ export default function Quotation({ setCurrentPage, lang }) {
       }
 
       if (!res.ok) {
-        alert(data.message || 'Failed to submit quotation request.');
+        setSubmitMessage(data.message || 'Failed to submit quotation request.');
         return;
       }
 
       if (data.fallbackMode && data.mailtoLink) {
+        setSubmitMessage(data.message || 'Your email app should open with a draft.');
         window.location.href = data.mailtoLink;
-      }
-
-      if (data.message) {
-        console.info('Quotation submission response:', data.message);
+      } else {
+        setSubmitMessage(data.message || 'Your quotation request was received.');
       }
 
       setQuoteSubmitted(true);
     } catch (err) {
       console.error('Quote submit failed:', err);
-      alert('Could not submit request. Please try again later.');
+      setSubmitMessage('Could not submit request. Please try again later.');
     }
   };
 
@@ -164,6 +166,11 @@ export default function Quotation({ setCurrentPage, lang }) {
                 </div>
 
                 <form onSubmit={handleSubmitQuote}>
+                  {submitMessage && (
+                    <div style={{ marginBottom: '1rem', padding: '0.8rem 1rem', borderRadius: '0.5rem', background: '#FEF3C7', color: '#92400E', border: '1px solid #FCD34D' }}>
+                      {submitMessage}
+                    </div>
+                  )}
                   
                   {/* Step 1: Customer Type & Site Details */}
                   {step === 1 && (
