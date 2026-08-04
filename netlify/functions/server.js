@@ -11,8 +11,9 @@ import serverless from 'serverless-http';
 dotenv.config();
 
 export const app = express();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const currentDir = typeof __dirname !== 'undefined'
+  ? __dirname
+  : (typeof import.meta !== 'undefined' && import.meta.url ? path.dirname(fileURLToPath(import.meta.url)) : process.cwd());
 const SUPPORT_EMAIL = (process.env.SUPPORT_EMAIL || 'support@milanosecurity.co.tz').trim();
 
 const smtpHost = (process.env.SMTP_HOST || 'mail.milanosecurity.co.tz').trim();
@@ -29,7 +30,7 @@ const DEFAULT_FROM_EMAIL = process.env.SMTP_FROM ? process.env.SMTP_FROM.trim() 
 
 const getLogoAttachment = () => {
   try {
-    const logoPath = path.join(__dirname, '..', '..', 'public', 'favicon.svg');
+    const logoPath = path.join(currentDir, '..', '..', 'public', 'favicon.svg');
     if (fsSync.existsSync(logoPath)) {
       return [{ filename: 'logo.svg', path: logoPath, cid: 'logo@milano', contentType: 'image/svg+xml' }];
     }
