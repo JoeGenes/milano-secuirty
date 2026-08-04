@@ -24,7 +24,7 @@ export const COMPANY_INFO = {
   ],
   telephones: ["+255 685 302 141", "+255 758 556 355", "+255 713 963 520"],
   whatsApp: "+255 758 556 355",
-  emails: ["milanosec351@gmail.com", "milanossltd561@gmail.com"],
+  emails: ["info@milanosecurity.co.tz", "sales@milanosecurity.co.tz"],
   dpoEmail: "dpo@milanosecurity.co.tz",
   emergencyHotline: "+255 758 556 355",
   

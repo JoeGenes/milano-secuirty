@@ -7,7 +7,7 @@ const port = Number(process.env.SMTP_PORT || 465);
 const secure = process.env.SMTP_SECURE !== undefined 
   ? process.env.SMTP_SECURE === 'true' 
   : port === 465;
-const user = process.env.SMTP_USER || 'milanosec351@gmail.com';
+const user = process.env.SMTP_USER || 'info@milanosecurity.co.tz';
 const pass = process.env.SMTP_PASS || '';
 
 console.log('Testing SMTP configuration:');
