@@ -82,7 +82,7 @@ export default function Footer({ setCurrentPage, lang }) {
                 { id: 'careers', label: t.nav.careers },
                 { id: 'privacy', label: t.nav.privacy },
                 { id: 'applicant-privacy', label: t.nav.applicantPrivacy },
-                { id: 'hr-portal', label: t.nav.hrLogin || 'HR Login Portal', isHr: true }
+                // { id: 'hr-portal', label: t.nav.hrLogin || 'HR Login Portal', isHr: true }
               ].map(item => (
                 <li key={item.id}>
                   <button 
