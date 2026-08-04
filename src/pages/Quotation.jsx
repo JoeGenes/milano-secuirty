@@ -22,6 +22,7 @@ export default function Quotation({ setCurrentPage, lang }) {
   const t = TRANSLATIONS[lang];
   const [errors, setErrors] = useState({});
   const [submitMessage, setSubmitMessage] = useState('');
+  const [mailtoUrl, setMailtoUrl] = useState('');
 
   const renderError = (fieldName) => errors[fieldName] ? (
     <div style={{ color: '#B91C1C', fontSize: '0.8rem', marginTop: '0.4rem' }}>{errors[fieldName]}</div>
@@ -126,16 +127,17 @@ export default function Quotation({ setCurrentPage, lang }) {
 
       if (!res.ok) {
         const fallbackLink = data.mailtoLink || buildClientMailto();
-        setSubmitMessage(data.message || 'Opening your email client to submit your quotation request...');
+        setMailtoUrl(fallbackLink);
+        setSubmitMessage(data.message || 'Quotation summary prepared. Click below to send via your email app.');
         setQuoteSubmitted(true);
-        setTimeout(() => { window.location.href = fallbackLink; }, 600);
         return;
       }
 
       if (data.fallbackMode && data.mailtoLink) {
-        setSubmitMessage(data.message || 'Your email app should open with a draft.');
-        window.location.href = data.mailtoLink;
+        setMailtoUrl(data.mailtoLink);
+        setSubmitMessage(data.message || 'Your quotation draft is ready to send via your email client.');
       } else {
+        setMailtoUrl('');
         setSubmitMessage(data.message || 'Your quotation request was received.');
       }
 
@@ -143,9 +145,9 @@ export default function Quotation({ setCurrentPage, lang }) {
     } catch (err) {
       console.error('Quote submit failed:', err);
       const fallbackLink = buildClientMailto();
-      setSubmitMessage('Opening your email app to submit your quotation request...');
+      setMailtoUrl(fallbackLink);
+      setSubmitMessage('Quotation summary prepared. Click below to send via your email app.');
       setQuoteSubmitted(true);
-      setTimeout(() => { window.location.href = fallbackLink; }, 600);
     }
   };
 
@@ -467,7 +469,19 @@ export default function Quotation({ setCurrentPage, lang }) {
                   </div>
                 </div>
 
-                <button onClick={() => { setQuoteSubmitted(false); setStep(1); }} className="btn btn-navy">
+                {mailtoUrl && (
+                  <div style={{ margin: '1.5rem 0' }}>
+                    <a
+                      href={mailtoUrl}
+                      className="btn btn-gold"
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none', padding: '0.8rem 1.5rem', borderRadius: '6px', fontWeight: 'bold' }}
+                    >
+                      <Mail size={18} /> Open Email App to Send Proposal
+                    </a>
+                  </div>
+                )}
+
+                <button onClick={() => { setQuoteSubmitted(false); setStep(1); setMailtoUrl(''); }} className="btn btn-navy">
                   Submit Another Request
                 </button>
               </div>
