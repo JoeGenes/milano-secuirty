@@ -160,7 +160,7 @@ export default function Footer({ setCurrentPage, lang }) {
             onMouseOver={(e) => e.currentTarget.style.background = '#16185E'}
             onMouseOut={(e) => e.currentTarget.style.background = '#0A0B3D'}
           >
-            <Lock size={12} style={{ color: '#E7AD18' }} /> {t.nav.hrLogin || 'HR Portal Login'}
+            {/* <Lock size={12} style={{ color: '#E7AD18' }} /> {t.nav.hrLogin || 'HR Portal Login'} */}
           </button>
         </div>
       </div>

@@ -141,6 +141,11 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const distPath = path.join(currentDir, '..', '..', 'dist');
+if (fsSync.existsSync(distPath)) {
+  app.use(express.static(distPath));
+}
+
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 5 * 1024 * 1024 },
@@ -594,6 +599,125 @@ router.post('/quote/submit', async (req, res) => {
   }
 });
 
+// ==================== VACANCIES ENDPOINTS ====================
+const VACANCIES_FILE = path.join(currentDir, '..', '..', 'data', 'vacancies.json');
+
+function readVacanciesFromFile() {
+  try {
+    if (fsSync.existsSync(VACANCIES_FILE)) {
+      const data = fsSync.readFileSync(VACANCIES_FILE, 'utf8');
+      return JSON.parse(data);
+    }
+  } catch (err) {
+    console.warn('Error reading vacancies file:', err.message);
+  }
+  return [];
+}
+
+function writeVacanciesToFile(vacancies) {
+  try {
+    const dir = path.dirname(VACANCIES_FILE);
+    if (!fsSync.existsSync(dir)) {
+      fsSync.mkdirSync(dir, { recursive: true });
+    }
+    fsSync.writeFileSync(VACANCIES_FILE, JSON.stringify(vacancies, null, 2), 'utf8');
+  } catch (err) {
+    console.warn('Error writing vacancies file:', err.message);
+  }
+}
+
+router.get(['/vacancies', '/api/vacancies'], async (req, res) => {
+  try {
+    let vacancies = [];
+    if (mongoose.connection.readyState === 1) {
+      const { Vacancy } = await import('../../models/Vacancy.js').catch(() => ({}));
+      if (Vacancy) {
+        vacancies = await Vacancy.find().sort({ createdAt: -1 });
+      }
+    }
+    if (!vacancies || vacancies.length === 0) {
+      vacancies = readVacanciesFromFile();
+    }
+    return res.json({ success: true, vacancies });
+  } catch (error) {
+    console.error('Error fetching vacancies:', error);
+    const vacancies = readVacanciesFromFile();
+    return res.json({ success: true, vacancies });
+  }
+});
+
+router.post(['/vacancies', '/api/vacancies'], async (req, res) => {
+  try {
+    const { title, location, type, desc, requirements, deadline, pdfFileName, pdfDataUrl } = req.body;
+    if (!title || !location || !desc || !deadline) {
+      return res.status(400).json({ success: false, message: 'Title, location, description, and deadline are required.' });
+    }
+
+    const newVacancyData = {
+      id: `job-${Date.now()}`,
+      title: title.trim(),
+      location: location.trim(),
+      type: type || 'Full-Time',
+      desc: desc.trim(),
+      requirements: Array.isArray(requirements) ? requirements : (requirements || '').split('\n').map(r => r.trim()).filter(Boolean),
+      deadline,
+      publishedOn: new Date().toISOString(),
+      pdfFileName: pdfFileName || '',
+      pdfDataUrl: pdfDataUrl || ''
+    };
+
+    let createdVacancy = newVacancyData;
+
+    if (mongoose.connection.readyState === 1) {
+      try {
+        const { Vacancy } = await import('../../models/Vacancy.js').catch(() => ({}));
+        if (Vacancy) {
+          const doc = new Vacancy(newVacancyData);
+          await doc.save();
+          createdVacancy = doc.toObject();
+          createdVacancy.id = String(doc._id);
+        }
+      } catch (dbErr) {
+        console.warn('MongoDB save failed, storing in JSON file:', dbErr.message);
+      }
+    }
+
+    const current = readVacanciesFromFile();
+    const updated = [newVacancyData, ...current.filter(v => String(v.id) !== String(newVacancyData.id))];
+    writeVacanciesToFile(updated);
+
+    return res.json({ success: true, vacancy: createdVacancy, message: 'Vacancy published successfully.' });
+  } catch (error) {
+    console.error('Error creating vacancy:', error);
+    return res.status(500).json({ success: false, message: 'Could not create vacancy.' });
+  }
+});
+
+router.delete(['/vacancies/:id', '/api/vacancies/:id'], async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (mongoose.connection.readyState === 1) {
+      try {
+        const { Vacancy } = await import('../../models/Vacancy.js').catch(() => ({}));
+        if (Vacancy) {
+          await Vacancy.deleteMany({ $or: [{ _id: id }, { id: id }] });
+        }
+      } catch (dbErr) {
+        console.warn('MongoDB delete failed:', dbErr.message);
+      }
+    }
+
+    const current = readVacanciesFromFile();
+    const updated = current.filter(v => String(v.id) !== String(id) && String(v._id) !== String(id));
+    writeVacanciesToFile(updated);
+
+    return res.json({ success: true, message: 'Vacancy deleted successfully.' });
+  } catch (error) {
+    console.error('Error deleting vacancy:', error);
+    return res.status(500).json({ success: false, message: 'Could not delete vacancy.' });
+  }
+});
+
 app.use((req, res, next) => {
   if (req.url.startsWith('/.netlify/functions/server')) {
     req.url = req.url.replace('/.netlify/functions/server', '') || '/';
@@ -604,6 +728,12 @@ app.use((req, res, next) => {
 });
 
 app.use('/', router);
+
+if (fsSync.existsSync(distPath)) {
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(distPath, 'index.html'));
+  });
+}
 
 export const handler = serverless(app);
 

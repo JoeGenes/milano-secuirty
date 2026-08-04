@@ -1,0 +1,47 @@
+[
+  {
+    "id": "job-1",
+    "title": "Security Guard / Officer",
+    "location": "Dodoma / Dar es Salaam / Mwanza",
+    "type": "Full-Time",
+    "desc": "Responsible for access control, property guarding, perimeter surveillance, and incident reporting.",
+    "requirements": [
+      "Form IV / Form VI Certificate of Education",
+      "Clean criminal record background check",
+      "Good physical fitness & discipline",
+      "Fluency in Kiswahili and basic English",
+      "Prior security or National Service (JKT) experience is an added advantage"
+    ],
+    "deadline": "2026-12-31",
+    "publishedOn": "2026-08-01T00:00:00.000Z"
+  },
+  {
+    "id": "job-2",
+    "title": "Electronic Security Technician (CCTV & Alarms)",
+    "location": "Dodoma HQ",
+    "type": "Full-Time",
+    "desc": "Installation, configuration, and troubleshooting of CCTV cameras, access control, intruder alarms, and electric fences.",
+    "requirements": [
+      "Diploma or VETA Certificate in Electronics / Electrical Engineering / IT",
+      "At least 2 years hands-on experience in CCTV & alarm system installation",
+      "Knowledge of IP networks & remote surveillance setup",
+      "Valid driver's licence"
+    ],
+    "deadline": "2026-12-31",
+    "publishedOn": "2026-08-01T00:00:00.000Z"
+  },
+  {
+    "id": "job-3",
+    "title": "K9 Handler & Security Dog Supervisor",
+    "location": "Simiyu / Dodoma",
+    "type": "Full-Time",
+    "desc": "Care, routine training, and deployment of security dogs for perimeter patrols and facility protection.",
+    "requirements": [
+      "Proven experience in handling and training working dogs (German Shepherd/Malinois)",
+      "Knowledge of canine health, feeding, and obedience",
+      "Disciplined, patient, and vigilant attitude"
+    ],
+    "deadline": "2026-12-31",
+    "publishedOn": "2026-08-01T00:00:00.000Z"
+  }
+]
