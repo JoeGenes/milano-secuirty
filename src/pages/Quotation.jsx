@@ -80,6 +80,23 @@ export default function Quotation({ setCurrentPage, lang }) {
     e.preventDefault();
     if (!validateStep(3)) return;
 
+    const buildClientMailto = () => {
+      const recipient = 'sales@milanosecurity.co.tz';
+      const subject = encodeURIComponent(`New Quotation Request – ${formData.name}`);
+      const bodyLines = [
+        `Name / Organisation: ${formData.name}`,
+        `Phone: ${formData.phone}`,
+        `Email: ${formData.email}`,
+        `Region: ${formData.region}`,
+        `Customer Category: ${formData.customerType} (${formData.premisesType})`,
+        `Urgency: ${formData.urgency}`,
+        `Requested Services: ${(formData.selectedServices || []).join(', ')}`,
+        `Description / Instructions: ${formData.description || 'None provided'}`,
+        `Company: Milano Security`
+      ];
+      return `mailto:${recipient}?subject=${subject}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
+    };
+
     try {
       setSubmitMessage('Submitting your quotation request...');
 
@@ -108,7 +125,10 @@ export default function Quotation({ setCurrentPage, lang }) {
       }
 
       if (!res.ok) {
-        setSubmitMessage(data.message || 'Failed to submit quotation request.');
+        const fallbackLink = data.mailtoLink || buildClientMailto();
+        setSubmitMessage(data.message || 'Opening your email client to submit your quotation request...');
+        setQuoteSubmitted(true);
+        setTimeout(() => { window.location.href = fallbackLink; }, 600);
         return;
       }
 
@@ -122,7 +142,10 @@ export default function Quotation({ setCurrentPage, lang }) {
       setQuoteSubmitted(true);
     } catch (err) {
       console.error('Quote submit failed:', err);
-      setSubmitMessage('Could not submit request. Please try again later.');
+      const fallbackLink = buildClientMailto();
+      setSubmitMessage('Opening your email app to submit your quotation request...');
+      setQuoteSubmitted(true);
+      setTimeout(() => { window.location.href = fallbackLink; }, 600);
     }
   };
 

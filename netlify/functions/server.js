@@ -476,8 +476,16 @@ router.post('/quote/submit', async (req, res) => {
   }
 });
 
-app.use(router);
-app.use('/api', router);
-app.use('/.netlify/functions/server', router);
+app.use((req, res, next) => {
+  if (req.url.startsWith('/.netlify/functions/server')) {
+    req.url = req.url.replace('/.netlify/functions/server', '') || '/';
+  } else if (req.url.startsWith('/api')) {
+    req.url = req.url.replace('/api', '') || '/';
+  }
+  next();
+});
+
+app.use('/', router);
 
 export const handler = serverless(app);
+
