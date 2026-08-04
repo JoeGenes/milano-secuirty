@@ -1,4 +1,4 @@
-import { app, handler } from './netilify/functions/server.js';
+import { app, handler } from './netlify/functions/server.js';
 
 export { app, handler };
-export { buildFallbackMailto } from './netilify/functions/server.js';
+export { buildFallbackMailto } from './netlify/functions/server.js';

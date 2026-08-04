@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import fsSync from 'fs';
 import { fileURLToPath } from 'url';
+import serverless from 'serverless-http';
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ const smtpPort = Number(process.env.SMTP_PORT || 465);
 const isSecure = process.env.SMTP_SECURE !== undefined
   ? process.env.SMTP_SECURE === 'true'
   : smtpPort === 465;
+
 const mailTimeoutMs = Number(process.env.SMTP_TIMEOUT_MS || 4000);
 
 const DEFAULT_FROM_EMAIL = process.env.SMTP_FROM ? process.env.SMTP_FROM.trim() : (
@@ -26,9 +28,13 @@ const DEFAULT_FROM_EMAIL = process.env.SMTP_FROM ? process.env.SMTP_FROM.trim() 
 );
 
 const getLogoAttachment = () => {
-  const logoPath = path.join(__dirname, '..', '..', 'public', 'favicon.svg');
-  if (fsSync.existsSync(logoPath)) {
-    return [{ filename: 'logo.svg', path: logoPath, cid: 'logo@milano', contentType: 'image/svg+xml' }];
+  try {
+    const logoPath = path.join(__dirname, '..', '..', 'public', 'favicon.svg');
+    if (fsSync.existsSync(logoPath)) {
+      return [{ filename: 'logo.svg', path: logoPath, cid: 'logo@milano', contentType: 'image/svg+xml' }];
+    }
+  } catch (err) {
+    console.warn('Unable to load logo attachment:', err);
   }
   return [];
 };
@@ -73,20 +79,27 @@ const buildEmailTemplate = ({ title = 'Milano Security', preheader = '', bodyHtm
   </html>`;
 };
 
-export function buildFallbackMailto(recipient, positionTitle, details) {
-  const subject = encodeURIComponent(`New Career Application – ${positionTitle || 'General Enquiry'}`);
-  const bodyLines = [
-    `Applicant Name: ${details.fullName || 'Not provided'}`,
-    `Phone: ${details.phone || 'Not provided'}`,
-    `Email: ${details.email || 'Not provided'}`,
-    `Region: ${details.region || 'Not provided'}`,
-    `Education: ${details.education || 'Not provided'}`,
-    `Experience: ${details.experience || 'Not provided'}`,
-    `Position Applied: ${details.positionTitle || 'Not provided'}`,
-    `Location: ${details.positionLocation || 'Not provided'}`,
-    `Cover Note: ${details.coverMessage || 'No additional note provided'}`,
-    `Company: ${details.companyName || 'Milano Security'}`
-  ];
+export function buildFallbackMailto(recipient, subjectOrTitle, details = {}) {
+  const subjectText = subjectOrTitle ? subjectOrTitle : 'Milano Security Enquiry';
+  const subject = encodeURIComponent(subjectText);
+  const bodyLines = [];
+
+  if (details.fullName || details.name) bodyLines.push(`Name: ${details.fullName || details.name}`);
+  if (details.phone) bodyLines.push(`Phone: ${details.phone}`);
+  if (details.email) bodyLines.push(`Email: ${details.email}`);
+  if (details.region) bodyLines.push(`Region: ${details.region}`);
+  if (details.customerType) bodyLines.push(`Customer Category: ${details.customerType}`);
+  if (details.premisesType) bodyLines.push(`Premises Type: ${details.premisesType}`);
+  if (details.selectedServices) bodyLines.push(`Services: ${Array.isArray(details.selectedServices) ? details.selectedServices.join(', ') : details.selectedServices}`);
+  if (details.urgency) bodyLines.push(`Urgency: ${details.urgency}`);
+  if (details.education) bodyLines.push(`Education: ${details.education}`);
+  if (details.experience) bodyLines.push(`Experience: ${details.experience}`);
+  if (details.positionTitle) bodyLines.push(`Position Applied: ${details.positionTitle}`);
+  if (details.positionLocation) bodyLines.push(`Location: ${details.positionLocation}`);
+  if (details.coverMessage || details.description || details.details || details.message) {
+    bodyLines.push(`Notes / Details: ${details.coverMessage || details.description || details.details || details.message}`);
+  }
+  bodyLines.push(`Company: ${details.companyName || 'Milano Security'}`);
 
   return `mailto:${recipient}?subject=${subject}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
 }
@@ -96,6 +109,7 @@ async function persistSubmission(details) {
 }
 
 const router = express.Router();
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -130,7 +144,27 @@ const sendMailWithTimeout = async (mailOptions) => {
 };
 
 router.get('/health', (req, res) => {
-  res.json({ status: 'ok', service: 'milano-careers' });
+  res.json({
+    status: 'ok',
+    service: 'milano-careers',
+    smtpHost: process.env.SMTP_HOST || 'mail.milanosecurity.co.tz',
+    smtpPort,
+    smtpSecure: isSecure
+  });
+});
+
+router.get('/admin/verify-smtp', async (req, res) => {
+  try {
+    await transporter.verify();
+    res.json({ success: true, message: 'SMTP connection verified successfully.' });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'SMTP connection failed.',
+      code: error.code,
+      details: error.message
+    });
+  }
 });
 
 router.post('/careers/submit', upload.single('cv'), async (req, res) => {
@@ -146,7 +180,9 @@ router.post('/careers/submit', upload.single('cv'), async (req, res) => {
 
     const recipient = process.env.RECEIVER_EMAIL || 'careers@milanosecurity.co.tz';
     const applicantEmail = email.trim();
-    const attachments = req.file ? [{ filename: req.file.originalname, content: req.file.buffer, contentType: req.file.mimetype }] : [];
+    const attachments = req.file
+      ? [{ filename: req.file.originalname, content: req.file.buffer, contentType: req.file.mimetype }]
+      : [];
     const attachmentsWithLogo = attachments.concat(getLogoAttachment());
 
     const submissionDetails = {
@@ -205,9 +241,15 @@ router.post('/careers/submit', upload.single('cv'), async (req, res) => {
       return res.json({ success: true, message: 'Your application has been delivered successfully to the Milano Security HR inbox.' });
     } catch (smtpError) {
       console.error('SMTP delivery failed, switching to fallback:', smtpError);
-      const fallbackLink = buildFallbackMailto(recipient, positionTitle, submissionDetails);
+      const fallbackLink = buildFallbackMailto(recipient, `New Career Application – ${positionTitle || 'General Enquiry'}`, submissionDetails);
       await persistSubmission({ ...submissionDetails, fallbackLink, deliveryStatus: 'saved-fallback' });
-      return res.json({ success: true, fallbackMode: true, mailtoLink: fallbackLink, message: 'Your application was received. Your email app will open with a draft for HR so you can send it directly if the mail server is unavailable.' });
+
+      return res.json({
+        success: true,
+        fallbackMode: true,
+        mailtoLink: fallbackLink,
+        message: 'Your application was received. Your email app will open with a draft for HR so you can send it directly if the mail server is unavailable.'
+      });
     }
   } catch (error) {
     console.error('Career submission failed:', error);
@@ -232,7 +274,10 @@ router.post('/contact/submit', async (req, res) => {
     if (!consentGiven) missing.push('privacy consent');
 
     if (missing.length > 0) {
-      return res.status(400).json({ success: false, message: `Please complete the required fields: ${missing.join(', ')}.` });
+      return res.status(400).json({
+        success: false,
+        message: `Please complete the required fields: ${missing.join(', ')}.`
+      });
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
@@ -264,9 +309,15 @@ router.post('/contact/submit', async (req, res) => {
       return res.json({ success: true, message: `Your message has been sent to ${recipient}.` });
     } catch (smtpError) {
       console.error('Contact SMTP delivery failed, switching to fallback:', smtpError);
-      const fallbackLink = buildFallbackMailto(recipient, 'Contact Form Message', { fullName: trimmedName, phone: trimmedPhone, email: trimmedEmail, region: 'Not provided', coverMessage: trimmedMessage, companyName: 'Milano Security' });
+      const fallbackLink = buildFallbackMailto(recipient, `Contact Form Message – ${trimmedName}`, { fullName: trimmedName, phone: trimmedPhone, email: trimmedEmail, region: 'Not provided', coverMessage: trimmedMessage, companyName: 'Milano Security' });
       await persistSubmission({ type: 'contact', name: trimmedName, phone: trimmedPhone, email: trimmedEmail, message: trimmedMessage, recipient, fallbackLink, deliveryStatus: 'saved-fallback' });
-      return res.json({ success: true, fallbackMode: true, mailtoLink: fallbackLink, message: `Your message was received and a fallback draft has been prepared for ${recipient}.` });
+
+      return res.json({
+        success: true,
+        fallbackMode: true,
+        mailtoLink: fallbackLink,
+        message: `Your message was received and a fallback draft has been prepared for ${recipient}.`
+      });
     }
   } catch (error) {
     console.error('Contact submission failed:', error);
@@ -328,9 +379,15 @@ router.post('/support/submit', async (req, res) => {
       return res.json({ success: true, message: `Your message has been sent to ${recipient}.` });
     } catch (smtpError) {
       console.error('Support SMTP delivery failed, switching to fallback:', smtpError);
-      const fallbackLink = buildFallbackMailto(recipient, 'Support Request', { fullName: name, phone, email, region, education: '', experience: '', coverMessage: details, positionTitle: category, positionLocation: region, companyName: 'Milano Security' });
+      const fallbackLink = buildFallbackMailto(recipient, `Support Request – ${name}`, { fullName: name, phone, email: senderEmail, region, coverMessage: details, positionTitle: category, positionLocation: region, companyName: 'Milano Security' });
       await persistSubmission({ name, phone, email: senderEmail, category, region, details, recipient, fallbackLink, deliveryStatus: 'saved-fallback' });
-      return res.json({ success: true, fallbackMode: true, mailtoLink: fallbackLink, message: `Your message was received and a fallback draft has been prepared for ${recipient}.` });
+
+      return res.json({
+        success: true,
+        fallbackMode: true,
+        mailtoLink: fallbackLink,
+        message: `Your message was received and a fallback draft has been prepared for ${recipient}.`
+      });
     }
   } catch (error) {
     console.error('Support submission failed:', error);
@@ -357,7 +414,7 @@ router.post('/quote/submit', async (req, res) => {
     if (!trimmedPhone) missing.push('telephone number');
     if (!trimmedEmail) missing.push('email address');
     if (!trimmedRegion) missing.push('region');
-    if (!trimmedDescription) missing.push('brief description');
+    // Note: description is optional on frontend form
     if (!consentGiven) missing.push('privacy consent');
 
     if (missing.length > 0) {
@@ -377,10 +434,10 @@ router.post('/quote/submit', async (req, res) => {
       <p><strong>Phone:</strong> ${trimmedPhone}</p>
       <p><strong>Email:</strong> ${trimmedEmail}</p>
       <p><strong>Region:</strong> ${trimmedRegion}</p>
-      <p><strong>Customer Category:</strong> ${customerType} (${premisesType})</p>
-      <p><strong>Urgency:</strong> ${urgency}</p>
-      <p><strong>Requested Services:</strong> ${(selectedServices || []).join(', ')}</p>
-      <p><strong>Description / Instructions:</strong><br/>${trimmedDescription.replace(/\n/g, '<br/>')}</p>
+      <p><strong>Customer Category:</strong> ${customerType || 'Not specified'} (${premisesType || 'Not specified'})</p>
+      <p><strong>Urgency:</strong> ${urgency || 'Standard'}</p>
+      <p><strong>Requested Services:</strong> ${(selectedServices || []).join(', ') || 'None selected'}</p>
+      <p><strong>Description / Instructions:</strong><br/>${(trimmedDescription || 'No additional instructions provided').replace(/\n/g, '<br/>')}</p>
     `;
 
     const mailOptions = {
@@ -398,8 +455,19 @@ router.post('/quote/submit', async (req, res) => {
       return res.json({ success: true, message: `Your quotation request has been sent to ${SALES_EMAIL}.` });
     } catch (smtpError) {
       console.error('Quotation SMTP delivery failed, switching to fallback:', smtpError);
-      const fallbackLink = buildFallbackMailto(SALES_EMAIL, 'Quotation Request', { fullName: trimmedName, phone: trimmedPhone, email: trimmedEmail, region: trimmedRegion, coverMessage: trimmedDescription });
+      const fallbackLink = buildFallbackMailto(SALES_EMAIL, `Quotation Request – ${trimmedName}`, {
+        fullName: trimmedName,
+        phone: trimmedPhone,
+        email: trimmedEmail,
+        region: trimmedRegion,
+        customerType,
+        premisesType,
+        selectedServices,
+        urgency,
+        coverMessage: trimmedDescription
+      });
       await persistSubmission({ type: 'quotation', name: trimmedName, phone: trimmedPhone, email: trimmedEmail, region: trimmedRegion, customerType, premisesType, selectedServices, urgency, description: trimmedDescription, recipient: SALES_EMAIL, fallbackLink, deliveryStatus: 'saved-fallback' });
+
       return res.json({ success: true, fallbackMode: true, mailtoLink: fallbackLink, message: `Your request was received; a fallback draft for ${SALES_EMAIL} has been prepared.` });
     }
   } catch (error) {
@@ -412,64 +480,4 @@ app.use(router);
 app.use('/api', router);
 app.use('/.netlify/functions/server', router);
 
-export const handler = async (event, context) => {
-  const method = event?.httpMethod || 'GET';
-  const path = event?.path || '/';
-  const headers = event?.headers || {};
-  const body = event?.body ? event.body : undefined;
-
-  const req = {
-    method,
-    url: path,
-    headers,
-    body,
-    query: {},
-    params: {},
-    connection: {}
-  };
-
-  const res = {
-    statusCode: 200,
-    headers: {},
-    body: '',
-    setHeader(name, value) { this.headers[name] = value; },
-    status(code) { this.statusCode = code; return this; },
-    json(payload) { this.headers['content-type'] = 'application/json'; this.body = JSON.stringify(payload); return this; },
-    send(payload) { this.headers['content-type'] = 'text/plain'; this.body = payload; return this; }
-  };
-
-  const expressRes = {
-    status(code) { res.status(code); return expressRes; },
-    setHeader(name, value) { res.setHeader(name, value); return expressRes; },
-    end(payload) { res.body = payload; return expressRes; },
-    json(payload) { res.json(payload); return expressRes; },
-    send(payload) { res.send(payload); return expressRes; }
-  };
-
-  const match = path.match(/^(.+?)(\?.*)?$/);
-  const normalizedPath = match ? match[1] : path;
-
-  const expressReq = {
-    method,
-    url: path,
-    originalUrl: path,
-    path: normalizedPath,
-    headers,
-    body: body ? JSON.parse(body) : {},
-    query: {},
-    params: {},
-    connection: {},
-    on() {},
-    socket: {}
-  };
-
-  return new Promise((resolve) => {
-    const callback = () => resolve({
-      statusCode: res.statusCode,
-      headers: res.headers,
-      body: res.body
-    });
-
-    app.handle(expressReq, expressRes, callback);
-  });
-};
+export const handler = serverless(app);
