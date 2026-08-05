@@ -15,6 +15,7 @@ import jamiiBoraImage from '../../images/jamii bora.jpg';
 export default function Home({ setCurrentPage, lang }) {
   const [activeTab, setActiveTab] = useState('manned');
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth < 768 : false);
   const t = TRANSLATIONS[lang];
 
   const serviceTabDetails = {
@@ -74,14 +75,26 @@ export default function Home({ setCurrentPage, lang }) {
   ];
 
   useEffect(() => {
+    const updateViewport = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    updateViewport();
+    window.addEventListener('resize', updateViewport);
+
     const interval = window.setInterval(() => {
       setCurrentStoryIndex((current) => (current + 1) % successStoryImages.length);
     }, 3000);
 
-    return () => window.clearInterval(interval);
+    return () => {
+      window.removeEventListener('resize', updateViewport);
+      window.clearInterval(interval);
+    };
   }, [successStoryImages.length]);
 
-  const visibleStories = Array.from({ length: 4 }, (_, offset) => successStoryImages[(currentStoryIndex + offset) % successStoryImages.length]);
+  const visibleStories = isMobile
+    ? [successStoryImages[currentStoryIndex]]
+    : Array.from({ length: 4 }, (_, offset) => successStoryImages[(currentStoryIndex + offset) % successStoryImages.length]);
 
   return (
     <div className="animate-fade-in" style={{ backgroundColor: '#FFFFFF' }}>
@@ -490,14 +503,14 @@ export default function Home({ setCurrentPage, lang }) {
           </div>
 
           <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 'clamp(1rem, 2vw, 1.6rem)', alignItems: 'stretch' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(220px, 1fr))', gap: 'clamp(1rem, 2vw, 1.6rem)', alignItems: 'stretch' }}>
               {visibleStories.map((story, idx) => (
                 <div key={`${story.name}-${idx}`} style={{ padding: 'clamp(0.9rem, 2vw, 1.2rem)', background: '#FFFFFF', textAlign: 'center' }}>
-                  <div style={{ minHeight: '180px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F8FAFC', borderRadius: '12px', padding: '1rem', marginBottom: '1rem', border: '1px solid #E2E8F0' }}>
+                  <div style={{ minHeight: isMobile ? '220px' : '180px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F8FAFC', borderRadius: '12px', padding: '1rem', marginBottom: '1rem', border: '1px solid #E2E8F0' }}>
                     <img
                       src={story.image}
                       alt={story.name}
-                      style={{ maxWidth: '100%', maxHeight: '140px', objectFit: 'contain', filter: 'drop-shadow(0 6px 14px rgba(10,11,61,0.08))' }}
+                      style={{ maxWidth: '100%', maxHeight: isMobile ? '170px' : '140px', objectFit: 'contain', filter: 'drop-shadow(0 6px 14px rgba(10,11,61,0.08))' }}
                     />
                   </div>
 
