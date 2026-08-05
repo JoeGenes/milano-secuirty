@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Shield, Phone, MessageSquare, ArrowRight, CheckCircle2, MapPin, Building2, UserCheck, Lock, Award, Users, Camera, BellRing, Dog, Car, HardHat, Flame, Scan, Star, ArrowUpRight } from 'lucide-react';
 import { COMPANY_INFO, SERVICES, COVERAGE_REGIONS, CLIENT_LOGOS, CASE_STUDIES } from '../data/content';
 import { TRANSLATIONS } from '../data/translations';
 import heroImage from '/police.jpeg';
+import totalEnergyImage from '../../images/totalEnergy.jpg';
+import silverlandImage from '../../images/silverland.png';
+import powerChinaImage from '../../images/powerchina.png';
+import sinohydroImage from '../../images/sinohydro.jpg';
+import radiantImage from '../../images/radiant.avif';
+import pinnacleImage from '../../images/pinnacle.jpg';
+import transAfricaImage from '../../images/transafrica.png';
+import jamiiBoraImage from '../../images/jamii bora.jpg';
 
 export default function Home({ setCurrentPage, lang }) {
   const [activeTab, setActiveTab] = useState('manned');
+  const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
   const t = TRANSLATIONS[lang];
 
   const serviceTabDetails = {
@@ -52,6 +61,27 @@ export default function Home({ setCurrentPage, lang }) {
   };
 
   const currentTab = serviceTabDetails[activeTab];
+
+  const successStoryImages = [
+    { name: 'TotalEnergies', category: 'Energy & Petroleum', image: totalEnergyImage },
+    { name: 'Silverlands Tanzania', category: 'Agribusiness', image: silverlandImage },
+    { name: 'PowerChina', category: 'Infrastructure & Energy', image: powerChinaImage },
+    { name: 'Sinohydro', category: 'Engineering & Construction', image: sinohydroImage },
+    { name: 'Radiant Industries', category: 'Manufacturing', image: radiantImage },
+    { name: 'Pinnacle Engineering Solutions', category: 'Engineering', image: pinnacleImage },
+    { name: 'Trans Africa', category: 'Logistics & Transport', image: transAfricaImage },
+    { name: 'Jamii Bora Development Initiative', category: 'NGO & Community', image: jamiiBoraImage }
+  ];
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setCurrentStoryIndex((current) => (current + 1) % successStoryImages.length);
+    }, 3000);
+
+    return () => window.clearInterval(interval);
+  }, [successStoryImages.length]);
+
+  const visibleStories = Array.from({ length: 4 }, (_, offset) => successStoryImages[(currentStoryIndex + offset) % successStoryImages.length]);
 
   return (
     <div className="animate-fade-in" style={{ backgroundColor: '#FFFFFF' }}>
@@ -459,28 +489,59 @@ export default function Home({ setCurrentPage, lang }) {
             <h2 className="section-title" style={{ color: '#0A0B3D', fontSize: 'clamp(1.4rem, 4vw, 2.2rem)' }}>Success Stories, to know about our Security</h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 'clamp(1rem, 2vw, 2rem)' }}>
-            {CASE_STUDIES.map(cs => (
-              <div key={cs.id} className="card" style={{ padding: 'clamp(1.2rem, 2.5vw, 2rem)', background: '#FFFFFF' }}>
-                <div style={{ display: 'flex', gap: '0.2rem', color: '#D4AF37', marginBottom: 'clamp(0.6rem, 1.5vw, 1rem)' }}>
-                  {[...Array(5)].map((_, i) => <Star key={i} size={16} fill="#0A0B3D" />)}
-                </div>
-
-                <p style={{ fontSize: 'clamp(0.8rem, 1.6vw, 0.92rem)', color: '#475569', fontStyle: 'italic', lineHeight: '1.6', marginBottom: 'clamp(1rem, 1.5vw, 1.5rem)' }}>
-                  "{cs.solution} Results achieved: {cs.results}"
-                </p>
-
-                <div style={{ borderTop: '1px solid #E2E8F0', paddingTop: 'clamp(0.6rem, 1vw, 1rem)', display: 'flex', alignItems: 'center', gap: 'clamp(0.5rem, 1vw, 0.8rem)' }}>
-                  <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(10, 11, 61, 0.08)', color: '#0A0B3D', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 'clamp(0.75rem, 1.5vw, 0.85rem)' }}>
-                    MS
+          <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 'clamp(1rem, 2vw, 1.6rem)', alignItems: 'stretch' }}>
+              {visibleStories.map((story, idx) => (
+                <div key={`${story.name}-${idx}`} style={{ padding: 'clamp(0.9rem, 2vw, 1.2rem)', background: '#FFFFFF', textAlign: 'center' }}>
+                  <div style={{ minHeight: '180px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F8FAFC', borderRadius: '12px', padding: '1rem', marginBottom: '1rem', border: '1px solid #E2E8F0' }}>
+                    <img
+                      src={story.image}
+                      alt={story.name}
+                      style={{ maxWidth: '100%', maxHeight: '140px', objectFit: 'contain', filter: 'drop-shadow(0 6px 14px rgba(10,11,61,0.08))' }}
+                    />
                   </div>
-                  <div>
-                    <h5 style={{ fontSize: 'clamp(0.8rem, 1.6vw, 0.95rem)', color: '#0A0B3D', margin: 0 }}>{cs.client}</h5>
-                    <span style={{ fontSize: 'clamp(0.65rem, 1.3vw, 0.75rem)', color: '#64748B' }}>{cs.industry}</span>
-                  </div>
+
+                  <h5 style={{ fontSize: 'clamp(0.8rem, 1.6vw, 0.95rem)', color: '#0A0B3D', margin: '0 0 0.35rem 0' }}>{story.name}</h5>
+                  <span style={{ fontSize: 'clamp(0.65rem, 1.3vw, 0.75rem)', color: '#64748B' }}>{story.category}</span>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.85rem', marginTop: '1.4rem' }}>
+              <button
+                type="button"
+                onClick={() => setCurrentStoryIndex((current) => (current - 1 + successStoryImages.length) % successStoryImages.length)}
+                style={{ border: '1px solid #0A0B3D', background: '#FFFFFF', color: '#0A0B3D', width: '36px', height: '36px', borderRadius: '50%', cursor: 'pointer', fontWeight: '700' }}
+              >
+                ←
+              </button>
+
+              {successStoryImages.map((story, idx) => (
+                <button
+                  key={story.name}
+                  type="button"
+                  onClick={() => setCurrentStoryIndex(idx)}
+                  aria-label={`Show ${story.name}`}
+                  style={{
+                    width: '10px',
+                    height: '10px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    background: idx === currentStoryIndex ? '#0A0B3D' : '#CBD5E1',
+                    cursor: 'pointer',
+                    padding: 0
+                  }}
+                />
+              ))}
+
+              <button
+                type="button"
+                onClick={() => setCurrentStoryIndex((current) => (current + 1) % successStoryImages.length)}
+                style={{ border: '1px solid #0A0B3D', background: '#FFFFFF', color: '#0A0B3D', width: '36px', height: '36px', borderRadius: '50%', cursor: 'pointer', fontWeight: '700' }}
+              >
+                →
+              </button>
+            </div>
           </div>
         </div>
       </section>
